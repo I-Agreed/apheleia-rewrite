@@ -1,5 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <!-- Sidebar -->
     <q-drawer
       v-model="drawer"
       show-if-above
@@ -14,11 +15,14 @@
 
       style="background-color: var(--aph-purple);"
     >
+    <!-- Logo button -->
     <q-item clickable tag="a" to="/dash" v-ripple style="height: 80px">
+      <!-- Logo Image -->
       <q-avatar class="absolute-center">
         <img src="../assets/logo_mono.svg">
       </q-avatar>
     </q-item>
+      <!-- Top list of buttons -->
       <q-list>
         <NavbarLink
           v-for="link in topLinks"
@@ -26,6 +30,8 @@
           v-bind="link"
         />
       </q-list>
+
+      <!-- Bottom list of buttons -->
       <q-list class="absolute-bottom">
         <NavbarLink
           v-for="link in bottomLinks"
@@ -35,6 +41,7 @@
       </q-list>
     </q-drawer>
 
+    <!-- The actual page being rendered -->
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -45,6 +52,7 @@
 import { defineComponent, ref } from 'vue'
 import NavbarLink from 'src/components/NavbarLink.vue'
 
+// Information about the links
 const topLinksList = [
   {
     title: 'Dashboard',

@@ -56,9 +56,6 @@ export const useSelf = defineStore('selfStore', {
         },
         fullName: () => {
             return sessionStorage["givenName"] + " " + sessionStorage["surname"];
-        },
-        loans: () => {
-            return this.history.loans
         }
     },
     actions: {

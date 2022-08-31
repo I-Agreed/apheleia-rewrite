@@ -1,19 +1,26 @@
 <template>
     <div class="landing landing-container">
         <div class="landing-layout">
+            <!-- Whitespace on the left -->
             <div class="landing-division landing-whitespace"></div>
             <div class="landing-division landing-text">
                 <div class="landing-img-container">
+                    <!-- Landing Logo -->
                     <img id="landing-logo" src="../assets/logo.svg" alt="">
+
+                    <!-- landing titles -->
                     <div id="landing-title-container">
                         <img class="landing-title-outline" src="../assets/landing-title-outline.svg" alt="">  
                         <img class="landing-title-outline" src="../assets/landing-title-outline.svg" alt="">  
                         <img class="landing-title" src="../assets/landing-title-solid.svg" alt="Apheleia">  
                     </div>
-                    <!-- <img id="landing-title" class="landing-img" src="../../assets/landing-logo.svg" alt="Apheleia"> -->
                 </div>
+
+                <!-- Login button -->
                 <input id="landing-login" type="button" name="landing-login" value="Login" @click="login()">
             </div>
+
+            <!-- gradient banner -->
             <div class="landing-division landing-banner"></div>
             <div class="landing-division landing-whitespace"></div>
         </div>
