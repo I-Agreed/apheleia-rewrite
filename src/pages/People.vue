@@ -24,7 +24,7 @@
 
             <!-- Table -->
             <div class="col col-11" style="width: 100%;">
-                <q-table :rows="rows" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
+                <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
                     <!-- Roles selection box -->
                     <template v-slot:body-cell-role="props">
                         <q-td :props="props">
@@ -60,6 +60,13 @@
 
                     <!-- Panels -->
                     <template v-slot:after>
+                        <div class="wide-flexbox">
+                            <span></span>
+                            <!-- Close Button component doesn't work here -->
+                            <q-btn flat label="" color="primary" v-close-popup>
+                                <q-icon name="close" size="sm"/>
+                            </q-btn>
+                        </div>
                         <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
                             <q-tab-panel name="role1">
                                 <div style="margin-left: 2vw;">
@@ -125,35 +132,21 @@
   
 <script>
     import { defineComponent, ref } from 'vue'
+    
+    import { usePeople } from '../stores/usePeople'
+
     import InviteUsers from 'src/components/InviteUsers.vue'
-  
+    import CloseButton from '../components/CloseButton.vue'
+
+    const peopleSt = usePeople()
+
     const columns = [
-        { name: 'id', headerStyle: 'width: 20%', align: "center", label: "School ID", field: "id", sortable: true },
-        { name: 'name', headerStyle: 'width: 60%', align: "center", label: "Name", field: "name", sortable: true },
-        { name: 'role', headerStyle: 'width: 20%', align: "center", label: "Role", field: "role", sortable: true }
+        { name: 'id',   headerStyle: 'width: 20%', align: "center", label: "School ID", field: "id",    sortable: true },
+        { name: 'name', headerStyle: 'width: 60%', align: "center", label: "Name",      field: "name",  sortable: true },
+        { name: 'role', headerStyle: 'width: 20%', align: "center", label: "Role",      field: "roles", sortable: true }
     ]
 
     const rows = [
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" },
-        { id: "123456789", name: "John Smith", role: "Teacher" }
     ]
 
     export default defineComponent({
@@ -168,7 +161,8 @@
                 tab: ref('role1'),
                 splitterModel: ref(10),
                 columns,
-                rows
+                rows,
+                peopleSt
             }
         }
     })
@@ -186,5 +180,9 @@
 
 .roles-popup-text {
     font-size: 14pt;
+}
+
+.wide-flexbox {
+    display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 100%;
 }
 </style>

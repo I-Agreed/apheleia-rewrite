@@ -61,9 +61,7 @@
                 </q-card-section>
     
                 <q-card-actions style="padding-bottom: 5%;" align="right">
-                    <q-btn flat label="" color="primary" v-close-popup>
-                        <q-icon name="close" size="sm"/>
-                    </q-btn>
+                    <CloseButton/>
                 </q-card-actions>
 
             </div>
@@ -130,9 +128,7 @@
                         <q-tab-panel name="archetype1">
                             <div style="display: flex; align-content: space-between; justify-content: space-between;">
                                 <span></span>
-                                <q-btn flat label="" color="primary" v-close-popup>
-                                    <q-icon name="close" size="sm"/>
-                                </q-btn>
+                                <CloseButton/>
                             </div>
                             <div class="q-pa-md">
                                 <q-table :rows="tempRow" :columns="tempCol" row-key="name" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]">
@@ -171,9 +167,7 @@
             <div class="q-pa-md">
                 <div class="wide-flexbox" style="padding-bottom: 1em;">
                     <span></span>
-                    <q-btn flat label="" color="primary" v-close-popup>
-                        <q-icon name="close" size="sm"/>
-                    </q-btn>
+                    <CloseButton/>
                 </div>
                 <q-table :rows="inventorySt.archetypeRows('Foil')" :columns="archColumns" row-key="property" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
                     <template v-slot:body="props">
@@ -244,6 +238,7 @@
     
     import { useInventory } from '../stores/useInventory.js'
     import { itemsLocal } from '../stores/itemsLocal'
+    import CloseButton from '../components/CloseButton.vue'
     
     const inventory = useInventory()
     const itemsPage = itemsLocal()
@@ -359,7 +354,8 @@
                     model.value = val
                 }
             }
-        }
+        },
+        components: { CloseButton }
     })
 </script>
   
