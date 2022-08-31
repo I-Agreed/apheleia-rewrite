@@ -11,7 +11,7 @@
         <q-card-section style="padding-top: 0px;">
             <q-field outlined stack-label>
                 <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">https://apheleia.com/123abc</div>
+                <div class="self-center full-width no-outline" tabindex="0">{{ url }}</div>
                 </template>
             </q-field>
         </q-card-section>
@@ -26,6 +26,12 @@
   import { defineComponent } from 'vue'
   
   export default defineComponent({
-    name: 'InviteUsers'
+    name: 'InviteUsers',
+    props: {
+        url: {
+            type: String,
+            required: true
+        },
+    }
   })
 </script>
