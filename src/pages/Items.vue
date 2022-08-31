@@ -169,7 +169,6 @@
             const options = ref(lendOptions)
 
             return {
-                rows,
                 tab: ref(inventory.schemes[0].name),
                 inventorySt: inventory,
                 itemsSt: itemsPage,
