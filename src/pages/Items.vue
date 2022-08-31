@@ -43,7 +43,7 @@
     <!-- lend item popup -->
     <q-dialog v-model="lend">
         <q-card style="width: 100%;">
-            <div style="display: flex; flex-flow: row nowrap; align-content: space-between; justify-content: space-between; width: 100%; ">
+            <div class="wide-flexbox">
                 <q-card-section>
                     <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
                 </q-card-section>
@@ -132,12 +132,12 @@
                                     </template>
                                 </q-table>
                                 <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
-                                    <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 30%;">
+                                    <div class="wide-flexbox" style="width: 30%;">
                                         <q-btn color="primary" label="New Item" class="manage-items-button"/>
                                         <q-btn color="primary" label="Edit Archetype" class="manage-items-button" @click="editArc = true"/>
                                     </div>
-                                    <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 30%;">
-                                        <q-btn color="primary" label="Cancel" class="manage-items-button"/>
+                                    <div class="wide-flexbox" style="width: 30%;">
+                                        <q-btn color="primary" label="Cancel" class="manage-items-button" v-close-popup/>
                                         <q-btn color="primary" label="Save and Exit" class="manage-items-button" v-close-popup/>
                                     </div>
                                 </div>
@@ -153,7 +153,13 @@
     <q-dialog v-model="editArc" full-width>
         <q-card style="height: 100%;">
             <div class="q-pa-md">
-                <q-table :rows="inventorySt.archetypeRows('Foil')" :columns="archColumns" row-key="property" style="height: 87vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
+                <div class="wide-flexbox" style="padding-bottom: 1em;">
+                    <span></span>
+                    <q-btn flat label="" color="primary" v-close-popup>
+                        <q-icon name="close" size="sm"/>
+                    </q-btn>
+                </div>
+                <q-table :rows="inventorySt.archetypeRows('Foil')" :columns="archColumns" row-key="property" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
                     <template v-slot:body="props">
                         <q-tr :props="props">
                             <q-td key="property" :props="props">
@@ -332,5 +338,9 @@
 
     .manage-items-button {
         height: 70%; width: 46%; margin-top: 1vh;
+    }
+
+    .wide-flexbox {
+        display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 100%;
     }
 </style>
