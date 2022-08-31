@@ -8,7 +8,7 @@
                 <div class="row" style="width: 100%; height: 100%;">
                     <!-- Search Bar -->
                     <div class="col-8">
-                        <q-input outlined label="Search" style="height: 70%; width: 80%;"/>
+                        <q-input outlined label="Search" style="height: 70%; width: 80%;" v-model="search"/>
                     </div>
 
                     <!-- Buttons -->
@@ -34,7 +34,7 @@
                         <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name" >
                             <div>
                                 <!-- The Tables themselves which hold the data -->
-                                <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
+                                <q-table :rows="inventorySt.rows(scheme.name).filter((x) => searchFilter(x, search))" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
                                     <!-- Lend Item button -->
                                     <template v-slot:body-cell-lend="props">
                                         <q-td :props="props">
@@ -336,11 +336,17 @@
                 model,
                 options,
                 splitterModel: ref(10),
+                search: ref(""),
 
                 tempCol: columns,
                 tempRow: rows,
 
                 archColumns: archetypeColumns,
+
+                searchFilter(item, param) {
+                    // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
+                    return item.Name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase());
+                },
 
                 filterFn (val, update, abort) {
                     update(() => {
