@@ -1,38 +1,32 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
     <q-drawer
-      v-model="leftDrawerOpen"
+      v-model="drawer"
       show-if-above
       bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
+      :mini="miniState"
+      @mouseover="miniState = false"
+      @mouseout="miniState = true"
+
+      :mini-width="80"
+      :width="240"
+    >
+    <q-item clickable tag="a" href="#" v-ripple style="height: 80px">
+      <q-avatar class="absolute-center">
+        <img src="../assets/logo.svg">
+      </q-avatar>
+    </q-item>
+      <q-list>
+        <NavbarLink
+          v-for="link in topLinks"
+          :key="link.title"
+          v-bind="link"
+        />
+      </q-list>
+      <q-list class="absolute-bottom">
+        <NavbarLink
+          v-for="link in bottomLinks"
           :key="link.title"
           v-bind="link"
         />
@@ -47,50 +41,56 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import NavbarLink from 'src/components/NavbarLink.vue'
 
-const linksList = [
+const topLinksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Dashboard',
+    icon: 'home',
+    link: '#'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'Items',
+    icon: 'category',
+    link: '#'
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: 'People',
+    icon: 'people',
+    link: '#'
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    title: 'Loans',
+    icon: 'inventory',
+    link: '#'
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
+    title: 'Notifications',
+    icon: 'notifications',
+    link: '#'
+  },
+]
+
+const bottomLinksList = [
+  {
+    title: 'About',
+    icon: 'info',
+    link: '#'
   },
   {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
+    title: 'Help',
+    icon: 'help',
+    link: '#'
   },
   {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'Settings',
+    icon: 'settings',
+    link: '#'
+  },
+  {
+    title: 'Log Out',
+    icon: 'logout',
+    link: '#'
   }
 ]
 
@@ -98,18 +98,14 @@ export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink
+    NavbarLink
   },
 
   setup () {
-    const leftDrawerOpen = ref(false)
-
     return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      topLinks: topLinksList,
+      bottomLinks: bottomLinksList,
+      miniState: ref(true)
     }
   }
 })

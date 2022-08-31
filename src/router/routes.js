@@ -8,8 +8,7 @@ const routes = [
     ]
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
+  // 404 not found
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
