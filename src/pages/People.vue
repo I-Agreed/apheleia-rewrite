@@ -11,7 +11,7 @@
                         <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 80%; margin-left: 20%;"/>
                     </div>
                     <div class="col-2">
-                        <q-btn color="primary" label="Invite Users" style="height: 70%; width: 80%; margin-left: 20%;"/>
+                        <q-btn color="primary" label="Invite Users" style="height: 70%; width: 80%; margin-left: 20%;" @click="invite = true"/>
                     </div>
                 </div>
             </div>
@@ -27,11 +27,17 @@
                 </q-table>
             </div>
         </div>
+
+        <!-- popups -->
+        <q-dialog v-model="invite">
+            <InviteUsers/>
+        </q-dialog>
     </q-page>
 </template>
   
 <script>
-    import { defineComponent } from 'vue'
+    import { defineComponent, ref } from 'vue'
+    import InviteUsers from 'src/components/InviteUsers.vue'
   
     const columns = [
         { name: 'id', headerStyle: 'width: 20%', align: "center", label: "School ID", field: "id", sortable: true },
@@ -64,8 +70,12 @@
 
     export default defineComponent({
         name: 'People',
+        components: {
+            InviteUsers
+        },
         setup () {
             return {
+                invite: ref(false),
                 columns,
                 rows
             }
