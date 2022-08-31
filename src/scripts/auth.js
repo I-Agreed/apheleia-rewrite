@@ -13,6 +13,7 @@ const clientConfig = {
     scope: "all-ro" // "all read-only" (only scope)
 }
 
+// creates code challanged for oauth2
 async function create_code_challenge() {
     // Verifier
     let out = ""
@@ -43,6 +44,7 @@ async function create_code_challenge() {
     return [out, codeChallenge];
 }
 
+// creates a random string to use as a state
 function gen_state() {
     let out = "";
     let chars = "abcdefghijklmnopqrstuvwxzABCDEFGHIKLMNOPQRSTUVWXYZ";
@@ -53,7 +55,7 @@ function gen_state() {
     return out;
 }
 
-
+// handles the callback page and gets the access tokens
 export async function handle_code(params) {
     // check state
     let state = params.query.state;
@@ -66,6 +68,7 @@ export async function handle_code(params) {
     }
 }
 
+// sets user details obtained from api
 async function set_info(redirect = true) {
     // get user id and store it
     let user_info = await get_user_info();
@@ -83,6 +86,7 @@ async function set_info(redirect = true) {
     }
 }
 
+// obtains a new access and refresh token using the current refresh token
 export async function refresh_token() {
     // Sends a post request to the token endpoint
     let expiry = new Date(Date.parse(localStorage.getItem("accessTokenExpiry")));
@@ -109,6 +113,7 @@ export async function refresh_token() {
     localStorage.setItem("refreshToken", tokens.refresh_token);
 }
 
+// gets the access token from the student portal
 export async function get_token(code) {
     // Sends a post request to the token endpoint
     // With help from https://github.com/mintcarrotkeys/generic-bells/blob/main/src/apiFetcher.js
@@ -135,10 +140,9 @@ export async function get_token(code) {
     setTimeout(get_token, (tokens.expires_in - 5) * 1000);
 }
 
+// handles hte pressing of the login button
 export async function login() {
     let [codeVerifier, codeChallenge] = await create_code_challenge();
-    //console.log("verifier: " + codeVerifier);
-    //console.log("challenge: " + codeChallenge);
     localStorage.setItem("codeVerifier", codeVerifier);
     // Construct address from auth_uri
     // Gets keys from the clientConfig, maps them to a string: "key=value" then joins all the strings with "&"
@@ -159,6 +163,7 @@ export async function login() {
     location.href = uri;
 }
 
+// checks to see if a refresh token is present on startup and logs in if there is
 export async function auth_setup() {
     // check for existing refresh token
     var accessTokenExpiry = localStorage["accessTokenExpiry"]
