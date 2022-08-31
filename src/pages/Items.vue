@@ -43,48 +43,58 @@
     <!-- lend item popup -->
     <q-dialog v-model="lend">
         <q-card style="width: 100%;">
-        <q-card-section>
-          <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
-        </q-card-section>
+            <div style="display: flex; flex-flow: row nowrap; align-content: space-between; justify-content: space-between; width: 100%; ">
+                <q-card-section>
+                    <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
+                </q-card-section>
+    
+                <q-card-actions style="padding-bottom: 5%;" align="right">
+                    <q-btn flat label="" color="primary" v-close-popup>
+                        <q-icon name="close" size="sm"/>
+                    </q-btn>
+                </q-card-actions>
 
-        <q-card-section class="q-pt-none">
-          Lend to:
-        </q-card-section>
+            </div>
 
-        <q-card-section style="padding-top: 0px;">
-            <q-select
-                filled
-                :model-value="model"
-                use-input
-                hide-selected
-                fill-input
-                input-debounce="0"
-                :options="options"
-                @input-value="setModel"
-                style="width: 250px; padding-bottom: 32px"
-            >     
-                <template v-slot:no-option>
-                    <q-item>
-                        <q-item-section class="text-grey">
-                            No results
-                        </q-item-section>
-                    </q-item>
-                </template>
-            </q-select>
-        </q-card-section>
 
-        <q-card-section class="q-pt-none">
-          Lend until:
-        </q-card-section>
+            <q-card-section class="q-pt-none">
+            Lend to:
+            </q-card-section>
 
-        <q-card-section style="padding-top: 0px;">
-            <q-input v-model="time" filled type="date" />
-        </q-card-section>
+            <q-card-section style="padding-top: 0px;">
+                <q-select
+                    filled
+                    :model-value="model"
+                    use-input
+                    hide-selected
+                    fill-input
+                    input-debounce="0"
+                    :options="options"
+                    @input-value="setModel"
+                    style="width: 250px; padding-bottom: 32px"
+                >     
+                    <template v-slot:no-option>
+                        <q-item>
+                            <q-item-section class="text-grey">
+                                No results
+                            </q-item-section>
+                        </q-item>
+                    </template>
+                </q-select>
+            </q-card-section>
 
-        <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup />
-        </q-card-actions>
-    </q-card>
+            <q-card-section class="q-pt-none">
+            Lend until:
+            </q-card-section>
+
+            <q-card-section style="padding-top: 0px;">
+                <q-input v-model="time" filled type="date" />
+            </q-card-section>
+
+            <q-card-actions align="right">
+            <q-btn flat label="OK" color="primary" v-close-popup />
+            </q-card-actions>
+        </q-card>
     </q-dialog>
 
     <!-- manage item popup -->
@@ -102,8 +112,14 @@
                 <template v-slot:after>
                     <q-tab-panels v-model="tab2" animated vertical transition-prev="jump-up" transition-next="jump-down">
                         <q-tab-panel name="archetype1">
+                            <div style="display: flex; align-content: space-between; justify-content: space-between;">
+                                <span></span>
+                                <q-btn flat label="" color="primary" v-close-popup>
+                                    <q-icon name="close" size="sm"/>
+                                </q-btn>
+                            </div>
                             <div class="q-pa-md">
-                                <q-table :rows="tempRow" :columns="tempCol" row-key="name" style="height: 85vh;" separator="cell" :rows-per-page-options="[0]">
+                                <q-table :rows="tempRow" :columns="tempCol" row-key="name" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]">
                                     <template v-slot:body="props">
                                         <q-tr :props="props">
                                             <q-td v-for="col in tempCol" :key="col.name" :props="props">
@@ -115,8 +131,16 @@
                                         </q-tr>
                                     </template>
                                 </q-table>
-                                <q-btn color="primary" label="New Item" style="height: 70%; width: 10%; margin-top: 1vh;" />
-                                <q-btn color="primary" label="Edit Archetype" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" @click="editArc = true"/>
+                                <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
+                                    <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 30%;">
+                                        <q-btn color="primary" label="New Item" class="manage-items-button"/>
+                                        <q-btn color="primary" label="Edit Archetype" class="manage-items-button" @click="editArc = true"/>
+                                    </div>
+                                    <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 30%;">
+                                        <q-btn color="primary" label="Cancel" class="manage-items-button"/>
+                                        <q-btn color="primary" label="Save and Exit" class="manage-items-button" v-close-popup/>
+                                    </div>
+                                </div>
                             </div>
                         </q-tab-panel>
                     </q-tab-panels>
@@ -247,5 +271,9 @@
     #items-container {
         width: 80%;
         height: 80%;
+    }
+
+    .manage-items-button {
+        height: 70%; width: 46%; margin-top: 1vh;
     }
 </style>
