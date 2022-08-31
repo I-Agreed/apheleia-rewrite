@@ -1,7 +1,7 @@
 <template>
-    <h3 class="absolute-left" style="padding-left: 10%;">settings.</h3>
     <q-page class="absolute-center flex flex-center" id="settings-container">
         <div class="q-gutter-sm">
+            <h3 style="margin-bottom: 1.5vh;">settings.</h3>
             <div><q-checkbox left-label v-model="notifications" label="Enable Notifications:" /></div>
             <div><q-checkbox left-label v-model="reminder" label="Remind Me For Overdue Items:" /></div>
             <div style="margin-top: 1vh;">
