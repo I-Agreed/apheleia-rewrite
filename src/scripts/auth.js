@@ -9,7 +9,7 @@ const authConfig = {
 
 const clientConfig = {
     client_id: "apheleia",
-    redirect_uri: "https://apheleia.pages.dev/callback",
+    redirect_uri: "https://apheleia-rewrite.pages.dev/callback",
     scope: "all-ro" // "all read-only" (only scope)
 }
 
@@ -18,7 +18,7 @@ async function create_code_challenge() {
     let out = ""
     let chars = "abcdefghijklmnopqrstuvwxzABCDEFGHIKLMNOPQRSTUVWXYZ1234567890-_.~"
     let len = 64
-    // Generate random string
+        // Generate random string
     for (let i = 0; i < len; i++) {
         out += chars[Math.floor(Math.random() * chars.length)]
     }
@@ -29,14 +29,14 @@ async function create_code_challenge() {
     async function sha256(plain) {
         const encoder = new TextEncoder()
         const data = encoder.encode(plain)
-        
+
         return window.crypto.subtle.digest('SHA-256', data)
     }
     // Base 64 encode hashed verifier
     function base64urlencode(a) {
         return window.btoa(String.fromCharCode.apply(null, new Uint8Array(a))).replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_")
     }
-    
+
     const hashed = await sha256(out)
     const codeChallenge = base64urlencode(hashed)
 
@@ -66,7 +66,7 @@ export async function handle_code(params) {
     }
 }
 
-async function set_info(redirect=true) {
+async function set_info(redirect = true) {
     // get user id and store it
     let user_info = await get_user_info();
     if (user_info !== null) {
@@ -96,16 +96,16 @@ export async function refresh_token() {
     })
     let response = await fetch(authConfig.token_uri, {
         method: "POST",
-        headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
-        body: body}
-        ).catch(e => console.log(e));
-        
+        headers: { "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: body
+    }).catch(e => console.log(e));
+
     let tokens = await response.json();
     //console.log("refresh response:");
     //console.log(tokens);
     localStorage.setItem("accessToken", tokens.access_token);
-    localStorage.setItem("accessTokenExpiry", (new Date(Date.now() + (tokens.expires_in - 5)*1000)).toString()); // creates date now + 1h - 5 seconds
-    localStorage.setItem("refreshTokenExpiry", (new Date(Date.now() + (24*60*60*90 - 5) * 1000)).toString()); // creates date now + 90 days - 5 seconds
+    localStorage.setItem("accessTokenExpiry", (new Date(Date.now() + (tokens.expires_in - 5) * 1000)).toString()); // creates date now + 1h - 5 seconds
+    localStorage.setItem("refreshTokenExpiry", (new Date(Date.now() + (24 * 60 * 60 * 90 - 5) * 1000)).toString()); // creates date now + 90 days - 5 seconds
     localStorage.setItem("refreshToken", tokens.refresh_token);
 }
 
@@ -122,17 +122,17 @@ export async function get_token(code) {
     })
     let response = await fetch(authConfig.token_uri, {
         method: "POST",
-        headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
-        body: body}
-        ).catch(e => console.log(e));
-        
+        headers: { "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: body
+    }).catch(e => console.log(e));
+
     let tokens = await response.json();
     //console.log(tokens);
     localStorage.setItem("accessToken", tokens.access_token);
-    localStorage.setItem("accessTokenExpiry", (new Date(Date.now() + (tokens.expires_in - 5)*1000)).toString()); // creates date now + 1h - 5 seconds
-    localStorage.setItem("refreshTokenExpiry", (new Date(Date.now() + (24*60*60*90 - 5) * 1000)).toString()); // creates date now + 90 days - 5 seconds
+    localStorage.setItem("accessTokenExpiry", (new Date(Date.now() + (tokens.expires_in - 5) * 1000)).toString()); // creates date now + 1h - 5 seconds
+    localStorage.setItem("refreshTokenExpiry", (new Date(Date.now() + (24 * 60 * 60 * 90 - 5) * 1000)).toString()); // creates date now + 90 days - 5 seconds
     localStorage.setItem("refreshToken", tokens.refresh_token);
-    setTimeout(get_token, (tokens.expires_in - 5)*1000);
+    setTimeout(get_token, (tokens.expires_in - 5) * 1000);
 }
 
 export async function login() {
@@ -167,7 +167,7 @@ export async function auth_setup() {
             await refresh_token();
             await set_info(false);
         } else { // not logged in
-    
+
         }
     }
 }

@@ -129,12 +129,13 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import { login } from "../scripts/auth.js"
+import { login, auth_setup } from "../scripts/auth.js"
 
 export default defineComponent({
   name: 'Landing',
 
   setup () {
+    auth_setup();
     return {
         login
     }
