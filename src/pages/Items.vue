@@ -27,7 +27,7 @@
                                 <q-table :rows="rows" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
                                     <template v-slot:body-cell-lend="props">
                                         <q-td :props="props">
-                                            <q-btn color="primary" label="Lend Item"/>
+                                            <q-btn color="primary" label="Lend Item" @click="lend = true"/>
                                         </q-td>
                                     </template>
                                 </q-table>
@@ -38,6 +38,53 @@
             </div>
         </div>
     </q-page>
+
+    <!-- popups -->
+    <q-dialog v-model="lend">
+        <q-card style="width: 100%;">
+        <q-card-section>
+          <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Lend to:
+        </q-card-section>
+
+        <q-card-section style="padding-top: 0px;">
+            <q-select
+                filled
+                :model-value="model"
+                use-input
+                hide-selected
+                fill-input
+                input-debounce="0"
+                :options="options"
+                @input-value="setModel"
+                style="width: 250px; padding-bottom: 32px"
+            >     
+                <template v-slot:no-option>
+                    <q-item>
+                        <q-item-section class="text-grey">
+                            No results
+                        </q-item-section>
+                    </q-item>
+                </template>
+            </q-select>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Lend until:
+        </q-card-section>
+
+        <q-card-section style="padding-top: 0px;">
+            <q-input v-model="time" filled type="date" hint="Native time" />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+    </q-card>
+    </q-dialog>
 </template>
   
 <script>
@@ -106,14 +153,39 @@
         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
     ]
 
+    const lendOptions = [
+        "abcd",
+        "efgh",
+        "ijkl",
+        "mnop",
+        "1234"
+    ]
+
     export default defineComponent({
         name: 'Items',
         setup () {
+            const model = ref(null)
+            const options = ref(lendOptions)
+
             return {
                 rows,
-                tab: ref('archetype1'),
+                tab: ref(inventory.schemes[0].name),
                 inventorySt: inventory,
-                itemsSt: itemsPage
+                itemsSt: itemsPage,
+                lend: ref(false),
+                model,
+                options,
+
+                filterFn (val, update, abort) {
+                    update(() => {
+                        const needle = val.toLocaleLowerCase()
+                        options.value = stringOptions.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1)
+                    })
+                },
+
+                setModel (val) {
+                    model.value = val
+                }
             }
         }
     })
