@@ -18,13 +18,13 @@
             <div class="col col-11" style="width: 100%;">
                 <q-card style="height: 100%;">
                     <q-tabs v-model="tab" active-color="primary" indicator-color="primary" align="justify">
-                        <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" />
+                        <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" @click="itemsSt.tabbedSchemeName = scheme.name" />
                     </q-tabs>
                     <q-separator />
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
                         <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name" >
                             <div>
-                                <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
+                                <q-table :rows="rows" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
                                     <template v-slot:body-cell-lend="props">
                                         <q-td :props="props">
                                             <q-btn color="primary" label="Lend Item"/>
@@ -50,17 +50,34 @@
     const inventory = useInventory()
     const itemsPage = itemsLocal()
     
-    let columns = []
-    inventory.schemes.forEach()
+    // let columns = {}
+    /*
+    columns = {
+        schemename: [
+            {}, // field name
+            {},
+            {}
+        ]
+    }
+    */
+    // inventory.schemes.forEach(scheme => {
+    //     let key = scheme.name
+    //     columns.key = []
+    //     scheme.fieldNames.forEach(fieldName => {
+    //         columns.key.push({ name: fieldName, align: "center", label: fieldName, field: fieldName, sortable: true })
+    //     })
+    // })
+
+    // console.log(columns)
     
-    const columns = [
-        { name: 'name', align: "center", label: "Item Name", field: "name", sortable: true },
-        { name: 'id', align: "center", label: "ID", field: "id", sortable: true },
-        { name: 'property1', align: "center", label: "Property 1", field: "property1", sortable: true },
-        { name: 'property2', align: "center", label: "Property 2", field: "property2", sortable: true },
-        { name: 'property3', align: "center", label: "Property 3", field: "property3", sortable: true },
-        { name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false }
-    ]
+    // const columns = [
+    //     { name: 'name', align: "center", label: "Item Name", field: "name", sortable: true },
+    //     { name: 'id', align: "center", label: "ID", field: "id", sortable: true },
+    //     { name: 'property1', align: "center", label: "Property 1", field: "property1", sortable: true },
+    //     { name: 'property2', align: "center", label: "Property 2", field: "property2", sortable: true },
+    //     { name: 'property3', align: "center", label: "Property 3", field: "property3", sortable: true },
+    //     { name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false }
+    // ]
 
     const rows = [
         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
@@ -93,7 +110,6 @@
         name: 'Items',
         setup () {
             return {
-                columns,
                 rows,
                 tab: ref('archetype1'),
                 inventorySt: inventory,
