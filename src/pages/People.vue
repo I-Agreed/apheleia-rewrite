@@ -30,7 +30,7 @@
 
         <!-- popups -->
         <q-dialog v-model="invite">
-            <InviteUsers/>
+            <InviteUsers url="https://apheleia.com/1bh3tg"/>
         </q-dialog>
     </q-page>
 </template>
