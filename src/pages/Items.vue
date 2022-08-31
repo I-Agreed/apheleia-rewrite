@@ -24,7 +24,7 @@
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
                         <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name" >
                             <div>
-                                <q-table :rows="rows" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
+                                <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
                                     <template v-slot:body-cell-lend="props">
                                         <q-td :props="props">
                                             <q-btn color="primary" label="Lend Item"/>
@@ -49,6 +49,7 @@
     
     const inventory = useInventory()
     const itemsPage = itemsLocal()
+
     
     // let columns = {}
     /*
@@ -79,38 +80,37 @@
     //     { name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false }
     // ]
 
-    const rows = [
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-        { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    ]
+    // const rows = [
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+    // ]
 
     export default defineComponent({
         name: 'Items',
         setup () {
             return {
-                rows,
                 tab: ref('archetype1'),
                 inventorySt: inventory,
                 itemsSt: itemsPage
