@@ -12,7 +12,7 @@
                     </div>
                     <!-- <img id="landing-title" class="landing-img" src="../../assets/landing-logo.svg" alt="Apheleia"> -->
                 </div>
-                <input id="landing-login" type="button" name="landing-login" value="Login">
+                <input id="landing-login" type="button" name="landing-login" value="Login" @click="login()">
             </div>
             <div class="landing-division landing-banner"></div>
             <div class="landing-division landing-whitespace"></div>
@@ -122,12 +122,14 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
+import { login } from "../scripts/auth.js"
 
 export default defineComponent({
   name: 'Landing',
 
   setup () {
     return {
+        login
     }
   }
 })

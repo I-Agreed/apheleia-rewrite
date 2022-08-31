@@ -1,3 +1,4 @@
+import { logout } from 'src/scripts/auth';
 
 const routes = [
   {
@@ -18,6 +19,10 @@ const routes = [
       { path: '/dash/help', component: () => import('pages/Help.vue') },
       { path: '/dash/settings', component: () => import('pages/Settings.vue') },
     ]
+  },
+  {
+    path: '/logout',
+    component: () => {logout(); return import('src/pages/Landing.vue')}
   },
 
   // 404 not found

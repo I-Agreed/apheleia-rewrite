@@ -92,7 +92,7 @@ const bottomLinksList = [
   {
     title: 'Log Out',
     icon: 'logout',
-    link: '/'
+    link: '/logout'
   }
 ]
 
