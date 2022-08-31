@@ -49,9 +49,7 @@
                 </q-card-section>
     
                 <q-card-actions style="padding-bottom: 5%;" align="right">
-                    <q-btn flat label="" color="primary" v-close-popup>
-                        <q-icon name="close" size="sm"/>
-                    </q-btn>
+                    <CloseButton/>
                 </q-card-actions>
 
             </div>
@@ -114,9 +112,7 @@
                         <q-tab-panel name="archetype1">
                             <div style="display: flex; align-content: space-between; justify-content: space-between;">
                                 <span></span>
-                                <q-btn flat label="" color="primary" v-close-popup>
-                                    <q-icon name="close" size="sm"/>
-                                </q-btn>
+                                <CloseButton/>
                             </div>
                             <div class="q-pa-md">
                                 <q-table :rows="tempRow" :columns="tempCol" row-key="name" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]">
@@ -155,9 +151,7 @@
             <div class="q-pa-md">
                 <div class="wide-flexbox" style="padding-bottom: 1em;">
                     <span></span>
-                    <q-btn flat label="" color="primary" v-close-popup>
-                        <q-icon name="close" size="sm"/>
-                    </q-btn>
+                    <CloseButton/>
                 </div>
                 <q-table :rows="inventorySt.archetypeRows('Foil')" :columns="archColumns" row-key="property" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
                     <template v-slot:body="props">
@@ -217,6 +211,7 @@
     
     import { useInventory } from '../stores/useInventory.js'
     import { itemsLocal } from '../stores/itemsLocal'
+    import CloseButton from '../components/CloseButton.vue'
     
     const inventory = useInventory()
     const itemsPage = itemsLocal()
@@ -293,41 +288,37 @@
     ]
 
     export default defineComponent({
-        name: 'Items',
-        setup () {
-            const model = ref(null)
-            const options = ref(lendOptions)
-
-            return {
-                tab: ref(inventory.schemes[0].name),
-                tab2: ref("archetype1"),
-                inventorySt: inventory,
-                itemsSt: itemsPage,
-                lend: ref(false),
-                manage: ref(false),
-                editArc: ref(false),
-                model,
-                options,
-                splitterModel: ref(10),
-
-                tempCol: columns,
-                tempRow: rows,
-
-                archColumns: archetypeColumns,
-
-                filterFn (val, update, abort) {
-                    update(() => {
-                        const needle = val.toLocaleLowerCase()
-                        options.value = stringOptions.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1)
-                    })
-                },
-
-                setModel (val) {
-                    model.value = val
-                }
+    name: "Items",
+    setup() {
+        const model = ref(null);
+        const options = ref(lendOptions);
+        return {
+            tab: ref(inventory.schemes[0].name),
+            tab2: ref("archetype1"),
+            inventorySt: inventory,
+            itemsSt: itemsPage,
+            lend: ref(false),
+            manage: ref(false),
+            editArc: ref(false),
+            model,
+            options,
+            splitterModel: ref(10),
+            tempCol: columns,
+            tempRow: rows,
+            archColumns: archetypeColumns,
+            filterFn(val, update, abort) {
+                update(() => {
+                    const needle = val.toLocaleLowerCase();
+                    options.value = stringOptions.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1);
+                });
+            },
+            setModel(val) {
+                model.value = val;
             }
-        }
-    })
+        };
+    },
+    components: { CloseButton }
+})
 </script>
   
 <style scoped>

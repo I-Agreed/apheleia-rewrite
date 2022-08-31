@@ -31,14 +31,10 @@ export const useSelf = defineStore('selfStore', {
             },
             history: {
                 loans: [
-                    "Loan 1",
-                    "Loan 2",
-                    "Loan 3",
-                    "Loan 4",
-                    "Loan 5",
-                    "Loan 6",
-                    "Loan 7",
-                    "Loan 8"
+                    { id: "000000001", name: "Item1", borrow: "18/02/22", due: "22/03/22", return: "28/02/22" },
+                    { id: "000000010", name: "Item2", borrow: "17/02/22", due: "22/04/22", return: "30/03/22" },
+                    { id: "000000011", name: "Item3", borrow: "19/02/22", due: "27/05/22", return: "03/05/22" },
+                    { id: "000000100", name: "Item4", borrow: "13/02/22", due: "22/06/22", return: "30/09/22" },
                 ],
                 notifications: [
                     "Item 1 is due today!",
@@ -47,7 +43,8 @@ export const useSelf = defineStore('selfStore', {
                 ]
             }
         }
-    }, getters: { // these use variable naming because they arent accessed as functions
+    },
+    getters: { // these use variable naming because they arent accessed as functions
         userId: () => {
             return sessionStorage["userId"];
         },
@@ -60,6 +57,11 @@ export const useSelf = defineStore('selfStore', {
         fullName: () => {
             return sessionStorage["givenName"] + " " + sessionStorage["surname"];
         },
+        loans: () => {
+            return this.history.loans
+        }
+    },
+    actions: {
     }
     
 })
