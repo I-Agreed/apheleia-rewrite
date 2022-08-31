@@ -102,7 +102,8 @@
             return {
                 columns,
                 rows,
-                tab: ref('archetype1')
+                tab: ref('archetype1'),
+                inventoryStore
             }
         }
     })

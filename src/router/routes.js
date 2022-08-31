@@ -5,18 +5,18 @@ const routes = [
     component: () => import('src/pages/Landing.vue')
   },
   {
-    path: '/home',
+    path: '/dash',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Dashboard.vue') },
-      { path: '/people', component: () => import('pages/People.vue') },
-      { path: '/items', component: () => import('pages/Items.vue') },
-      { path: '/loans', component: () => import('pages/Loans.vue') },
-      { path: '/notifications', component: () => import('pages/Notifications.vue') },
+      { path: '/dash/people', component: () => import('pages/People.vue') },
+      { path: '/dash/items', component: () => import('pages/Items.vue') },
+      { path: '/dash/loans', component: () => import('pages/Loans.vue') },
+      { path: '/dash/notifications', component: () => import('pages/Notifications.vue') },
       
-      { path: '/about', component: () => import('pages/About.vue') },
-      { path: '/help', component: () => import('pages/Help.vue') },
-      { path: '/settings', component: () => import('pages/Settings.vue') },
+      { path: '/dash/about', component: () => import('pages/About.vue') },
+      { path: '/dash/help', component: () => import('pages/Help.vue') },
+      { path: '/dash/settings', component: () => import('pages/Settings.vue') },
     ]
   },
 

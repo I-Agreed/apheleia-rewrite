@@ -14,7 +14,7 @@
 
       style="background-color: var(--aph-purple);"
     >
-    <q-item clickable tag="a" to="home" v-ripple style="height: 80px">
+    <q-item clickable tag="a" to="dash" v-ripple style="height: 80px">
       <q-avatar class="absolute-center">
         <img src="../assets/logo_mono.svg">
       </q-avatar>
@@ -49,27 +49,27 @@ const topLinksList = [
   {
     title: 'Dashboard',
     icon: 'home',
-    link: '/home'
+    link: '/dash'
   },
   {
     title: 'Items',
     icon: 'category',
-    link: '/items'
+    link: '/dash/items'
   },
   {
     title: 'People',
     icon: 'people',
-    link: '/people'
+    link: '/dash/people'
   },
   {
     title: 'Loans',
     icon: 'inventory',
-    link: '/loans'
+    link: '/dash/loans'
   },
   {
     title: 'Notifications',
     icon: 'notifications',
-    link: '/notifications'
+    link: '/dash/notifications'
   },
 ]
 
@@ -77,22 +77,22 @@ const bottomLinksList = [
   {
     title: 'About',
     icon: 'info',
-    link: '/about'
+    link: '/dash/about'
   },
   {
     title: 'Help',
     icon: 'help',
-    link: '/help'
+    link: '/dash/help'
   },
   {
     title: 'Settings',
     icon: 'settings',
-    link: '/settings'
+    link: '/dash/settings'
   },
   {
     title: 'Log Out',
     icon: 'logout',
-    link: '#'
+    link: '/'
   }
 ]
 
