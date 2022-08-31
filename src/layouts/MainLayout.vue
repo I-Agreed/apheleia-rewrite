@@ -14,7 +14,7 @@
 
       style="background-color: var(--aph-purple);"
     >
-    <q-item clickable tag="a" href="#" v-ripple style="height: 80px">
+    <q-item clickable tag="a" to="home" v-ripple style="height: 80px">
       <q-avatar class="absolute-center">
         <img src="../assets/logo_mono.svg">
       </q-avatar>
@@ -49,7 +49,7 @@ const topLinksList = [
   {
     title: 'Dashboard',
     icon: 'home',
-    link: '#'
+    link: '/home'
   },
   {
     title: 'Items',
@@ -59,7 +59,7 @@ const topLinksList = [
   {
     title: 'People',
     icon: 'people',
-    link: '#'
+    link: '/people'
   },
   {
     title: 'Loans',

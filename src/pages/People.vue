@@ -1,0 +1,64 @@
+<template>
+    <h3 class="absolute-left" style="padding-left: 10%;">people.</h3>
+    <q-page class="absolute-center flex flex-center" id="people-container">
+        <div class="column" style="width: 100%; height: 80%;">
+            <div class="col col-1" style="width: 100%;">
+                <div class="row" style="width: 100%; height: 100%;">
+                    <div class="col-8">
+                        <q-input outlined label="Search" style="height: 70%; width: 80%;"/>
+                    </div>
+                    <div class="col-2">
+                        <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 80%; margin-left: 20%;"/>
+                    </div>
+                    <div class="col-2">
+                        <q-btn color="primary" label="Invite Users" style="height: 70%; width: 80%; margin-left: 20%;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-11" style="width: 100%;">
+                <q-table :rows="rows" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
+            </div>
+        </div>
+    </q-page>
+</template>
+  
+<script>
+    import { defineComponent } from 'vue'
+  
+    const columns = [
+        { name: 'id', headerStyle: 'width: 20%', align: "center", label: "School ID", field: "id", sortable: true },
+        { name: 'name', headerStyle: 'width: 60%', align: "center", label: "Name", field: "name", sortable: true },
+        { name: 'role', headerStyle: 'width: 20%', align: "center", label: "Role", field: "role", sortable: true }
+    ]
+
+    const rows = [
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" }
+    ]
+
+    export default defineComponent({
+        name: 'People',
+        setup () {
+            return {
+                columns,
+                rows
+            }
+        }
+    })
+</script>
+
+<style scoped>
+#people-container {
+    width: 80%;
+    height: 80%;
+}
+</style>

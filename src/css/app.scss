@@ -3,8 +3,8 @@
     --aph-warning: rgb(185, 95, 113);
     --aph-border: rgb(208, 215, 222);
 
-    --aph-purple: rgb(45, 28, 77);
-    --aph-purple-light: rgb(96, 66, 141);
+    --aph-purple: #2d1c4d;
+    --aph-purple-light: #60428d;
     --aph-pink: rgb(221 73 152);
     --aph-blue: rgb(122, 167, 193);
     --aph-grey: rgb(123, 143, 162);
@@ -27,4 +27,11 @@
     --aph-text-dark: rgb(5, 5, 5);
 
     --aph-text-highlight: rgb(140, 207, 252);
+}
+
+h3 {
+    font-family: montserrat;
+    font-weight: bold;
+    color: var(--aph-purple);
+    font-size: 3vh;
 }

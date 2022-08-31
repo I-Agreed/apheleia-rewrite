@@ -3,20 +3,20 @@
     <q-page class="absolute-center flex flex-center" id="dash-container">
         <div class="row" style="width: 100%;height: 80%;">
             <div class="column col-7" style="height: 100%;">
-                <div class= "col col-6" id="dash-current-loans">
+                <div class= "col col-6">
                     <h5>Current Loans</h5>
                     <div class="q-pa-md" style="height: 85%;">
-                        <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[5]" style="height: 100%;"/>
+                        <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell"/>
                     </div>
                 </div>
-                <div class= "col col-6" id="dash-loan-history">
+                <div class= "col col-6">
                     <h5>Loan History</h5>
                     <div class="q-pa-md" style="height: 100%;">
-                        <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[5]" style="height: 100%;"/>
+                        <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell"/>
                     </div>
                 </div>
             </div>
-            <div class="col-5" id="dash-notifications">
+            <div class="col-5">
                 <h5>Notifications</h5>
                 <div class="q-pa-md" style="height: 100%;">
                     <q-list bordered separator class="rounded-borders shadow-1" style="height: 100%;">
@@ -81,25 +81,6 @@
 #dash-container {
     width: 80%;
     height: 80%;
-}
-
-#dash-current-loans {
-    
-}
-
-#dash-loan-history {
-    
-}
-
-#dash-notifications {
-    
-}
-
-h3 {
-    font-family: montserrat;
-    font-weight: bold;
-    color: var(--aph-purple);
-    font-size: 3vh;
 }
 
 h5 {
