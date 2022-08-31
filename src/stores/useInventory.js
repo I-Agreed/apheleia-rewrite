@@ -84,6 +84,10 @@ export const useInventory = defineStore('inventoryStore', {
     getters: {
     },
     actions: {
+        // Converts strings (such as fieldName) to working keys
+        stringToKey(string) {
+            return string.replace(" ", "_")
+        },
         // Returns the schemeId of a matching scheme with a matching name in the database, returns -1 if not found
         getSchemeId(schemeName) {
             let schemeId = -1
@@ -101,15 +105,15 @@ export const useInventory = defineStore('inventoryStore', {
             
             // If a matching scheme was found
             if (schemeId != -1) {
-                let out_columns = []
+                let outColumns = []
                 // Add the field names to the columns list
                 this.schemes[schemeId].fieldNames.forEach(fieldName => {
-                    out_columns.push({ name: fieldName, align: "center", label: fieldName, field: fieldName, sortable: true })
+                    outColumns.push({ name: this.stringToKey(fieldName), label: fieldName, field: this.stringToKey(fieldName), align: "center", sortable: true })
                 })
 
                 // Add the last column for lending and return
-                out_columns.push({ name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false })
-                return out_columns
+                outColumns.push({ name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false })
+                return outColumns
             }
             else {
                 console.log("Error in useInventory.js, actions, columns(schemeName)")
@@ -121,29 +125,28 @@ export const useInventory = defineStore('inventoryStore', {
             
             // If a matching scheme was found
             if (schemeId != -1) {
-                let out_rows = []
+                let outRows = []
+                let currentScheme = this.schemes[schemeId]
 
                 // Add the item data to the rows
                 // Loop through all the items
-                for (let i = 0; i < this.schemes[schemeId].items.length; ++i) {
+                for (let i = 0; i < currentScheme.items.length; ++i) {
                     // Create an item
                     let item = {}
 
                     // Populate the item with { fieldName1: value1, fieldName2: value2... }
-                    for (let fieldIndex = 0; fieldIndex < this.schemes[schemeId].fieldNames.length; ++fieldIndex) {
-                        let key = this.schemes[schemeId].fieldNames[fieldIndex]
-                        item.key = this.schemes[schemeId].items[fieldIndex]
+                    for (let fieldIndex = 0; fieldIndex < currentScheme.fieldNames.length; ++fieldIndex) {
+                        let key = this.stringToKey(currentScheme.fieldNames[fieldIndex])
+                        
+                        item.key = currentScheme.items[i][fieldIndex]
                     }
 
                     // Add the item to the rows list
-                    out_rows.push(item)
+                    outRows.push(item)
+
                 }
 
-                this.schemes[schemeId].fieldNames.forEach(fieldName => {
-                    console.log(fieldName)
-                })
-
-                return out_rows
+                return outRows
             }
             else {
                 console.log("Error in useInventory.js, actions, rows(schemeName)")
