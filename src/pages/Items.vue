@@ -13,7 +13,7 @@
 
                     <!-- Buttons -->
                     <div class="col-2">
-                        <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;"/>
+                        <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="create_pdf(inventorySt.schemes)"/>
                     </div>
                     <div class="col-2">
                         <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
@@ -240,6 +240,8 @@
     import { itemsLocal } from '../stores/itemsLocal'
     import CloseButton from '../components/CloseButton.vue'
     
+    import { create_pdf } from 'src/scripts/pdf'
+
     const inventory = useInventory()
     const itemsPage = itemsLocal()
 
@@ -352,7 +354,9 @@
 
                 setModel (val) {
                     model.value = val
-                }
+                },
+
+                create_pdf
             }
         },
         components: { CloseButton }
