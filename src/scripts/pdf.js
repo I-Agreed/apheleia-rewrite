@@ -118,7 +118,7 @@ function create_page(doc, scheme, fontSizes, fonts) {
     let dd = String(today.getDate()).padStart(2, '0');
     let mm = String(today.getMonth() + 1).padStart(2, '0');
     let yyyy = today.getFullYear();
-    today = mm + '/' + dd + '/' + yyyy;
+    today = dd + '/' + mm + '/' + yyyy;
 
     page.drawText(today, { x: 12, y: page.getHeight() - 83, size: 17, font: fonts[0], color: rgb(0, 0, 0), opacity: 1 })
     create_table(page, 25, titles.length, titles, data, fontSizes, fonts);
