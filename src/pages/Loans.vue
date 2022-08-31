@@ -1,10 +1,15 @@
 <template>
+    <!-- Loans title -->
     <h3 class="absolute-left" style="padding-left: 10%;">loans.</h3>
     <q-page class="absolute-center flex flex-center" id="loans-container">
+        <!-- columns which split the seach bar and table -->
         <div class="column" style="width: 100%; height: 80%;">
+            <!-- Search bar -->
             <div class="col col-1" style="width: 100%;">
                 <q-input outlined label="Search" style="height: 70%; width: 53%;"/>
             </div>
+            
+            <!-- table -->
             <div class="col col-11" style="width: 100%;">
                 <q-table :rows="rows" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
             </div>

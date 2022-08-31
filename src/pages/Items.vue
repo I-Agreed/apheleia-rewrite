@@ -1,12 +1,17 @@
 <template>
     <h3 class="absolute-left" style="padding-left: 10%;">items.</h3>
     <q-page class="absolute-center flex flex-center" id="items-container">
+        <!-- Columns to seperate the search bar/buttons and the tavle -->
         <div class="column" style="width: 100%; height: 80%;">
+            <!-- Contains search bar and buttons -->
             <div class="col col-1" style="width: 100%;">
                 <div class="row" style="width: 100%; height: 100%;">
+                    <!-- Search Bar -->
                     <div class="col-8">
                         <q-input outlined label="Search" style="height: 70%; width: 80%;"/>
                     </div>
+
+                    <!-- Buttons -->
                     <div class="col-2">
                         <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;"/>
                     </div>
@@ -15,16 +20,22 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Contains the items tabs and tables -->
             <div class="col col-11" style="width: 100%;">
                 <q-card style="height: 100%;">
+                    <!-- Top Tabs -->
                     <q-tabs v-model="tab" active-color="primary" indicator-color="primary" align="justify">
                         <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" @click="itemsSt.tabbedSchemeName = scheme.name" />
                     </q-tabs>
                     <q-separator />
+                    <!-- Panels containing tavles -->
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
                         <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name" >
                             <div>
+                                <!-- The Tables themselves which hold the data -->
                                 <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
+                                    <!-- Lend Item button -->
                                     <template v-slot:body-cell-lend="props">
                                         <q-td :props="props">
                                             <q-btn color="primary" label="Lend Item" @click="lend = true"/>
@@ -40,13 +51,16 @@
     </q-page>
 
     <!-- popups -->
+
     <!-- lend item popup -->
     <q-dialog v-model="lend">
         <q-card style="width: 100%;">
+        <!-- Title -->
         <q-card-section>
           <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
         </q-card-section>
 
+        <!-- Lend to subtitle and input selection box -->
         <q-card-section class="q-pt-none">
           Lend to:
         </q-card-section>
@@ -73,6 +87,7 @@
             </q-select>
         </q-card-section>
 
+        <!-- Lend until subtitle and input box -->
         <q-card-section class="q-pt-none">
           Lend until:
         </q-card-section>
@@ -90,7 +105,9 @@
     <!-- manage item popup -->
     <q-dialog v-model="manage" full-width>
         <q-card style="height: 100%;">
+            <!-- Splitter splits vertically between tabs and panels -->
             <q-splitter v-model="splitterModel" style="height: 100%">
+                <!-- Tabs on the left -->
                 <template v-slot:before>
                     <q-tabs v-model="tab2" vertical class="text-primary">
                         <q-tab name="archetype1" label="Archetype 1" />
@@ -99,11 +116,15 @@
                         <q-btn label="New Achetype" class="absolute-bottom" style="width: 100%;"/>
                     </q-tabs>
                 </template>
+
+                <!-- Panels on the right -->
                 <template v-slot:after>
                     <q-tab-panels v-model="tab2" animated vertical transition-prev="jump-up" transition-next="jump-down">
                         <q-tab-panel name="archetype1">
                             <div class="q-pa-md">
+                                 <!-- The Table itself -->
                                 <q-table :rows="tempRow" :columns="tempCol" row-key="name" style="height: 85vh;" separator="cell" :rows-per-page-options="[0]">
+                                    <!-- Allows for the data to be edited -->
                                     <template v-slot:body="props">
                                         <q-tr :props="props">
                                             <q-td v-for="col in tempCol" :key="col.name" :props="props">
@@ -115,6 +136,7 @@
                                         </q-tr>
                                     </template>
                                 </q-table>
+                                <!-- New Item and Edit Archetype Buttons -->
                                 <q-btn color="primary" label="New Item" style="height: 70%; width: 10%; margin-top: 1vh;" />
                                 <q-btn color="primary" label="Edit Archetype" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" @click="editArc = true"/>
                             </div>
@@ -129,9 +151,11 @@
     <q-dialog v-model="editArc" full-width>
         <q-card style="height: 100%;">
             <div class="q-pa-md">
+                <!-- Table containing all the info -->
                 <q-table :rows="inventorySt.archetypeRows('Foil')" :columns="archColumns" row-key="property" style="height: 87vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
                     <template v-slot:body="props">
                         <q-tr :props="props">
+                            <!-- Modifying the rows of the property column to make them editable -->
                             <q-td key="property" :props="props">
                                 {{ props.row.property }}
                                 <q-popup-edit v-model="props.row.property" :title="`Update Property`" buttons v-slot="scope">
@@ -139,11 +163,14 @@
                                 </q-popup-edit>
                             </q-td>
                             
+                            <!-- modifying the rows of the property type column to make them editable as a dropdown -->
                             <q-td key="propertyType" :props="props">
                                 <q-select outlined v-model="props.row.propertyType" :options="['text', 'number', 'selection', 'date', 'checkbox']"/>
                             </q-td>
 
+                            <!-- modifying the rows of the default value column to make them editable depending on the type -->
                             <q-td key="defaultValue" :props="props">
+                                <!-- Plain text editing for text and number type -->
                                 <div v-if="props.row.propertyType === 'text' || props.row.propertyType === 'number'">
                                     {{ props.row.defaultValue }}
                                     <q-popup-edit v-model="props.row.defaultValue" :title="`Update Property Default`" buttons v-slot="scope">
@@ -151,29 +178,36 @@
                                     </q-popup-edit>
                                 </div>
 
+                                <!-- A list of text input boxes for the selection type -->
                                 <div v-if="props.row.propertyType === 'selection'">
                                     <div v-for="val in props.row.defaultValue" style="display: flex;">
                                         <q-input outlined v-model="val.value" style="margin-top: 10px; width: 95%;"/>
+                                        <!-- Delete button for each input box -->
                                         <q-btn flat round color="red" icon="delete" style="margin-left: 0.6vw;"/>
                                     </div>
+                                    <!-- + button to add more input boxes -->
                                     <q-btn color="primary" label="+" style="height: 70%; width: 10%; margin-top: 1vh;" />
                                 </div>
 
+                                <!-- Date input for the date type -->
                                 <div v-if="props.row.propertyType === 'date'">
                                     <q-input v-model="props.row.defaultValue" filled type="date" />
                                 </div>
 
+                                <!-- Checkbox input for the checkbox type -->
                                 <div v-if="props.row.propertyType === 'checkbox'">
                                     <q-select outlined v-model="props.row.defaultValue" :options="['true', 'false']"/>
                                 </div>
                             </q-td>
 
+                            <!-- Delete button on the right side of each property on table -->
                             <q-td key="delete" :props="props">
                                 <q-btn flat round color="red" icon="delete" />
                             </q-td>
                         </q-tr>
                     </template>
                 </q-table>
+                <!-- New Property and Save buttons -->
                 <q-btn color="primary" label="New Property" style="height: 70%; width: 10%; margin-top: 1vh;" />
                 <q-btn color="primary" label="Save" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" @click="editArc = true"/>
             </div>

@@ -1,13 +1,22 @@
 <template>
     <q-page class="absolute-center flex flex-center" id="settings-container">
         <div class="q-gutter-sm">
+            <!-- settings title -->
             <h3 style="margin-bottom: 1.5vh;">settings.</h3>
+            
+            <!-- enable notifications checkbox -->
             <div><q-checkbox left-label v-model="notifications" label="Enable Notifications:" /></div>
+            
+            <!-- remind for items checkbox -->
             <div><q-checkbox left-label v-model="reminder" label="Remind Me For Overdue Items:" /></div>
+            
+            <!-- send notifications textbox -->
             <div style="margin-top: 1vh;">
                 <p style="margin-bottom: 0.2vh;">Send Notifications to:</p>
                 <q-input filled v-model="email" label="email" style="width: 30vw;"/>
             </div>
+
+            <!-- buttons for saving and restoring -->
             <div style="margin-top: 3vh;">
                 <q-btn color="primary" label="Save Changes" style="margin-right: 1vw;"/>
                 <q-btn color="primary" label="Restore Default"/>

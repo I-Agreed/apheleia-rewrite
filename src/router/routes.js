@@ -1,10 +1,13 @@
 import { logout } from 'src/scripts/auth';
 
 const routes = [
+  // landing page
   {
     path: '/',
     component: () => import('src/pages/Landing.vue')
   },
+
+  // dashboard
   {
     path: '/dash',
     component: () => import('layouts/MainLayout.vue'),
@@ -20,6 +23,8 @@ const routes = [
       { path: '/dash/settings', component: () => import('pages/Settings.vue') },
     ]
   },
+
+  // logout
   {
     path: '/logout',
     component: () => {logout(); return import('src/pages/Landing.vue')}

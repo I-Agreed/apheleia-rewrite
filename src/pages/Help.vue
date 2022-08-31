@@ -1,8 +1,10 @@
 <template>
     <h3 class="absolute-left" style="padding-left: 10%;">help.</h3>
     <q-page class="absolute-center flex flex-center" id="help-container">
-        <div style="height: 80%; width: 100%; border: 2px solid var(--aph-grey); border-radius: 10px;">
+        <div style="height: 80%; width: 100%; border: 2px solid var(--aph-grey); border-radius: 10px;">          <!-- Rounded border -->
+            <!-- Splitter which splits vertically between the tabs and content -->
             <q-splitter v-model="splitterModel" style="height: 100%">
+                <!-- The tabs on the left -->
                 <template v-slot:before>
                     <q-tabs v-model="tab" vertical class="text-primary">
                         <q-tab name="overview" label="Overview" />
@@ -11,6 +13,7 @@
                         <q-tab name="people" label="People" />
                     </q-tabs>
                 </template>
+                <!-- The panels on the right, connected to the tabs by the 'name' variable -->
                 <template v-slot:after>
                     <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
                         <q-tab-panel name="overview">
