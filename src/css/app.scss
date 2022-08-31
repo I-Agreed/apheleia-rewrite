@@ -1,1 +1,30 @@
 // app global css in SCSS form
+:root {
+    --aph-warning: rgb(185, 95, 113);
+    --aph-border: rgb(208, 215, 222);
+
+    --aph-purple: rgb(45, 28, 77);
+    --aph-purple-light: rgb(96, 66, 141);
+    --aph-pink: rgb(221 73 152);
+    --aph-blue: rgb(122, 167, 193);
+    --aph-grey: rgb(123, 143, 162);
+    --aph-greya: rgba(208, 215, 222, 120);
+
+    --aph-dark1: rgb(12, 12, 12);
+    --aph-dark2: rgb(24, 24, 24);
+    --aph-dark3: rgb(32, 32, 32);
+
+    --aph-dark1a: rgba(12, 12, 12, 0.8);
+    --aph-dark2a: rgba(24, 24, 24, 0.75);
+    --aph-dark3a: rgba(32, 32, 32, 0.6);
+
+    --aph-light1: rgb(220, 220, 220);
+    --aph-light2: rgb(200, 200, 200);
+    --aph-light3: rgb(180, 180, 180);
+
+    --aph-text-light: rgb(250, 250, 250);
+    --aph-text-grey: var(--aph-grey);
+    --aph-text-dark: rgb(5, 5, 5);
+
+    --aph-text-highlight: rgb(140, 207, 252);
+}

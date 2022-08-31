@@ -9,12 +9,14 @@
       @mouseover="miniState = false"
       @mouseout="miniState = true"
 
-      :mini-width="80"
+      :mini-width="miniWidth"
       :width="240"
+
+      style="background-color: var(--aph-purple);"
     >
     <q-item clickable tag="a" href="#" v-ripple style="height: 80px">
       <q-avatar class="absolute-center">
-        <img src="../assets/logo.svg">
+        <img src="../assets/logo_mono.svg">
       </q-avatar>
     </q-item>
       <q-list>
@@ -105,7 +107,8 @@ export default defineComponent({
     return {
       topLinks: topLinksList,
       bottomLinks: bottomLinksList,
-      miniState: ref(true)
+      miniState: ref(true),
+      miniWidth: 80
     }
   }
 })
