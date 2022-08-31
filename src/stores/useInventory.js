@@ -138,13 +138,14 @@ export const useInventory = defineStore('inventoryStore', {
                     for (let fieldIndex = 0; fieldIndex < currentScheme.fieldNames.length; ++fieldIndex) {
                         let key = this.stringToKey(currentScheme.fieldNames[fieldIndex])
                         
-                        item.key = currentScheme.items[i][fieldIndex]
+                        item[key] = currentScheme.items[i][fieldIndex]
                     }
 
                     // Add the item to the rows list
                     outRows.push(item)
                 }
 
+                console.log(outRows)
                 return outRows
             }
             else {
