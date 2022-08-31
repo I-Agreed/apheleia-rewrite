@@ -11,7 +11,7 @@
                         <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;"/>
                     </div>
                     <div class="col-2">
-                        <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;"/>
+                        <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
                     </div>
                 </div>
             </div>
@@ -40,6 +40,7 @@
     </q-page>
 
     <!-- popups -->
+    <!-- lend item popup -->
     <q-dialog v-model="lend">
         <q-card style="width: 100%;">
         <q-card-section>
@@ -77,13 +78,51 @@
         </q-card-section>
 
         <q-card-section style="padding-top: 0px;">
-            <q-input v-model="time" filled type="date" hint="Native time" />
+            <q-input v-model="time" filled type="date" />
         </q-card-section>
 
         <q-card-actions align="right">
           <q-btn flat label="OK" color="primary" v-close-popup />
         </q-card-actions>
     </q-card>
+    </q-dialog>
+
+    <!-- manage item popup -->
+    <q-dialog v-model="manage" full-width>
+        <q-card style="height: 100%;">
+            <q-splitter v-model="splitterModel" style="height: 100%">
+                <template v-slot:before>
+                    <q-tabs v-model="tab2" vertical class="text-primary">
+                        <q-tab name="archetype1" label="Archetype 1" />
+                        <q-tab name="archetype2" label="Archetype 2" />
+                        <q-tab name="archetype3" label="Archetype 3" />
+                        <q-btn label="New Achetype" class="absolute-bottom" style="width: 100%;"/>
+                    </q-tabs>
+                </template>
+                <template v-slot:after>
+                    <q-tab-panels v-model="tab2" animated vertical transition-prev="jump-up" transition-next="jump-down">
+                        <q-tab-panel name="archetype1">
+                            <div class="q-pa-md">
+                                <q-table :rows="tempRow" :columns="tempCol" row-key="name" style="height: 85vh;" separator="cell" :rows-per-page-options="[0]">
+                                    <template v-slot:body="props">
+                                        <q-tr :props="props">
+                                            <q-td v-for="col in tempCol" :key="col.name" :props="props">
+                                                {{ props.row[col.name] }}
+                                                <q-popup-edit v-model="props.row[col.name]" :title="`Update ${col.label}`" buttons v-slot="scope">
+                                                    <q-input v-model="scope.value" dense autofocus />
+                                                </q-popup-edit>
+                                            </q-td>
+                                        </q-tr>
+                                    </template>
+                                </q-table>
+                                <q-btn color="primary" label="New Item" style="height: 70%; width: 10%; margin-top: 1vh;" />
+                                <q-btn color="primary" label="Edit Archetype" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" />
+                            </div>
+                        </q-tab-panel>
+                    </q-tab-panels>
+                </template>
+            </q-splitter>
+        </q-card>
     </q-dialog>
 </template>
   
@@ -118,41 +157,40 @@
 
     // console.log(columns)
     
-    // const columns = [
-    //     { name: 'name', align: "center", label: "Item Name", field: "name", sortable: true },
-    //     { name: 'id', align: "center", label: "ID", field: "id", sortable: true },
-    //     { name: 'property1', align: "center", label: "Property 1", field: "property1", sortable: true },
-    //     { name: 'property2', align: "center", label: "Property 2", field: "property2", sortable: true },
-    //     { name: 'property3', align: "center", label: "Property 3", field: "property3", sortable: true },
-    //     { name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false }
-    // ]
+     const columns = [
+         { name: 'name', align: "center", label: "Item Name", field: "name", sortable: true },
+         { name: 'id', align: "center", label: "ID", field: "id", sortable: true },
+         { name: 'property1', align: "center", label: "Property 1", field: "property1", sortable: true },
+         { name: 'property2', align: "center", label: "Property 2", field: "property2", sortable: true },
+         { name: 'property3', align: "center", label: "Property 3", field: "property3", sortable: true },
+    ]
 
-    // const rows = [
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    //     { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-    // ]
+     const rows = [
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
+     ]
 
     const lendOptions = [
         "abcd",
@@ -170,11 +208,17 @@
 
             return {
                 tab: ref(inventory.schemes[0].name),
+                tab2: ref("archetype1"),
                 inventorySt: inventory,
                 itemsSt: itemsPage,
                 lend: ref(false),
+                manage: ref(false),
                 model,
                 options,
+                splitterModel: ref(10),
+
+                tempCol: columns,
+                tempRow: rows,
 
                 filterFn (val, update, abort) {
                     update(() => {
