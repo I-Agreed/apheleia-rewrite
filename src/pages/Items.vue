@@ -116,12 +116,19 @@
                                     </template>
                                 </q-table>
                                 <q-btn color="primary" label="New Item" style="height: 70%; width: 10%; margin-top: 1vh;" />
-                                <q-btn color="primary" label="Edit Archetype" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" />
+                                <q-btn color="primary" label="Edit Archetype" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" @click="editArc = true"/>
                             </div>
                         </q-tab-panel>
                     </q-tab-panels>
                 </template>
             </q-splitter>
+        </q-card>
+    </q-dialog>
+
+    <!-- edit archetype popup -->
+    <q-dialog v-model="editArc" full-width>
+        <q-card style="height: 100%;">
+
         </q-card>
     </q-dialog>
 </template>
@@ -213,6 +220,7 @@
                 itemsSt: itemsPage,
                 lend: ref(false),
                 manage: ref(false),
+                editArc: ref(false),
                 model,
                 options,
                 splitterModel: ref(10),

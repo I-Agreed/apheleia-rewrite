@@ -14,7 +14,7 @@
 
       style="background-color: var(--aph-purple);"
     >
-    <q-item clickable tag="a" to="dash" v-ripple style="height: 80px">
+    <q-item clickable tag="a" to="/dash" v-ripple style="height: 80px">
       <q-avatar class="absolute-center">
         <img src="../assets/logo_mono.svg">
       </q-avatar>
