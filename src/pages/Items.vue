@@ -18,11 +18,11 @@
             <div class="col col-11" style="width: 100%;">
                 <q-card style="height: 100%;">
                     <q-tabs v-model="tab" active-color="primary" indicator-color="primary" align="justify">
-                        <q-tab v-for="scheme in inventorySt.schemes" :label="scheme.name" />
+                        <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" />
                     </q-tabs>
                     <q-separator />
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
-                        <q-tab-panel name="archetype1" >
+                        <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name" >
                             <div>
                                 <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
                                     <template v-slot:body-cell-lend="props">
@@ -32,17 +32,7 @@
                                     </template>
                                 </q-table>
                             </div>
-                        </q-tab-panel>  
-                        <q-tab-panel name="archetype2" >
-                            <div>
-                                <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell"/>
-                            </div>
-                        </q-tab-panel>  
-                        <q-tab-panel name="archetype3" >
-                            <div>
-                                <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell"/>
-                            </div>
-                        </q-tab-panel>  
+                        </q-tab-panel>
                     </q-tab-panels>
                 </q-card>
             </div>
@@ -56,6 +46,12 @@
     
     import { useInventory } from '../stores/useInventory.js'
     import { itemsLocal } from '../stores/itemsLocal'
+    
+    const inventory = useInventory()
+    const itemsPage = itemsLocal()
+    
+    let columns = []
+    inventory.schemes.forEach()
     
     const columns = [
         { name: 'name', align: "center", label: "Item Name", field: "name", sortable: true },
@@ -100,8 +96,8 @@
                 columns,
                 rows,
                 tab: ref('archetype1'),
-                inventorySt: useInventory(),
-                itemsSt: itemsLocal()
+                inventorySt: inventory,
+                itemsSt: itemsPage
             }
         }
     })
