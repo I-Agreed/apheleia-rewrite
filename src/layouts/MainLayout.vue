@@ -87,7 +87,7 @@ const bottomLinksList = [
   {
     title: 'Settings',
     icon: 'settings',
-    link: '#'
+    link: '/settings'
   },
   {
     title: 'Log Out',
