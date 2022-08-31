@@ -23,7 +23,7 @@
                             <q-select filled v-model="props.value" :options="['Teacher', '2', '3']"/>
                         </div>
                     </q-td>
-  </template>
+                    </template>
                 </q-table>
             </div>
         </div>
