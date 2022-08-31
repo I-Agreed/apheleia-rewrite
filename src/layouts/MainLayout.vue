@@ -64,7 +64,7 @@ const topLinksList = [
   {
     title: 'Loans',
     icon: 'inventory',
-    link: '#'
+    link: '/loans'
   },
   {
     title: 'Notifications',

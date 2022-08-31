@@ -16,7 +16,15 @@
                 </div>
             </div>
             <div class="col col-11" style="width: 100%;">
-                <q-table :rows="rows" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
+                <q-table :rows="rows" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
+                    <template v-slot:body-cell-role="props">
+                        <q-td :props="props">
+                        <div>
+                            <q-select filled v-model="props.value" :options="['Teacher', '2', '3']"/>
+                        </div>
+                    </q-td>
+  </template>
+                </q-table>
             </div>
         </div>
     </q-page>
@@ -32,6 +40,15 @@
     ]
 
     const rows = [
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
+        { id: "123456789", name: "John Smith", role: "Teacher" },
         { id: "123456789", name: "John Smith", role: "Teacher" },
         { id: "123456789", name: "John Smith", role: "Teacher" },
         { id: "123456789", name: "John Smith", role: "Teacher" },
