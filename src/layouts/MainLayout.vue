@@ -54,7 +54,7 @@ const topLinksList = [
   {
     title: 'Items',
     icon: 'category',
-    link: '#'
+    link: '/items'
   },
   {
     title: 'People',
