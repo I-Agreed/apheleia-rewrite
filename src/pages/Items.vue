@@ -54,8 +54,8 @@
     import { defineComponent } from 'vue'
     import { ref } from 'vue'
     
-    import { useInventory } from '../store/useInventory'
-    import { itemsLocal } from '../store/itemsLocal'
+    import { useInventory } from '../stores/useInventory'
+    import { itemsLocal } from '../stores/itemsLocal'
     
     const inventoryStore = useInventory()
     const itemsSt = itemsLocal()
