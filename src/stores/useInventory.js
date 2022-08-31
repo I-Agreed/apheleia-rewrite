@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 
+// fieldTypes: 0 = text, 1 = number, 2 = selection, 3 = date, 4 = checkbox
+
 export const useInventory = defineStore('inventoryStore', {
     state: () => {
         return {
@@ -10,6 +12,7 @@ export const useInventory = defineStore('inventoryStore', {
                     totalItems: 16,
                     fieldTypes: [0, 1, 2],
                     fieldNames: ["Name", "Tag", "Condition"],
+                    fieldDefault: ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair"}]],
                     items: [
                         ["Red Brambleback", "101", "Perfect"],
                         ["Worcester", "756", "Perfect"],
@@ -35,6 +38,7 @@ export const useInventory = defineStore('inventoryStore', {
                     totalItems: 7,
                     fieldTypes: [0, 1, 2, 2 ],
                     fieldNames: ["Name", "Tag", "Condition", "Tip Condition"],
+                    fieldDefault: ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair"}], [{ value: "Perfect" }, { value: "Needs Immediate Repair"}]],
                     items: [
                         ["Swing", "107", "Perfect", "Perfect"],
                         ["Ding", "757", "Perfect", "Perfect"],
@@ -51,6 +55,7 @@ export const useInventory = defineStore('inventoryStore', {
                     totalItems: 1,
                     fieldTypes: [0],
                     fieldNames: ["Name"],
+                    fieldDefault: ["Item"],
                     items: [
                         ["I am the only epee blade. I am alone. Please give me friends and attributes."]
                     ]
@@ -61,6 +66,7 @@ export const useInventory = defineStore('inventoryStore', {
                     totalItems: 1,
                     fieldTypes: [0],
                     fieldNames: ["Name"],
+                    fieldDefault: ["Item"],
                     items: [
                         ["I am the only normal camera. Please do not throw me out. Please give me friends and attributes."]
                     ]
@@ -69,12 +75,13 @@ export const useInventory = defineStore('inventoryStore', {
                     id: 4,
                     name: "Camera Pro",
                     totalItems: 2,
-                    fieldTypes: [0, 4],
-                    fieldNames: ["Name", "Has Lens"],
+                    fieldTypes: [0, 4, 3],
+                    fieldNames: ["Name", "Has Lens", "Date Bought"],
+                    fieldDefault: ["Item", "false", "2022-02-02"],
                     items: [
-                        ["I have a lover. Please give me friends and attributes.", "False"],
-                        ["I have a lover. Please give me friends, they are boring.", "True"],
-                        ["RED-H74", "True"]
+                        ["I have a lover. Please give me friends and attributes.", "false", "2022-02-02"],
+                        ["I have a lover. Please give me friends, they are boring.", "true", "2022-02-02"],
+                        ["RED-H74", "True", "2022-02-02"]
                     ]
                 },
                 //{name: "Archetype Name n"}
@@ -151,6 +158,31 @@ export const useInventory = defineStore('inventoryStore', {
             else {
                 console.log("Error in useInventory.js, actions, rows(schemeName)")
             }
+        },
+        // returns rows for edit archetype popup
+        archetypeRows(schemeName) {
+            let rows = []
+            let schemeId = this.getSchemeId(schemeName)
+            let currentScheme = this.schemes[schemeId]
+
+            for (let i = 0; i < currentScheme.fieldNames.length; i++) {
+                rows.push({ property: currentScheme.fieldNames[i], propertyType: getType(currentScheme.fieldTypes[i]), defaultValue: currentScheme.fieldDefault[i] })
+            }
+
+            function getType(type) {
+                switch (type) {
+                    case 0: return "text"; break;
+                    case 1: return "number"; break;
+                    case 2: return "selection"; break;
+                    case 3: return "date"; break;
+                    case 4: return "checkbox"; break;
+                    
+                    default:
+                        break;
+                }
+            }
+
+            return rows
         },
         create_item(archetypeId, fields) {
             this.schemes.forEach(scheme => {
