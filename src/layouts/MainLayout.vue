@@ -77,7 +77,7 @@ const bottomLinksList = [
   {
     title: 'About',
     icon: 'info',
-    link: '#'
+    link: '/about'
   },
   {
     title: 'Help',
