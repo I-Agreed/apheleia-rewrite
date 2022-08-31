@@ -37,6 +37,8 @@ function save_pdf(dataUri, name = "Apheleia Items Report") {
 
 // creates a rectangle and text as a part of a table
 function create_cell(page, x, y, w, h, text, fontSize, font) {
+    if (text === undefined) text = "N/A";
+
     page.drawRectangle({
         x: x,
         y: y,
@@ -63,7 +65,6 @@ function create_cell(page, x, y, w, h, text, fontSize, font) {
 // fills a page with a table
 // page, int, int, array[c], array[r][c], array[2], array[2]
 function create_table(page, rows, cols, titles, data, fontSizes, fonts) {
-    console.log(titles, data[0]);
 
     let margin = 10;
     let header = 90;
@@ -88,7 +89,6 @@ function create_table(page, rows, cols, titles, data, fontSizes, fonts) {
     }
     let totalMinWidth = minColWidths.reduce((x, y) => x + y, 0); // sum min widths;
     let colWidths = minColWidths.map((x) => x * tWidth / totalMinWidth);
-    console.log(minColWidths);
     let x = tX;
     // column titles
     for (let c = 0; c < cols; c++) {
@@ -100,7 +100,6 @@ function create_table(page, rows, cols, titles, data, fontSizes, fonts) {
     for (let r = 1; r < actualRows; r++) { // first row is title row, also accounts for data that is shorter than number of rows
         x = tX;
         for (let c = 0; c < cols; c++) {
-            console.log(x);
             create_cell(page, x, tY + rowHeight * (rows - r - 1), colWidths[c], rowHeight, data[r - 1][c], fontSizes[0], fonts[0]);
             x += colWidths[c];
         }
@@ -111,6 +110,17 @@ function create_page(doc, scheme, fontSizes, fonts) {
     let page = doc.addPage();
     let titles = scheme.fieldNames;
     let data = scheme.items;
+    // title and date
+    page.drawText("Item Report: " + scheme.name, { x: 12, y: page.getHeight() - 63, size: 17, font: fonts[0], color: rgb(0, 0, 0), opacity: 1 });
+    page.drawText("apheleia.", { x: 12, y: page.getHeight() - 40, size: 26, font: fonts[0], color: rgb(0, 0, 0), opacity: 1 });
+
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+
+    page.drawText(today, { x: 12, y: page.getHeight() - 83, size: 17, font: fonts[0], color: rgb(0, 0, 0), opacity: 1 })
     create_table(page, 25, titles.length, titles, data, fontSizes, fonts);
 }
 
@@ -133,6 +143,7 @@ async function create_pdf(schemes) {
     // Trigger the browser to download the PDF document
     //download(pdfBytes, "pdf-lib_creation_example.pdf", "application/pdf");
     save_pdf(pdfDataUri);
+    console.log("PDF made");
 }
 
 export { create_pdf }
