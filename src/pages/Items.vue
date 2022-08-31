@@ -18,9 +18,7 @@
             <div class="col col-11" style="width: 100%;">
                 <q-card style="height: 100%;">
                     <q-tabs v-model="tab" active-color="primary" indicator-color="primary" align="justify">
-                        <q-tab name="archetype1" label="Archetype 1" />
-                        <q-tab name="archetype2" label="Archetype 2" />
-                        <q-tab name="archetype3" label="Archetype 3" />
+                        <q-tab v-for="scheme in inventoryStore.schemes" :name="scheme.name" :label="scheme.name" />
                     </q-tabs>
                     <q-separator />
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
@@ -55,6 +53,12 @@
 <script>
     import { defineComponent } from 'vue'
     import { ref } from 'vue'
+    
+    import { useInventory } from '../stores/useInventory'
+    import { itemsLocal } from '../stores/itemsLocal'
+    
+    const inventoryStore = useInventory()
+    const itemsSt = itemsLocal()
 
     const columns = [
         { name: 'name', align: "center", label: "Item Name", field: "name", sortable: true },
