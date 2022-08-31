@@ -84,9 +84,12 @@ export const useInventory = defineStore('inventoryStore', {
     getters: {
     },
     actions: {
-        // Returns the columns (table headers) necessary for the items display
-        columns(schemeName) {
-            // Find the scheme with the matching name by Id
+        // Converts strings (such as fieldName) to working keys
+        stringToKey(string) {
+            return string.replace(" ", "_")
+        },
+        // Returns the schemeId of a matching scheme with a matching name in the database, returns -1 if not found
+        getSchemeId(schemeName) {
             let schemeId = -1
             for (let i = 0; i < this.schemes.length; ++i) {
                 if (this.schemes[i].name == schemeName) {
@@ -94,21 +97,59 @@ export const useInventory = defineStore('inventoryStore', {
                     break
                 }
             }
-
+            return schemeId
+        },
+        // Returns the columns (table headers) necessary for the items display for a given scheme (item type)
+        columns(schemeName) {
+            let schemeId = this.getSchemeId(schemeName)
+            
             // If a matching scheme was found
             if (schemeId != -1) {
-                let cols = []
+                let outColumns = []
                 // Add the field names to the columns list
                 this.schemes[schemeId].fieldNames.forEach(fieldName => {
-                    cols.push({ name: fieldName, align: "center", label: fieldName, field: fieldName, sortable: true })
+                    outColumns.push({ name: this.stringToKey(fieldName), label: fieldName, field: this.stringToKey(fieldName), align: "center", sortable: true })
                 })
 
                 // Add the last column for lending and return
-                cols.push({ name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false })
-                return cols
+                outColumns.push({ name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false })
+                return outColumns
             }
             else {
-                console.log("Error in useInventory.js, getters, columns(schemeName)")
+                console.log("Error in useInventory.js, actions, columns(schemeName)")
+            }
+        },
+        // Returns the table rows for the items display for a given scheme (item type)
+        rows(schemeName) {
+            let schemeId = this.getSchemeId(schemeName)
+            
+            // If a matching scheme was found
+            if (schemeId != -1) {
+                let outRows = []
+                let currentScheme = this.schemes[schemeId]
+
+                // Add the item data to the rows
+                // Loop through all the items
+                for (let i = 0; i < currentScheme.items.length; ++i) {
+                    // Create an item
+                    let item = {}
+
+                    // Populate the item with { fieldName1: value1, fieldName2: value2... }
+                    for (let fieldIndex = 0; fieldIndex < currentScheme.fieldNames.length; ++fieldIndex) {
+                        let key = this.stringToKey(currentScheme.fieldNames[fieldIndex])
+                        
+                        item.key = currentScheme.items[i][fieldIndex]
+                    }
+
+                    // Add the item to the rows list
+                    outRows.push(item)
+
+                }
+
+                return outRows
+            }
+            else {
+                console.log("Error in useInventory.js, actions, rows(schemeName)")
             }
         },
         create_item(archetypeId, fields) {
