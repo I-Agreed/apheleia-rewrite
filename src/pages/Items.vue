@@ -128,7 +128,55 @@
     <!-- edit archetype popup -->
     <q-dialog v-model="editArc" full-width>
         <q-card style="height: 100%;">
+            <div class="q-pa-md">
+                <q-table :rows="inventorySt.archetypeRows('Foil')" :columns="archColumns" row-key="property" style="height: 87vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
+                    <template v-slot:body="props">
+                        <q-tr :props="props">
+                            <q-td key="property" :props="props">
+                                {{ props.row.property }}
+                                <q-popup-edit v-model="props.row.property" :title="`Update Property`" buttons v-slot="scope">
+                                    <q-input v-model="scope.value" dense autofocus />
+                                </q-popup-edit>
+                            </q-td>
+                            
+                            <q-td key="propertyType" :props="props">
+                                <q-select outlined v-model="props.row.propertyType" :options="['text', 'number', 'selection', 'date', 'checkbox']"/>
+                            </q-td>
 
+                            <q-td key="defaultValue" :props="props">
+                                <div v-if="props.row.propertyType === 'text' || props.row.propertyType === 'number'">
+                                    {{ props.row.defaultValue }}
+                                    <q-popup-edit v-model="props.row.defaultValue" :title="`Update Property Default`" buttons v-slot="scope">
+                                        <q-input v-model="scope.value" dense autofocus />
+                                    </q-popup-edit>
+                                </div>
+
+                                <div v-if="props.row.propertyType === 'selection'">
+                                    <div v-for="val in props.row.defaultValue" style="display: flex;">
+                                        <q-input outlined v-model="val.value" style="margin-top: 10px; width: 95%;"/>
+                                        <q-btn flat round color="red" icon="delete" style="margin-left: 0.6vw;"/>
+                                    </div>
+                                    <q-btn color="primary" label="+" style="height: 70%; width: 10%; margin-top: 1vh;" />
+                                </div>
+
+                                <div v-if="props.row.propertyType === 'date'">
+                                    <q-input v-model="props.row.defaultValue" filled type="date" />
+                                </div>
+
+                                <div v-if="props.row.propertyType === 'checkbox'">
+                                    <q-select outlined v-model="props.row.defaultValue" :options="['true', 'false']"/>
+                                </div>
+                            </q-td>
+
+                            <q-td key="delete" :props="props">
+                                <q-btn flat round color="red" icon="delete" />
+                            </q-td>
+                        </q-tr>
+                    </template>
+                </q-table>
+                <q-btn color="primary" label="New Property" style="height: 70%; width: 10%; margin-top: 1vh;" />
+                <q-btn color="primary" label="Save" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" @click="editArc = true"/>
+            </div>
         </q-card>
     </q-dialog>
 </template>
@@ -164,6 +212,13 @@
 
     // console.log(columns)
     
+    const archetypeColumns = [
+        { name: 'property', align: "center", label: "Property", field: "property", sortable: true },
+        { name: 'propertyType', align: "center", label: "Property Type", field: "propertyType", sortable: true },
+        { name: 'defaultValue', align: "center", label: "Default Value", field: "defaultValue", sortable: true },
+        { name: 'delete', field: "delete", headerStyle: 'width: 3%'}
+    ]
+
      const columns = [
          { name: 'name', align: "center", label: "Item Name", field: "name", sortable: true },
          { name: 'id', align: "center", label: "ID", field: "id", sortable: true },
@@ -227,6 +282,8 @@
 
                 tempCol: columns,
                 tempRow: rows,
+
+                archColumns: archetypeColumns,
 
                 filterFn (val, update, abort) {
                     update(() => {
