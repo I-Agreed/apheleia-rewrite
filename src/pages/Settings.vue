@@ -18,9 +18,17 @@
   
 <script>
     import { defineComponent } from 'vue'
+    import { ref } from 'vue'
 
     export default defineComponent({
-        name: 'Settings'
+        name: 'Settings',
+        setup () {
+            return {
+                notifications: ref(false),
+                reminder: ref(false),
+                email: ref("")
+            }
+        }
     })
 </script>
   
