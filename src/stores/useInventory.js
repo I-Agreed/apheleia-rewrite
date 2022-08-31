@@ -143,7 +143,6 @@ export const useInventory = defineStore('inventoryStore', {
 
                     // Add the item to the rows list
                     outRows.push(item)
-
                 }
 
                 return outRows
