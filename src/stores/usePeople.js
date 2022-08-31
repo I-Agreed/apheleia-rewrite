@@ -8,44 +8,28 @@ export const usePeople = defineStore('peopleStore', {
                     // internal_id: 0,
                     id: 444444444,
                     name: "Cat",
-                    roles: [
-                        0,
-                        1,
-                        2,
-                    ],
+                    roles: ["Teacher"],
                     info: "This animal does eeeepeee"
                 },
                 {
                     // internal_id: 1,
                     id: 444444444,
                     name: "Dog",
-                    roles: [
-                        0,
-                        1,
-                        2,
-                    ],
+                    roles: ["Student"],
                     info: "This animal does fossil"
                 },
                 {
                     // internal_id: 2,
                     id: 444444444,
                     name: "Rabbit",
-                    roles: [
-                        0,
-                        1,
-                        2,
-                    ],
+                    roles: ["Student"],
                     info: "This animal does fossil"
                 },
                 {
                     // internal_id: 3,
                     id: 444444444,
                     name: "Mouse",
-                    roles: [
-                        0,
-                        1,
-                        2,
-                    ],
+                    roles: ["Coach"],
                     info: "This animal does sabba"
                 },
                 { id: "123456789", name: "John Smith", roles: "Teacher" },
