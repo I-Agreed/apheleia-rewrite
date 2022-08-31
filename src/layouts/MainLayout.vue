@@ -69,7 +69,7 @@ const topLinksList = [
   {
     title: 'Notifications',
     icon: 'notifications',
-    link: '#'
+    link: '/notifications'
   },
 ]
 
