@@ -82,7 +82,7 @@ const bottomLinksList = [
   {
     title: 'Help',
     icon: 'help',
-    link: '#'
+    link: '/help'
   },
   {
     title: 'Settings',
