@@ -69,6 +69,12 @@ const routes = [
         redirect: (to) => { handle_code(to); return "/dash" }
     },
 
+    // invite link
+    {
+        path: '/invite/:code?',
+        redirect: (to) => { return "/" } // do something here to make link work
+    },
+
     // 404 not found
     {
         path: '/:catchAll(.*)*',
