@@ -1,3 +1,11 @@
+/*
+My thought process with the classes is that they would be easier to manipulate, such as creation, deletion, and modification.
+They could either be created by the user on their end, or be loaded in from the database.
+TODO: At some point after logging in to the web page, the program should request the lists of every archetype, item, loan, role, user, and subject area that the user is able to interact with.
+Each class should have a method that constructs an instance from the raw data recieved from the api, and probably also a function to do the inverse for modifications.
+Other things, such as loans, roles, and subjects should also have classes but i dont have time to create them.
+*/
+
 export class Archetype {
     constructor(name, subject, fieldTypes, fieldNames, fieldDefault, items = [], dbId = "", perms = { loan: false, handBack: false, edit: false }) {
         this.name = name;
@@ -14,12 +22,23 @@ export class Archetype {
             this.items.push(Item(this.name, items[i]));
         }
     }
+
+    // data is output from get archetype api function
+    // im also not entirely sure how the database schema property of archetypes is structured
+    fromRawApi(data) {
+        return new Archetype(data.name, data.subject_area, data.schema, data.schema, [], data.id);
+    }
 }
 
 export class Item {
-    constructor(arch, values, loan = undefined) {
+    constructor(arch, values, dbId = "", loan = undefined) {
         this.arch = arch; // name of archetype
         this.values = values;
         this.loan = loan; // loan (if applicable)
+    }
+
+    // TODO: i dont have a lot of time rn, the data.archetype is actually the database id of the archetype, this should be fixed
+    fromRawApi(data) {
+        return new Item(data.archetype, data.archetype_data, data.id);
     }
 }
