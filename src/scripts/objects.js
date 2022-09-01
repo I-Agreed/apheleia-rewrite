@@ -19,7 +19,7 @@ export class Archetype {
         // fill item objects
         this.items = [];
         for (let i = 0; i < items.length; i++) {
-            this.items.push(Item(this.name, items[i]));
+            this.items.push(new Item(this.name, items[i]));
         }
     }
 
@@ -45,7 +45,8 @@ export class Item {
 
 export class Role {
     constructor(name, permissions) {
-
+        this.name = name
+        this.permissions = permissions // TODO:
     }
 
     fromRawApi(data) {

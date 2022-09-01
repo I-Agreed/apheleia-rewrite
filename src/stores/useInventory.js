@@ -13,7 +13,7 @@ export const useInventory = defineStore('inventoryStore', {
     state: () => {
         return {
             schemes: [
-                Archetype("Foil", "Fencing", [0, 1, 2], ["Tag", "Blade Condition"], ["#000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]], [
+                new Archetype("Foil", "Fencing", [0, 1, 2], ["Tag", "Blade Condition"], ["#000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]], [
                     ["#F001", "Perfect"],
                     ["#F002", "Perfect"],
                     ["#F003", "Perfect"],
@@ -26,7 +26,7 @@ export const useInventory = defineStore('inventoryStore', {
                     ["#F010", "Perfect"]
                 ]),
 
-                Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]], [{ value: "Perfect" }, { value: "Needs Immediate Repair" }], [
+                new Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]], [{ value: "Perfect" }, { value: "Needs Immediate Repair" }], [
                     ["#S001", "Perfect", "Functional"],
                     ["#S002", "Perfect", "Inconsistent"],
                     ["#S003", "Perfect", "Inconsistent"],
@@ -36,15 +36,15 @@ export const useInventory = defineStore('inventoryStore', {
                     ["#S007", "Needs Immediate Repair", "Broken"]
                 ]),
 
-                Archetype("Epee", "Fencing", [0], ["Name"], ["Item"], [
+                new Archetype("Epee", "Fencing", [0], ["Name"], ["Item"], [
                     ["I am the only epee blade. I am alone. Please give me friends and attributes."]
                 ]),
 
-                Archetype("Camera", "Film", [0], ["Name"], ["Item"], [
+                new Archetype("Camera", "Film", [0], ["Name"], ["Item"], [
                     ["I am the only normal camera. Please do not throw me out. Please give me friends and attributes."]
                 ]),
 
-                Archetype("Camera Pro", "Film", [0, 4, 3], ["Name", "Has Lens", "Date Bought"], ["Item", "false", "2022-02-02"], [
+                new Archetype("Camera Pro", "Film", [0, 4, 3], ["Name", "Has Lens", "Date Bought"], ["Item", "false", "2022-02-02"], [
                     ["I have a lover. Please give me friends and attributes.", "false", "2022-02-02"],
                     ["I have a lover. Please give me friends, they are boring.", "true", "2022-02-02"],
                     ["RED-H74", "True", "2022-02-02"]
