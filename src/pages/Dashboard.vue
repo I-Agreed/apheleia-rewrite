@@ -1,9 +1,9 @@
 <template>
     <h3 class="absolute-left" style="padding-left: 10%;">dashboard.</h3>
     <q-page class="absolute-center flex flex-center" id="dash-container">
-        <!-- The rows of the dashboard -->
-        <div class="row" style="width: 100%;height: 80%;">
-            <!-- The columns of the left side -->
+        <!-- Container for the two columns -->
+        <div class="row" style="width: 100%; height: 80%;">
+            <!-- Left column -->
             <div class="column col-7" style="height: 100%;">
                 <!-- Current Loans on the top left -->
                 <div class= "col col-6">
@@ -23,19 +23,11 @@
                     </div>
                 </div>
             </div>
-            <!-- Notifications on the right -->
+            <!-- Right column -->
             <div class="col-5">
                 <h5>Notifications</h5>
                 <!-- List for notifications -->
-                <div class="q-pa-md" style="height: 100%;">
-                    <q-list bordered separator class="rounded-borders shadow-1" style="height: 100%;">
-                        <q-item clickable v-for="notification in selfSt.history.notifications">
-                            <q-icon name="notifications" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"/>
-                            <span style="margin: 0px; margin-top: 0.5vh; margin-right: 10%; width: 100%;">{{ notification }}</span>
-                            <q-icon @click="selfSt.history.notifications = selfSt.history.notifications.filter(notif => notif != notification)" name="close" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"/> 
-                        </q-item>
-                    </q-list>
-                </div>
+                <NotificationsPanel />
             </div>
         </div>
     </q-page>
@@ -43,6 +35,7 @@
   
 <script>
     import { useSelf } from '../stores/useSelf'
+    import NotificationsPanel from './dashboard/Notifications.vue'
 
     const selfSt = useSelf()
 

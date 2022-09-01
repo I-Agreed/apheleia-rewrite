@@ -11,25 +11,19 @@ export const useInventory = defineStore('inventoryStore', {
                     name: "Foil",
                     totalItems: 16,
                     fieldTypes: [0, 1, 2],
-                    fieldNames: ["Name", "Tag", "Condition"],
-                    fieldDefault: ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair"}]],
+                    fieldNames: ["Tag", "Blade Condition"],
+                    fieldDefault: ["#000", [{ value: "Perfect" }, { value: "Needs Immediate Repair"}]],
                     items: [
-                        ["Red Brambleback", "101", "Perfect"],
-                        ["Worcester", "756", "Perfect"],
-                        ["Dark Flame Abyss Dragon", "937", "Perfect"],
-                        ["The Stabber", "123", "Perfect"],
-                        ["Yordle", "236", "Good"],
-                        ["Bunny", "237", "Perfect"],
-                        ["Hankerchief", "240", "Needs Immediate Repair"],
-                        ["My Maths Extension Mark", "200", "Needs Immediate Repair"],
-                        ["My English Advanced Mark", "102", "Needs Immediate Repair"],
-                        ["Pineapple", "754", "Good"],
-                        ["The Table Flipper", "465", "Good"],
-                        ["Skewer", "968", "Needs Immediate Repair"],
-                        ["I Throw My Fencing Blade", "183", "Good"],
-                        ["The developers have misspelt Aphelia 99% of the time...", "092", "Perfect"],
-                        ["The Floor is Made of Floor", "742", "Perfect"],
-                        ["Secret Base", "010", "Needs Immediate Repair"]
+                        ["#F001", "Perfect"],
+                        ["#F002", "Perfect"],
+                        ["#F003", "Perfect"],
+                        ["#F004", "Perfect"],
+                        ["#F005", "Minor Damage"],
+                        ["#F006", "Needs Immediate Repair"],
+                        ["#F007", "Needs Immediate Repair"],
+                        ["#F008", "Perfect"],
+                        ["#F009", "Perfect"],
+                        ["#F010", "Perfect"]
                     ]
                 },
                 {
@@ -37,16 +31,16 @@ export const useInventory = defineStore('inventoryStore', {
                     name: "Sabre",
                     totalItems: 7,
                     fieldTypes: [0, 1, 2, 2 ],
-                    fieldNames: ["Name", "Tag", "Condition", "Tip Condition"],
+                    fieldNames: ["Tag", "Blade Condition", "Wire Condition"],
                     fieldDefault: ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair"}], [{ value: "Perfect" }, { value: "Needs Immediate Repair"}]],
                     items: [
-                        ["Swing", "107", "Perfect", "Perfect"],
-                        ["Ding", "757", "Perfect", "Perfect"],
-                        ["Ding Ding", "931", "Perfect", "Perfect"],
-                        ["I Cut You", "124", "Perfect", , "Perfect"],
-                        ["CHARGE!", "222", "Good", "Perfect"],
-                        ["I Trip", "221", "Perfect", , "Perfect"],
-                        ["Swing and Swing", "111", "Needs Immediate Repair", "Perfect"]
+                        ["#S001", "Perfect", "Functional"],
+                        ["#S002", "Perfect", "Inconsistent"],
+                        ["#S003", "Perfect", "Inconsistent"],
+                        ["#S004", "Perfect", "Functional"],
+                        ["#S005", "Minor Damage", "Functional"],
+                        ["#S006", "Needs Immediate Repair", "Functional"],
+                        ["#S007", "Needs Immediate Repair", "Broken"]
                     ]
                 },
                 {
