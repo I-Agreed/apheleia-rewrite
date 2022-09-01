@@ -24,14 +24,19 @@
 
             <!-- Table -->
             <div class="col col-11" style="width: 100%;">
-                <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
+                <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
+                <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
                     <!-- Roles selection box -->
                     <template v-slot:body-cell-role="props">
                         <q-td :props="props">
-                        <div>
-                            <q-select filled v-model="props.value" :options="['Teacher', '2', '3']"/>
-                        </div>
-                    </q-td>
+                            <div>
+                                <q-select filled v-model="props.value" :options="['Teacher', '2', '3']"/>
+                            </div>
+                        </q-td>
+                        <!-- Delete user -->
+                        <q-td :props="props">
+                            <q-btn color="red" label="Remove user" @click="lend = true"/>
+                        </q-td>
                     </template>
                 </q-table>
             </div>
@@ -45,88 +50,7 @@
         </q-dialog>
 
         <!-- manage users popup -->
-        <q-dialog v-model="manage" full-width>
-            <q-card style="height: 100%;">
-                <!-- Splitter which splits horizontally between the tabs and the panels -->
-                <q-splitter v-model="splitterModel" style="height: 100%">
-                    <!-- Tabs -->
-                    <template v-slot:before>
-                        <q-tabs v-model="tab" vertical class="text-primary">
-                            <q-tab name="role1" label="Role 1" />
-                            <q-tab name="role2" label="Role 2" />
-                            <q-tab name="role3" label="Role 3" />
-                        </q-tabs>
-                    </template>
-
-                    <!-- Panels -->
-                    <template v-slot:after>
-                        <div class="wide-flexbox">
-                            <span></span>
-                            <!-- Close Button component doesn't work here -->
-                            <q-btn flat label="" color="primary" v-close-popup>
-                                <q-icon name="close" size="sm"/>
-                            </q-btn>
-                        </div>
-                        <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
-                            <q-tab-panel name="role1">
-                                <div style="margin-left: 2vw;">
-                                    <!-- Role title -->
-                                    <h3>Role 1</h3>
-
-                                    <!-- splitting the page into 3 columns -->
-                                    <div class="column" style="height: 70vh;">
-                                        <!-- First column, split into rows -->
-                                        <div class= "row col col-4" style="width: 70vw;">
-                                            <!-- subtitle -->
-                                            <div class="col-2">
-                                                <p class="roles-popup-titles">loanable archetypes:</p>
-                                            </div>
-
-                                            <!-- checkboxes -->
-                                            <div class="col-10">
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 1:" class="roles-popup-text"/></div>
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 2:" class="roles-popup-text"/></div>
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 3:" class="roles-popup-text"/></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Second column, split into rows -->
-                                        <div class= "row col col-4" style="width: 70vw;">
-                                            <!-- subtitle -->
-                                            <div class="col-2">
-                                                <p class="roles-popup-titles">returnable archetypes:</p>
-                                            </div>
-
-                                            <!-- checkboxes -->
-                                            <div class="col-10">
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 1:" class="roles-popup-text"/></div>
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 2:" class="roles-popup-text"/></div>
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 3:" class="roles-popup-text"/></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Third column, split into rows -->
-                                        <div class= "row col col-4" style="width: 70vw;">
-                                            <!-- subtitle -->
-                                            <div class="col-2">
-                                                <p class="roles-popup-titles">writable archetypes:</p>
-                                            </div>
-
-                                            <!-- checkboxes -->
-                                            <div class="col-10">
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 1:" class="roles-popup-text"/></div>
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 2:" class="roles-popup-text"/></div>
-                                                <div><q-checkbox left-label v-model="notifications" label="Archetype 3:" class="roles-popup-text"/></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </q-tab-panel>
-                        </q-tab-panels>
-                    </template>
-                </q-splitter>
-            </q-card>
-        </q-dialog>
+        <ManageUsers v-model="manage" />
     </q-page>
 </template>
   
@@ -137,13 +61,15 @@
 
     import InviteUsers from 'src/components/InviteUsers.vue'
     import CloseButton from '../components/CloseButton.vue'
+    import ManageUsers from './users/ManageUsers.vue'
 
     const peopleSt = usePeople()
 
     const columns = [
-        { name: 'id',   headerStyle: 'width: 20%', align: "center", label: "School ID", field: "id",    sortable: true },
-        { name: 'name', headerStyle: 'width: 60%', align: "center", label: "Name",      field: "name",  sortable: true },
-        { name: 'role', headerStyle: 'width: 20%', align: "center", label: "Role",      field: "roles", sortable: true }
+        { name: 'id',         headerStyle: 'width: 12%', align: "center", label: "School ID",  field: "id",         sortable: true },
+        { name: 'first_name', headerStyle: 'width: 30%', align: "center", label: "First Name", field: "first_name", sortable: true },
+        { name: 'last_name',  headerStyle: 'width: 30%', align: "center", label: "Last Name",  field: "last_name",  sortable: true },
+        { name: 'role',       headerStyle: 'width: 20%', align: "center", label: "Role",       field: "roles",      sortable: true }
     ]
 
     const rows = [
@@ -151,9 +77,7 @@
 
     export default defineComponent({
         name: 'People',
-        components: {
-            InviteUsers, CloseButton
-        },
+        components: { InviteUsers, CloseButton, ManageUsers },
         setup () {
             return {
                 invite: ref(false),
@@ -164,10 +88,10 @@
                 rows,
                 peopleSt,
                 search: ref(""),
-                searchFilter(item, param) {
-                    // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
-                    return item.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase());
-                },
+                // searchFilter(item, param) {
+                //     // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
+                //     return item.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase());
+                // },
             }
         }
     })
@@ -179,15 +103,5 @@
     height: 80%;
 }
 
-.roles-popup-titles {
-    font-size: 18pt;
-}
 
-.roles-popup-text {
-    font-size: 14pt;
-}
-
-.wide-flexbox {
-    display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 100%;
-}
 </style>

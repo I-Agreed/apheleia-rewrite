@@ -42,3 +42,25 @@ export class Item {
         return new Item(data.archetype, data.archetype_data, data.id);
     }
 }
+
+export class Role {
+    constructor(name, permissions) {
+
+    }
+
+    fromRawApi(data) {
+    }
+}
+
+export class User {
+    constructor(id, first_name, last_name, role) {
+        this.id = id
+        this.first_name = first_name
+        this.last_name = last_name
+        this.role = role
+    }
+
+    fromRawApi(data) {
+
+    }
+}
