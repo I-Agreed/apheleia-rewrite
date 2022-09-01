@@ -25,7 +25,7 @@
             <!-- Table -->
             <div class="col col-11" style="width: 100%;">
                 <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
-                <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
+                <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
                     <!-- Roles selection box -->
                     <template v-slot:body-cell-role="props">
                         <q-td :props="props">
@@ -88,10 +88,11 @@
                 rows,
                 peopleSt,
                 search: ref(""),
-                // searchFilter(item, param) {
-                //     // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
-                //     return item.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase());
-                // },
+
+                searchFilter(item, param) {
+                    // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
+                    return Object.values(item).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                },
             }
         }
     })
