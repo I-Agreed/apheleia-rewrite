@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 
 import { User, Role } from 'src/scripts/objects.js'
 
-
 //TODO: make these into a struct with a constructor that accepts api output
 //      add perms for roles per archetype in the same subject
 //      add methods to add, remove, and edit items in an archetype

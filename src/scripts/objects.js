@@ -45,7 +45,8 @@ export class Item {
 
 export class Role {
     constructor(name, permissions) {
-
+        this.name = name
+        this.permissions = permissions // TODO:
     }
 
     fromRawApi(data) {}

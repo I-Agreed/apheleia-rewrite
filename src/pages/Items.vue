@@ -31,7 +31,7 @@
                     <q-separator />
                     <!-- Panels containing tavles -->
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
-                        <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name" >
+                        <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name">
                             <div>
                                 <!-- The Tables themselves which hold the data -->
                                 <q-table :rows="inventorySt.rows(scheme.name).filter((x) => searchFilter(x, search))" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
