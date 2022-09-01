@@ -5,6 +5,7 @@ export const useSelf = defineStore('selfStore', {
         return {
             role: {
                 permissions: {
+                    canLend: true,
                     
                     loanable_archetypes: [
                         0, 2, 3

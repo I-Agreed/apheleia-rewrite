@@ -15,7 +15,7 @@
                     <div class="col-2">
                         <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="create_pdf(inventorySt.schemes)"/>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2" v-if="selfSt.role.permissions.canLend">
                         <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
                     </div>
                 </div>
@@ -50,15 +50,9 @@
         </div>
     </q-page>
 
-    <!-- popups -->
-
-    <!-- lend item popup -->
-    <LendItem v-model="lend" />
-    
-    <!-- manage item popup -->
-    <ManageItem v-model="manage" />
-
-    <!-- edit archetype popup -->
+    <!-- Popups -->
+    <LendItem      v-model="lend" />
+    <ManageItem    v-model="manage" />
     <EditArchetype v-model="editArc"/>
 </template>
   
@@ -66,7 +60,8 @@
     import { defineComponent } from 'vue'
     import { ref } from 'vue'
     
-    import { useInventory } from '../stores/useInventory.js'
+    import { useInventory } from '../stores/useInventory'
+    import { useSelf } from '../stores/useSelf'
     import { itemsLocal } from '../stores/itemsLocal'
     import CloseButton from '../components/CloseButton.vue'
     import LendItem from './items/LendItem.vue'
@@ -77,6 +72,7 @@
 
     const inventory = useInventory()
     const itemsPage = itemsLocal()
+    const self = useSelf()
 
     
     // let columns = {}
@@ -110,12 +106,12 @@
         name: 'Items',
         components: { CloseButton, LendItem, ManageItem, EditArchetype },
         setup () {
-
             return {
                 tab: ref(inventory.schemes[0].name),
                 tab2: ref("archetype1"),
                 inventorySt: inventory,
                 itemsSt: itemsPage,
+                selfSt: self,
                 lend: ref(false),
                 manage: ref(false),
                 editArc: ref(false),
