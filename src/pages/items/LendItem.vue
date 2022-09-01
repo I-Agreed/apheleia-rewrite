@@ -55,6 +55,8 @@
 </template>
 
 <script>
+    
+    import { ref } from 'vue'
     import { defineComponent } from 'vue'
 
     import CloseButton from 'src/components/CloseButton.vue'

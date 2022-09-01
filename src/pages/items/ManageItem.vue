@@ -54,9 +54,23 @@
 </template>
 
 <script>
+    import { ref } from 'vue'
     import { defineComponent } from 'vue'
+    import { useInventory } from '/src/stores/useInventory'
 
-    import CloseButton from 'src/components/CloseButton.vue'
+    import CloseButton from '/src/components/CloseButton.vue'
+    import { itemsLocal } from '/src/stores/itemsLocal'
+    import { create_pdf } from '/src/scripts/pdf'
+
+    const inventory = useInventory()
+    const itemsPage = itemsLocal()
+
+    const archetypeColumns = [
+        { name: 'property', align: "center", label: "Property", field: "property", sortable: true },
+        { name: 'propertyType', align: "center", label: "Property Type", field: "propertyType", sortable: true },
+        { name: 'defaultValue', align: "center", label: "Default Value", field: "defaultValue", sortable: true },
+        { name: 'delete', field: "delete", headerStyle: 'width: 3%'}
+    ]
 
     export default defineComponent({
         name: 'Manage Item',

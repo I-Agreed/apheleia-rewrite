@@ -96,19 +96,20 @@ export const useInventory = defineStore('inventoryStore', {
             if (schemeId != -1) {
                 let outRows = []
                 let currentScheme = this.schemes[schemeId]
-
+                console.log(currentScheme);
                 // Add the item data to the rows
                 // Loop through all the items
                 for (let i = 0; i < currentScheme.items.length; ++i) {
                     // Create an item
-                    let item = {}
+                    let item = currentScheme.items[i].values
+                        /*
+                        // Populate the item with { fieldName1: value1, fieldName2: value2... }
+                        for (let fieldIndex = 0; fieldIndex < currentScheme.fieldNames.length; ++fieldIndex) {
+                            let key = this.stringToKey(currentScheme.fieldNames[fieldIndex])
 
-                    // Populate the item with { fieldName1: value1, fieldName2: value2... }
-                    for (let fieldIndex = 0; fieldIndex < currentScheme.fieldNames.length; ++fieldIndex) {
-                        let key = this.stringToKey(currentScheme.fieldNames[fieldIndex])
-
-                        item[key] = currentScheme.items[i][fieldIndex]
-                    }
+                            item[key] = currentScheme.items[i][fieldIndex]
+                        }
+                        */
 
                     // Add the item to the rows list
                     outRows.push(item)

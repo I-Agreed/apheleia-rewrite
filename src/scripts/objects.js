@@ -11,7 +11,7 @@ export class Archetype {
         this.name = name;
         this.subject = subject; // name of subject
         this.fieldTypes = fieldTypes;
-        this.fieldName = fieldNames;
+        this.fieldNames = fieldNames;
         this.fieldDefault = fieldDefault;
         this.dbId = dbId; // id for use with backend api, might be undefined until saved if archetype is created by user
         this.perms = perms; // stores what the current user is able to do with items of this archetype
