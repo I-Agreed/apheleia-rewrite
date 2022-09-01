@@ -33,6 +33,7 @@ export const useSelf = defineStore('selfStore', {
                     { id: "000000011", name: "Item3", borrow: "19/02/22", due: "27/05/22", return: "03/05/22" },
                     { id: "000000100", name: "Item4", borrow: "13/02/22", due: "22/06/22", return: "30/09/22" },
                 ],
+                selectedNotification: {},
                 notifications: [
                     { title: "Item 1 is due today!", body: "Item 1 is due today, you should return it to your teacher.", read: false },
                     { title: "Due date change: Item 2", body: "The due date for Item 2 has been changed to an earlier date.", read: false },
