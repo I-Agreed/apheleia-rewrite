@@ -6,19 +6,19 @@
         <div class="column" style="width: 100%; height: 80%;">
             <!-- Search bar -->
             <div class="col col-1" style="width: 100%;">
-                <q-input outlined label="Search" style="height: 70%; width: 53%;"/>
+                <q-input outlined label="Search" style="height: 70%; width: 53%;" v-model="search"/>
             </div>
             
             <!-- table -->
             <div class="col col-11" style="width: 100%;">
-                <q-table :rows="selfSt.history.loans" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
+                <q-table :rows="selfSt.history.loans.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
             </div>
         </div>
     </q-page>
 </template>
   
 <script>
-    import { defineComponent } from 'vue'
+    import { defineComponent, ref } from 'vue'
   
     import { useSelf } from '../stores/useSelf'
 
@@ -36,6 +36,11 @@
         name: 'Loans',
         setup () {
             return {
+                search: ref(""),
+                searchFilter (loan, params) {
+                    return loan["name"].toLowerCase().includes(params.toLowerCase());
+                },
+
                 selfSt,
                 columns
             }

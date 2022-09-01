@@ -9,7 +9,7 @@
                 <div class="row" style="width: 100%; height: 100%;">
                     <!-- Search bar -->
                     <div class="col-8">
-                        <q-input outlined label="Search" style="height: 70%; width: 80%;"/>
+                        <q-input outlined v-model="search" label="Search" style="height: 70%; width: 80%;"/>
                     </div>
 
                     <!-- Buttons -->
@@ -24,7 +24,7 @@
 
             <!-- Table -->
             <div class="col col-11" style="width: 100%;">
-                <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
+                <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
                     <!-- Roles selection box -->
                     <template v-slot:body-cell-role="props">
                         <q-td :props="props">
@@ -162,7 +162,12 @@
                 splitterModel: ref(10),
                 columns,
                 rows,
-                peopleSt
+                peopleSt,
+                search: ref(""),
+                searchFilter(item, param) {
+                    // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
+                    return item.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase());
+                },
             }
         }
     })

@@ -36,8 +36,7 @@
                         </q-tab-panel>
                         <q-tab-panel name="people">
                             <div class="text-h4 q-mb-md">Users and Roles</div>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                            <p>On this page teachers can give members of their faculty different roles that they create. Depending on the role, a user may be able to lend or borrow equipment without the signature of a teacher.</p>
                         </q-tab-panel>
                     </q-tab-panels>
                 </template>

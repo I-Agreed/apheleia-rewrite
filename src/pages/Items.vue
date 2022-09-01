@@ -8,12 +8,12 @@
                 <div class="row" style="width: 100%; height: 100%;">
                     <!-- Search Bar -->
                     <div class="col-8">
-                        <q-input outlined label="Search" style="height: 70%; width: 80%;"/>
+                        <q-input outlined label="Search" style="height: 70%; width: 80%;" v-model="search"/>
                     </div>
 
                     <!-- Buttons -->
                     <div class="col-2">
-                        <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;"/>
+                        <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="create_pdf(inventorySt.schemes)"/>
                     </div>
                     <div class="col-2">
                         <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
@@ -34,7 +34,7 @@
                         <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name" >
                             <div>
                                 <!-- The Tables themselves which hold the data -->
-                                <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
+                                <q-table :rows="inventorySt.rows(scheme.name).filter((x) => searchFilter(x, search))" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
                                     <!-- Lend Item button -->
                                     <template v-slot:body-cell-lend="props">
                                         <q-td :props="props">
@@ -240,6 +240,8 @@
     import { itemsLocal } from '../stores/itemsLocal'
     import CloseButton from '../components/CloseButton.vue'
     
+    import { create_pdf } from 'src/scripts/pdf'
+
     const inventory = useInventory()
     const itemsPage = itemsLocal()
 
@@ -315,37 +317,50 @@
     ]
 
     export default defineComponent({
-    name: "Items",
-    setup() {
-        const model = ref(null);
-        const options = ref(lendOptions);
-        return {
-            tab: ref(inventory.schemes[0].name),
-            tab2: ref("archetype1"),
-            inventorySt: inventory,
-            itemsSt: itemsPage,
-            lend: ref(false),
-            manage: ref(false),
-            editArc: ref(false),
-            model,
-            options,
-            splitterModel: ref(10),
-            tempCol: columns,
-            tempRow: rows,
-            archColumns: archetypeColumns,
-            filterFn(val, update, abort) {
-                update(() => {
-                    const needle = val.toLocaleLowerCase();
-                    options.value = stringOptions.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1);
-                });
-            },
-            setModel(val) {
-                model.value = val;
+        name: 'Items',
+        setup () {
+            const model = ref(null)
+            const options = ref(lendOptions)
+
+            return {
+                tab: ref(inventory.schemes[0].name),
+                tab2: ref("archetype1"),
+                inventorySt: inventory,
+                itemsSt: itemsPage,
+                lend: ref(false),
+                manage: ref(false),
+                editArc: ref(false),
+                model,
+                options,
+                splitterModel: ref(10),
+                search: ref(""),
+
+                tempCol: columns,
+                tempRow: rows,
+
+                archColumns: archetypeColumns,
+
+                searchFilter(item, param) {
+                    // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
+                    return item.Name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase());
+                },
+
+                filterFn (val, update, abort) {
+                    update(() => {
+                        const needle = val.toLocaleLowerCase()
+                        options.value = stringOptions.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1)
+                    })
+                },
+
+                setModel (val) {
+                    model.value = val
+                },
+
+                create_pdf
             }
-        };
-    },
-    components: { CloseButton }
-})
+        },
+        components: { CloseButton }
+    })
 </script>
   
 <style scoped>

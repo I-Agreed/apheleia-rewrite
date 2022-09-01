@@ -9,16 +9,17 @@ const authConfig = {
 
 const clientConfig = {
     client_id: "apheleia",
-    redirect_uri: "https://apheleia.pages.dev/callback",
+    redirect_uri: "https://apheleia-rewrite.pages.dev/callback",
     scope: "all-ro" // "all read-only" (only scope)
 }
 
+// creates code challanged for oauth2
 async function create_code_challenge() {
     // Verifier
     let out = ""
     let chars = "abcdefghijklmnopqrstuvwxzABCDEFGHIKLMNOPQRSTUVWXYZ1234567890-_.~"
     let len = 64
-    // Generate random string
+        // Generate random string
     for (let i = 0; i < len; i++) {
         out += chars[Math.floor(Math.random() * chars.length)]
     }
@@ -29,20 +30,21 @@ async function create_code_challenge() {
     async function sha256(plain) {
         const encoder = new TextEncoder()
         const data = encoder.encode(plain)
-        
+
         return window.crypto.subtle.digest('SHA-256', data)
     }
     // Base 64 encode hashed verifier
     function base64urlencode(a) {
         return window.btoa(String.fromCharCode.apply(null, new Uint8Array(a))).replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_")
     }
-    
+
     const hashed = await sha256(out)
     const codeChallenge = base64urlencode(hashed)
 
     return [out, codeChallenge];
 }
 
+// creates a random string to use as a state
 function gen_state() {
     let out = "";
     let chars = "abcdefghijklmnopqrstuvwxzABCDEFGHIKLMNOPQRSTUVWXYZ";
@@ -53,7 +55,7 @@ function gen_state() {
     return out;
 }
 
-
+// handles the callback page and gets the access tokens
 export async function handle_code(params) {
     // check state
     let state = params.query.state;
@@ -66,7 +68,8 @@ export async function handle_code(params) {
     }
 }
 
-async function set_info(redirect=true) {
+// sets user details obtained from api
+async function set_info(redirect = true) {
     // get user id and store it
     let user_info = await get_user_info();
     if (user_info !== null) {
@@ -78,11 +81,12 @@ async function set_info(redirect=true) {
         sessionStorage["surname"] = surname;
         // redirect to home page
         if (redirect) {
-            location.href = "home";
+            location.href = "dash";
         }
     }
 }
 
+// obtains a new access and refresh token using the current refresh token
 export async function refresh_token() {
     // Sends a post request to the token endpoint
     let expiry = new Date(Date.parse(localStorage.getItem("accessTokenExpiry")));
@@ -96,19 +100,20 @@ export async function refresh_token() {
     })
     let response = await fetch(authConfig.token_uri, {
         method: "POST",
-        headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
-        body: body}
-        ).catch(e => console.log(e));
-        
+        headers: { "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: body
+    }).catch(e => console.log(e));
+
     let tokens = await response.json();
     //console.log("refresh response:");
     //console.log(tokens);
     localStorage.setItem("accessToken", tokens.access_token);
-    localStorage.setItem("accessTokenExpiry", (new Date(Date.now() + (tokens.expires_in - 5)*1000)).toString()); // creates date now + 1h - 5 seconds
-    localStorage.setItem("refreshTokenExpiry", (new Date(Date.now() + (24*60*60*90 - 5) * 1000)).toString()); // creates date now + 90 days - 5 seconds
+    localStorage.setItem("accessTokenExpiry", (new Date(Date.now() + (tokens.expires_in - 5) * 1000)).toString()); // creates date now + 1h - 5 seconds
+    localStorage.setItem("refreshTokenExpiry", (new Date(Date.now() + (24 * 60 * 60 * 90 - 5) * 1000)).toString()); // creates date now + 90 days - 5 seconds
     localStorage.setItem("refreshToken", tokens.refresh_token);
 }
 
+// gets the access token from the student portal
 export async function get_token(code) {
     // Sends a post request to the token endpoint
     // With help from https://github.com/mintcarrotkeys/generic-bells/blob/main/src/apiFetcher.js
@@ -122,23 +127,22 @@ export async function get_token(code) {
     })
     let response = await fetch(authConfig.token_uri, {
         method: "POST",
-        headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
-        body: body}
-        ).catch(e => console.log(e));
-        
+        headers: { "Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: body
+    }).catch(e => console.log(e));
+
     let tokens = await response.json();
     //console.log(tokens);
     localStorage.setItem("accessToken", tokens.access_token);
-    localStorage.setItem("accessTokenExpiry", (new Date(Date.now() + (tokens.expires_in - 5)*1000)).toString()); // creates date now + 1h - 5 seconds
-    localStorage.setItem("refreshTokenExpiry", (new Date(Date.now() + (24*60*60*90 - 5) * 1000)).toString()); // creates date now + 90 days - 5 seconds
+    localStorage.setItem("accessTokenExpiry", (new Date(Date.now() + (tokens.expires_in - 5) * 1000)).toString()); // creates date now + 1h - 5 seconds
+    localStorage.setItem("refreshTokenExpiry", (new Date(Date.now() + (24 * 60 * 60 * 90 - 5) * 1000)).toString()); // creates date now + 90 days - 5 seconds
     localStorage.setItem("refreshToken", tokens.refresh_token);
-    setTimeout(get_token, (tokens.expires_in - 5)*1000);
+    setTimeout(get_token, (tokens.expires_in - 5) * 1000);
 }
 
+// handles hte pressing of the login button
 export async function login() {
     let [codeVerifier, codeChallenge] = await create_code_challenge();
-    //console.log("verifier: " + codeVerifier);
-    //console.log("challenge: " + codeChallenge);
     localStorage.setItem("codeVerifier", codeVerifier);
     // Construct address from auth_uri
     // Gets keys from the clientConfig, maps them to a string: "key=value" then joins all the strings with "&"
@@ -159,15 +163,16 @@ export async function login() {
     location.href = uri;
 }
 
+// checks to see if a refresh token is present on startup and logs in if there is
 export async function auth_setup() {
     // check for existing refresh token
     var accessTokenExpiry = localStorage["accessTokenExpiry"]
     if (accessTokenExpiry !== undefined && new Date(Date.parse(accessTokenExpiry)) > new Date(Date.now())) {
         if (localStorage["refreshToken"] !== undefined && localStorage["refreshTokenExpiry"] !== undefined) {
             await refresh_token();
-            await set_info(false);
+            await set_info(true);
         } else { // not logged in
-    
+
         }
     }
 }
