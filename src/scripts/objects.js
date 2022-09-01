@@ -49,8 +49,7 @@ export class Role {
         this.permissions = permissions // TODO:
     }
 
-    fromRawApi(data) {
-    }
+    fromRawApi(data) {}
 }
 
 export class User {

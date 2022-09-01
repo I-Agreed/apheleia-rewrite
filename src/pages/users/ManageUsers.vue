@@ -38,10 +38,8 @@
                                             <p class="roles-popup-titles">Can Return</p>
                                         </div>
 
-                                        <div class="col-10">
-                                            <div><q-checkbox left-label v-model="notifications" label="Archetype 1:" class="roles-popup-text"/></div>
-                                            <div><q-checkbox left-label v-model="notifications" label="Archetype 2:" class="roles-popup-text"/></div>
-                                            <div><q-checkbox left-label v-model="notifications" label="Archetype 3:" class="roles-popup-text"/></div>
+                                        <div class="col-10 checkbox-container">
+                                            <q-checkbox left-label v-model="notifications" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
                                         </div>
                                     </div>
 
@@ -50,10 +48,8 @@
                                             <p class="roles-popup-titles">Can Modify</p>
                                         </div>
 
-                                        <div class="col-10">
-                                            <div><q-checkbox left-label v-model="notifications" label="Archetype 1:" class="roles-popup-text"/></div>
-                                            <div><q-checkbox left-label v-model="notifications" label="Archetype 2:" class="roles-popup-text"/></div>
-                                            <div><q-checkbox left-label v-model="notifications" label="Archetype 3:" class="roles-popup-text"/></div>
+                                        <div class="col-10 checkbox-container">
+                                            <q-checkbox left-label v-model="notifications" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
                                         </div>
                                     </div>
                                 </div>
