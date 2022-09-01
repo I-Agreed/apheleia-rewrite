@@ -7,38 +7,14 @@ import { defineStore } from 'pinia'
 export const usePeople = defineStore('peopleStore', {
     state: () => {
         return {
-            users: [{
-                    // internal_id: 0,
-                    id: 444444444,
-                    name: "Cat",
-                    roles: ["Teacher"],
-                    info: "This animal does eeeepeee"
-                },
-                {
-                    // internal_id: 1,
-                    id: 444444444,
-                    name: "Dog",
-                    roles: ["Student"],
-                    info: "This animal does fossil"
-                },
-                {
-                    // internal_id: 2,
-                    id: 444444444,
-                    name: "Rabbit",
-                    roles: ["Student"],
-                    info: "This animal does fossil"
-                },
-                {
-                    // internal_id: 3,
-                    id: 444444444,
-                    name: "Mouse",
-                    roles: ["Coach"],
-                    info: "This animal does sabba"
-                },
-                { id: "123456789", name: "John Smith", roles: "Teacher" },
-                { id: "123456789", name: "Jane Smith", roles: "Teacher" },
-                { id: "123456789", name: "John Doe", roles: "Teacher" },
-                { id: "123456789", name: "Jane Doe", roles: "Teacher" }
+            users: [
+                { id: 444444444, first_name: "Dat", last_name: "Huynh", role: "Teacher" },
+                { id: 444444444, first_name: "Jennifer", last_name: "May", role: "Teacher" },
+                { id: 444444444, first_name: "Rebecca", last_name: "Dam", role: "Teacher" },
+                { id: 444444444, first_name: "Johnathan", last_name: "Min", role: "Student" },
+                { id: 444444444, first_name: "Brendan", last_name: "Alcorn", role: "Student" },
+                { id: 444444444, first_name: "Kai Bo", last_name: "Cao", role: "Student" },
+                { id: 444444444, first_name: "Klim", last_name: "Tsoutsman", role: "Student" }
             ]
         }
     }
