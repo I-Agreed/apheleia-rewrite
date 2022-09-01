@@ -81,7 +81,7 @@ async function set_info(redirect = true) {
         sessionStorage["surname"] = surname;
         // redirect to home page
         if (redirect) {
-            location.href = "home";
+            location.href = "dash";
         }
     }
 }

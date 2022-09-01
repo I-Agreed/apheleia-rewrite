@@ -114,6 +114,7 @@ function create_page(doc, scheme, fontSizes, fonts) {
     page.drawText("Item Report: " + scheme.name, { x: 12, y: page.getHeight() - 63, size: 17, font: fonts[0], color: rgb(0, 0, 0), opacity: 1 });
     page.drawText("apheleia.", { x: 12, y: page.getHeight() - 40, size: 26, font: fonts[0], color: rgb(0, 0, 0), opacity: 1 });
 
+    // Get current Date
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0');
     let mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -132,6 +133,7 @@ async function create_pdf(schemes) {
 
     let fonts = [await pdfDoc.embedFont(StandardFonts.Helvetica), await pdfDoc.embedFont(StandardFonts.HelveticaBold)];
 
+    // create page for each archetype
     for (let i = 0; i < schemes.length; i++) {
         create_page(pdfDoc, schemes[i], fontSizes, fonts);
     }
