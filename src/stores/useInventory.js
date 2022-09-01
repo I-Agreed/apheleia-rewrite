@@ -2,17 +2,21 @@ import { defineStore } from 'pinia'
 
 // fieldTypes: 0 = text, 1 = number, 2 = selection, 3 = date, 4 = checkbox
 
+//TODO: make these into a struct with a constructor that accepts api output
+//      add perms to all archetypes
+//      add methods to add, remove, and edit items in an archetype
+//      associate items & archetypes with a subject
+
 export const useInventory = defineStore('inventoryStore', {
     state: () => {
         return {
-            schemes: [
-                {
+            schemes: [{
                     id: 0,
                     name: "Foil",
                     totalItems: 16,
                     fieldTypes: [0, 1, 2],
                     fieldNames: ["Tag", "Blade Condition"],
-                    fieldDefault: ["#000", [{ value: "Perfect" }, { value: "Needs Immediate Repair"}]],
+                    fieldDefault: ["#000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]],
                     items: [
                         ["#F001", "Perfect"],
                         ["#F002", "Perfect"],
@@ -30,9 +34,11 @@ export const useInventory = defineStore('inventoryStore', {
                     id: 1,
                     name: "Sabre",
                     totalItems: 7,
-                    fieldTypes: [0, 1, 2, 2 ],
+                    fieldTypes: [0, 1, 2, 2],
                     fieldNames: ["Tag", "Blade Condition", "Wire Condition"],
-                    fieldDefault: ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair"}], [{ value: "Perfect" }, { value: "Needs Immediate Repair"}]],
+                    fieldDefault: ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }],
+                        [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]
+                    ],
                     items: [
                         ["#S001", "Perfect", "Functional"],
                         ["#S002", "Perfect", "Inconsistent"],
@@ -82,8 +88,7 @@ export const useInventory = defineStore('inventoryStore', {
             ]
         }
     },
-    getters: {
-    },
+    getters: {},
     actions: {
         // Converts strings (such as fieldName) to working keys
         stringToKey(string) {
@@ -103,11 +108,11 @@ export const useInventory = defineStore('inventoryStore', {
         // Returns the columns (table headers) necessary for the items display for a given scheme (item type)
         columns(schemeName) {
             let schemeId = this.getSchemeId(schemeName)
-            
+
             // If a matching scheme was found
             if (schemeId != -1) {
                 let outColumns = []
-                // Add the field names to the columns list
+                    // Add the field names to the columns list
                 this.schemes[schemeId].fieldNames.forEach(fieldName => {
                     outColumns.push({ name: this.stringToKey(fieldName), label: fieldName, field: this.stringToKey(fieldName), align: "center", sortable: true })
                 })
@@ -115,15 +120,14 @@ export const useInventory = defineStore('inventoryStore', {
                 // Add the last column for lending and return
                 outColumns.push({ name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false })
                 return outColumns
-            }
-            else {
+            } else {
                 console.log("Error in useInventory.js, actions, columns(schemeName)")
             }
         },
         // Returns the table rows for the items display for a given scheme (item type)
         rows(schemeName) {
             let schemeId = this.getSchemeId(schemeName)
-            
+
             // If a matching scheme was found
             if (schemeId != -1) {
                 let outRows = []
@@ -138,7 +142,7 @@ export const useInventory = defineStore('inventoryStore', {
                     // Populate the item with { fieldName1: value1, fieldName2: value2... }
                     for (let fieldIndex = 0; fieldIndex < currentScheme.fieldNames.length; ++fieldIndex) {
                         let key = this.stringToKey(currentScheme.fieldNames[fieldIndex])
-                        
+
                         item[key] = currentScheme.items[i][fieldIndex]
                     }
 
@@ -148,8 +152,7 @@ export const useInventory = defineStore('inventoryStore', {
 
                 console.log(outRows)
                 return outRows
-            }
-            else {
+            } else {
                 console.log("Error in useInventory.js, actions, rows(schemeName)")
             }
         },
@@ -165,12 +168,22 @@ export const useInventory = defineStore('inventoryStore', {
 
             function getType(type) {
                 switch (type) {
-                    case 0: return "text"; break;
-                    case 1: return "number"; break;
-                    case 2: return "selection"; break;
-                    case 3: return "date"; break;
-                    case 4: return "checkbox"; break;
-                    
+                    case 0:
+                        return "text";
+                        break;
+                    case 1:
+                        return "number";
+                        break;
+                    case 2:
+                        return "selection";
+                        break;
+                    case 3:
+                        return "date";
+                        break;
+                    case 4:
+                        return "checkbox";
+                        break;
+
                     default:
                         break;
                 }
