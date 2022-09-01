@@ -8,13 +8,13 @@ Other things, such as loans, roles, and subjects should also have classes but i 
 
 export class Archetype {
     constructor(name, subject, fieldTypes, fieldNames, fieldDefault, items = [], dbId = "", perms = { loan: false, handBack: false, edit: false }) {
-        this.name = name;
-        this.subject = subject; // name of subject
-        this.fieldTypes = fieldTypes;
-        this.fieldNames = fieldNames;
-        this.fieldDefault = fieldDefault;
-        this.dbId = dbId; // id for use with backend api, might be undefined until saved if archetype is created by user
-        this.perms = perms; // stores what the current user is able to do with items of this archetype
+        this.name = name
+        this.subject = subject // name of subject
+        this.fieldTypes = fieldTypes
+        this.fieldNames = fieldNames
+        this.fieldDefault = fieldDefault
+        this.dbId = dbId // id for use with backend api, might be undefined until saved if archetype is created by user
+        this.perms = perms // stores what the current user is able to do with items of this archetype
 
         // fill item objects
         this.items = [];
@@ -31,7 +31,7 @@ export class Archetype {
 }
 
 export class Item {
-    constructor(arch, values, dbId = "", loan = undefined) {
+    constructor(arch, values, loan = undefined, dbId = "") {
         this.arch = arch; // name of archetype
         this.values = values;
         this.loan = loan; // loan (if applicable)
@@ -44,20 +44,49 @@ export class Item {
 }
 
 export class Role {
-    constructor(name, permissions) {
+    constructor(name) {
         this.name = name
-        this.permissions = permissions // TODO:
     }
 
     fromRawApi(data) {}
 }
 
+// export class Loan {
+//     constructor(item, loanedBy, loanedTo, dateLoaned, dateDue, dateReturned) {
+//         this.item = item
+//         this.loanedBy = loanedBy
+//         this.loanedTo = loanedTo
+//         this.dateLoaned = dateLoaned
+//         this.dateDue = dateDue
+//         this.dateReturned = dateReturned
+//     }
+
+//     fromRawApi(data) {}
+// }
+
+export class Notification {
+    constructor(title, body, read, author = "System") {
+        this.title = title
+        this.body = body
+        this.read = read
+        this.author = sentFrom
+    }
+}
+
+export class History {
+    constructor(loans = [], notifications = []) {
+        this.loans = loans
+        this.notifications = notifications
+    }
+}
+
 export class User {
-    constructor(id, first_name, last_name, role) {
+    constructor(id, first_name, last_name, role, history) {
         this.id = id
         this.first_name = first_name
         this.last_name = last_name
         this.role = role
+        this.history = history
     }
 
     fromRawApi(data) {

@@ -1,18 +1,15 @@
 import { defineStore } from 'pinia'
+import { Role, Item, User, ArchetypePermissions } from './src/scripts/objects.js'
 
 export const useSelf = defineStore('selfStore', {
     state: () => {
         return {
-            role: {
-                permissions: {
-                    canLend: true,
-                    
-                    loanable_archetypes: [
-                        0, 2, 3
-                    ]
-                }
-            },
+            // Temporary role
+            user: new User(),
+            role: new Role("Teacher"),
+            archetypes: [],
             currentLoans: [
+                new Item("Foil", ["#001", "Perfect"], this.user),
                 { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
                 { name: 'Item2', lent: '02/02/22', due: '22/02/22' }
             ],
