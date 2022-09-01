@@ -9,7 +9,7 @@ export const useSelf = defineStore('selfStore', {
             role: new Role("Teacher"),
             archetypes: [],
             currentLoans: [
-                new Item("Foil", ["#001", "Perfect"], this.user),
+                // new Item("Foil", ["#001", "Perfect"], this.user),
                 { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
                 { name: 'Item2', lent: '02/02/22', due: '22/02/22' }
             ],
