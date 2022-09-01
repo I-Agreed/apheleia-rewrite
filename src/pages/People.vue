@@ -63,7 +63,8 @@
     import CloseButton from '../components/CloseButton.vue'
     import ManageUsers from './users/ManageUsers.vue'
 
-    const peopleSt = usePeople()
+    const peopleSt = u
+    sePeople()
 
     const columns = [
         { name: 'id',         headerStyle: 'width: 12%', align: "center", label: "School ID",  field: "id",         sortable: true },

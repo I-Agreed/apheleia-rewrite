@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Role, Item, User, ArchetypePermissions } from './src/scripts/objects.js'
+import { Role, Item, User, ArchetypePermissions } from 'src/scripts/objects.js'
 
 export const useSelf = defineStore('selfStore', {
     state: () => {
