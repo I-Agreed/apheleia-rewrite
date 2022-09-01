@@ -31,13 +31,12 @@
                             <p>On this page you can find the all the items you have viewing access to, even if you aren't loaning them. By clicking the tabs at the top you can switch the view between different types of items.</p>
                             <p>Here you can either 'borrow' or 'request to borrow' items, but that depends on whether or not your teacher has given you permission to do so without it being checked off. If that's the case then you should ask your teacher to loan you the item.</p>
                             <p>You can search for items on this page by using the search bar and sort them in ascending/descending order by clicking their headings.</p>
-                            <div class="text-h4 q-mb-md">Teachers</div>
-                            <p>TODO: Good luck figuring it out</p>
+                            <!-- <div class="text-h4 q-mb-md">Teachers</div>
+                            <p>TODO: Good luck figuring it out</p> -->
                         </q-tab-panel>
                         <q-tab-panel name="people">
                             <div class="text-h4 q-mb-md">Users and Roles</div>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                            <p>On this page teachers can give members of their faculty different roles that they create. Depending on the role, a user may be able to lend or borrow equipment without the signature of a teacher.</p>
                         </q-tab-panel>
                     </q-tab-panels>
                 </template>
