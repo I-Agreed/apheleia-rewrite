@@ -5,18 +5,15 @@ export const useSelf = defineStore('selfStore', {
         return {
             role: {
                 permissions: {
+                    
                     loanable_archetypes: [
                         0, 2, 3
                     ]
                 }
             },
-            items: [
-                {
-                    
-                },
-                {
-                    
-                }
+            currentLoans: [
+                { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
+                { name: 'Item2', lent: '02/02/22', due: '22/02/22' }
             ],
             settings: {
                 email: "my_email@gmail.com",
@@ -37,9 +34,9 @@ export const useSelf = defineStore('selfStore', {
                     { id: "000000100", name: "Item4", borrow: "13/02/22", due: "22/06/22", return: "30/09/22" },
                 ],
                 notifications: [
-                    "Item 1 is due today!",
-                    "The due date for Item 2 has been changed to an earlier date.",
-                    "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)"
+                    { title: "Item 1 is due today!", body: "Item 1 is due today, you should return it to your teacher.", read: false },
+                    { title: "Due date change: Item 2", body: "The due date for Item 2 has been changed to an earlier date.", read: false },
+                    { title: "Did you know?", body: "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)", read: false }
                 ]
             }
         }
@@ -56,9 +53,34 @@ export const useSelf = defineStore('selfStore', {
         },
         fullName: () => {
             return sessionStorage["givenName"] + " " + sessionStorage["surname"];
+        },
+        currentLoansColumns: () => {
+            return [
+                { name: 'name', align: "center", label: "Item",    field: "name", sortable: true },
+                { name: 'lent', align: "center", label: "Lent On", field: "lent", sortable: true },
+                { name: 'due',  align: "center", label: "Due By",  field: "due",  sortable: true }
+            ]
+        },
+        historyLoansColumns: () => {
+            return [
+                { name: 'name',   align: "center", label: "Item",     field: "name",   sortable: true },
+                { name: 'borrow', align: "center", label: "Borrowed", field: "borrow", sortable: true },
+                { name: 'due',    align: "center", label: "Due",      field: "due",    sortable: true },
+                { name: 'return', align: "center", label: "Returned", field: "return", sortable: true }
+            ]
         }
     },
     actions: {
+        currentLoansRows() {
+            console.log(this.currentLoans)
+            return this.currentLoans
+        },
+        historyLoansRows() {
+            return this.history.loans
+        },
+        unreadNotifications() {
+            return this.history.notifications.filter(notification => notification.read != true)
+        }
     }
     
 })

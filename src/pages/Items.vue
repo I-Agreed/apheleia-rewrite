@@ -273,41 +273,6 @@
         { name: 'delete', field: "delete", headerStyle: 'width: 3%'}
     ]
 
-     const columns = [
-         { name: 'name', align: "center", label: "Item Name", field: "name", sortable: true },
-         { name: 'id', align: "center", label: "ID", field: "id", sortable: true },
-         { name: 'property1', align: "center", label: "Property 1", field: "property1", sortable: true },
-         { name: 'property2', align: "center", label: "Property 2", field: "property2", sortable: true },
-         { name: 'property3', align: "center", label: "Property 3", field: "property3", sortable: true },
-    ]
-
-     const rows = [
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-         { id: "123456789", name: "Item", property1: "abcde", property2: "22/02/22", property3: "123" },
-     ]
-
     const lendOptions = [
         "abcd",
         "efgh",
@@ -318,6 +283,7 @@
 
     export default defineComponent({
         name: 'Items',
+        components: { CloseButton },
         setup () {
             const model = ref(null)
             const options = ref(lendOptions)
@@ -334,9 +300,6 @@
                 options,
                 splitterModel: ref(10),
                 search: ref(""),
-
-                tempCol: columns,
-                tempRow: rows,
 
                 archColumns: archetypeColumns,
 
@@ -358,8 +321,7 @@
 
                 create_pdf
             }
-        },
-        components: { CloseButton }
+        }
     })
 </script>
   

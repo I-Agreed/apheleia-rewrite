@@ -5,28 +5,11 @@
         <div class="row" style="width: 100%; height: 80%;">
             <!-- Left column -->
             <div class="column col-7" style="height: 100%;">
-                <!-- Current Loans on the top left -->
-                <div class= "col col-6">
-                    <h5>Current Loans</h5>
-                    <!-- Table of current loans -->
-                    <div class="q-pa-md" style="height: 85%;">
-                        <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell"/>
-                    </div>
-                </div>
-
-                <!-- Loan history on bottom left -->
-                <div class= "col col-6">
-                    <h5>Loan History</h5>
-                    <!-- Table of loan history -->
-                    <div class="q-pa-md" style="height: 100%;">
-                        <q-table :rows="rows" :columns="columns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell"/>
-                    </div>
-                </div>
+                <LoansPanel />
+                <HistoryPanel />
             </div>
             <!-- Right column -->
-            <div class="col-5">
-                <h5>Notifications</h5>
-                <!-- List for notifications -->
+            <div class="col-5">\
                 <NotificationsPanel />
             </div>
         </div>
@@ -34,12 +17,11 @@
 </template>
   
 <script>
-    import { useSelf } from '../stores/useSelf'
+    import { defineComponent } from 'vue'
+    import LoansPanel from './dashboard/Loans.vue'
+    import HistoryPanel from './dashboard/History.vue'
     import NotificationsPanel from './dashboard/Notifications.vue'
-
-    const selfSt = useSelf()
-
-
+    
     const columns = [
         { name: 'name', align: "center", label: "Item", field: row => row.name, sortable: true },
         { name: 'lent', align: "center", label: "Lent On", field: "lent", sortable: true },
@@ -70,17 +52,12 @@
         "This is a notification.",
         "This is a notification."
     ]
-    
-    import { defineComponent } from 'vue'
   
     export default defineComponent({
         name: 'Dashboard',
+        components: { LoansPanel, HistoryPanel, NotificationsPanel },
         setup () {
             return {
-                selfSt,
-                columns,
-                rows,
-                notifications
             }
         }
     })
