@@ -5,7 +5,7 @@
             <div class="q-pa-md">
                 <div class="wide-flexbox">
                     <h5>{{ selfSt.history.selectedNotification.title }}</h5>
-                    <CloseButtonVue />
+                    <CloseButton />
                 </div>
                 <div>
                     <p>{{ selfSt.history.selectedNotification.body }}</p>
@@ -18,14 +18,14 @@
 <script>
     import { defineComponent } from 'vue'
 
-    import CloseButtonVue from './CloseButton.vue'
+    import CloseButton from './CloseButton.vue'
     import { useSelf } from '../stores/useSelf'
 
     const selfSt = useSelf()
 
     export default defineComponent({
         name: 'Notification Popup',
-        components: { CloseButtonVue },
+        components: { CloseButton },
         setup () {
             return {
                 selfSt,

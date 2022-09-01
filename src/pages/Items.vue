@@ -53,183 +53,13 @@
     <!-- popups -->
 
     <!-- lend item popup -->
-    <q-dialog v-model="lend">
-        <q-card style="width: 100%;">
-            <div class="wide-flexbox">
-                <q-card-section>
-                    <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
-                </q-card-section>
+    <LendItem v-model="lend" />
     
-                <q-card-actions style="padding-bottom: 5%;" align="right">
-                    <CloseButton/>
-                </q-card-actions>
-
-            </div>
-
-
-            <q-card-section class="q-pt-none">
-            Lend to:
-            </q-card-section>
-
-            <q-card-section style="padding-top: 0px;">
-                <q-select
-                    filled
-                    :model-value="model"
-                    use-input
-                    hide-selected
-                    fill-input
-                    input-debounce="0"
-                    :options="options"
-                    @input-value="setModel"
-                    style="width: 250px; padding-bottom: 32px"
-                >     
-                    <template v-slot:no-option>
-                        <q-item>
-                            <q-item-section class="text-grey">
-                                No results
-                            </q-item-section>
-                        </q-item>
-                    </template>
-                </q-select>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-            Lend until:
-            </q-card-section>
-
-            <q-card-section style="padding-top: 0px;">
-                <q-input v-model="time" filled type="date" />
-            </q-card-section>
-
-            <q-card-actions align="right">
-            <q-btn flat label="OK" color="primary" v-close-popup />
-            </q-card-actions>
-        </q-card>
-    </q-dialog>
-
     <!-- manage item popup -->
-    <q-dialog v-model="manage" full-width>
-        <q-card style="height: 100%;">
-            <!-- Splitter splits vertically between tabs and panels -->
-            <q-splitter v-model="splitterModel" style="height: 100%">
-                <!-- Tabs on the left -->
-                <template v-slot:before>
-                    <q-tabs v-model="tab2" vertical class="text-primary">
-                        <q-tab name="archetype1" label="Archetype 1" />
-                        <q-tab name="archetype2" label="Archetype 2" />
-                        <q-tab name="archetype3" label="Archetype 3" />
-                        <q-btn label="New Achetype" class="absolute-bottom" style="width: 100%;"/>
-                    </q-tabs>
-                </template>
-
-                <!-- Panels on the right -->
-                <template v-slot:after>
-                    <q-tab-panels v-model="tab2" animated vertical transition-prev="jump-up" transition-next="jump-down">
-                        <q-tab-panel name="archetype1">
-                            <div style="display: flex; align-content: space-between; justify-content: space-between;">
-                                <span></span>
-                                <CloseButton/>
-                            </div>
-                            <div class="q-pa-md">
-                                <q-table :rows="tempRow" :columns="tempCol" row-key="name" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]">
-                                    <template v-slot:body="props">
-                                        <q-tr :props="props">
-                                            <q-td v-for="col in tempCol" :key="col.name" :props="props">
-                                                {{ props.row[col.name] }}
-                                                <q-popup-edit v-model="props.row[col.name]" :title="`Update ${col.label}`" buttons v-slot="scope">
-                                                    <q-input v-model="scope.value" dense autofocus />
-                                                </q-popup-edit>
-                                            </q-td>
-                                        </q-tr>
-                                    </template>
-                                </q-table>
-                                <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
-                                    <div class="wide-flexbox" style="width: 30%;">
-                                        <q-btn color="primary" label="New Item" class="manage-items-button"/>
-                                        <q-btn color="primary" label="Edit Archetype" class="manage-items-button" @click="editArc = true"/>
-                                    </div>
-                                    <div class="wide-flexbox" style="width: 30%;">
-                                        <q-btn color="primary" label="Cancel" class="manage-items-button" v-close-popup/>
-                                        <q-btn color="primary" label="Save and Exit" class="manage-items-button" v-close-popup/>
-                                    </div>
-                                </div>
-                            </div>
-                        </q-tab-panel>
-                    </q-tab-panels>
-                </template>
-            </q-splitter>
-        </q-card>
-    </q-dialog>
+    <ManageItem v-model="manage" />
 
     <!-- edit archetype popup -->
-    <q-dialog v-model="editArc" full-width>
-        <q-card style="height: 100%;">
-            <div class="q-pa-md">
-                <div class="wide-flexbox" style="padding-bottom: 1em;">
-                    <span></span>
-                    <CloseButton/>
-                </div>
-                <q-table :rows="inventorySt.archetypeRows('Foil')" :columns="archColumns" row-key="property" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
-                    <template v-slot:body="props">
-                        <q-tr :props="props">
-                            <!-- Modifying the rows of the property column to make them editable -->
-                            <q-td key="property" :props="props">
-                                {{ props.row.property }}
-                                <q-popup-edit v-model="props.row.property" :title="`Update Property`" buttons v-slot="scope">
-                                    <q-input v-model="scope.value" dense autofocus />
-                                </q-popup-edit>
-                            </q-td>
-                            
-                            <!-- modifying the rows of the property type column to make them editable as a dropdown -->
-                            <q-td key="propertyType" :props="props">
-                                <q-select outlined v-model="props.row.propertyType" :options="['text', 'number', 'selection', 'date', 'checkbox']"/>
-                            </q-td>
-
-                            <!-- modifying the rows of the default value column to make them editable depending on the type -->
-                            <q-td key="defaultValue" :props="props">
-                                <!-- Plain text editing for text and number type -->
-                                <div v-if="props.row.propertyType === 'text' || props.row.propertyType === 'number'">
-                                    {{ props.row.defaultValue }}
-                                    <q-popup-edit v-model="props.row.defaultValue" :title="`Update Property Default`" buttons v-slot="scope">
-                                        <q-input v-model="scope.value" dense autofocus />
-                                    </q-popup-edit>
-                                </div>
-
-                                <!-- A list of text input boxes for the selection type -->
-                                <div v-if="props.row.propertyType === 'selection'">
-                                    <div v-for="val in props.row.defaultValue" style="display: flex;">
-                                        <q-input outlined v-model="val.value" style="margin-top: 10px; width: 95%;"/>
-                                        <!-- Delete button for each input box -->
-                                        <q-btn flat round color="red" icon="delete" style="margin-left: 0.6vw;"/>
-                                    </div>
-                                    <!-- + button to add more input boxes -->
-                                    <q-btn color="primary" label="+" style="height: 70%; width: 10%; margin-top: 1vh;" />
-                                </div>
-
-                                <!-- Date input for the date type -->
-                                <div v-if="props.row.propertyType === 'date'">
-                                    <q-input v-model="props.row.defaultValue" filled type="date" />
-                                </div>
-
-                                <!-- Checkbox input for the checkbox type -->
-                                <div v-if="props.row.propertyType === 'checkbox'">
-                                    <q-select outlined v-model="props.row.defaultValue" :options="['true', 'false']"/>
-                                </div>
-                            </q-td>
-
-                            <!-- Delete button on the right side of each property on table -->
-                            <q-td key="delete" :props="props">
-                                <q-btn flat round color="red" icon="delete" />
-                            </q-td>
-                        </q-tr>
-                    </template>
-                </q-table>
-                <!-- New Property and Save buttons -->
-                <q-btn color="primary" label="New Property" style="height: 70%; width: 10%; margin-top: 1vh;" />
-                <q-btn color="primary" label="Save" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" @click="editArc = true"/>
-            </div>
-        </q-card>
-    </q-dialog>
+    <EditArchetype v-model="editArc"/>
 </template>
   
 <script>
@@ -239,6 +69,9 @@
     import { useInventory } from '../stores/useInventory.js'
     import { itemsLocal } from '../stores/itemsLocal'
     import CloseButton from '../components/CloseButton.vue'
+    import LendItem from './items/LendItem.vue'
+    import ManageItem from './items/ManageItem.vue'
+    import EditArchetype from './items/EditArchetype.vue'
     
     import { create_pdf } from 'src/scripts/pdf'
 
@@ -273,20 +106,10 @@
         { name: 'delete', field: "delete", headerStyle: 'width: 3%'}
     ]
 
-    const lendOptions = [
-        "abcd",
-        "efgh",
-        "ijkl",
-        "mnop",
-        "1234"
-    ]
-
     export default defineComponent({
         name: 'Items',
-        components: { CloseButton },
+        components: { CloseButton, LendItem, ManageItem, EditArchetype },
         setup () {
-            const model = ref(null)
-            const options = ref(lendOptions)
 
             return {
                 tab: ref(inventory.schemes[0].name),
@@ -296,8 +119,6 @@
                 lend: ref(false),
                 manage: ref(false),
                 editArc: ref(false),
-                model,
-                options,
                 splitterModel: ref(10),
                 search: ref(""),
 
@@ -305,7 +126,7 @@
 
                 searchFilter(item, param) {
                     // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
-                    return item.Name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase());
+                    return item.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase());
                 },
 
                 filterFn (val, update, abort) {
@@ -313,10 +134,6 @@
                         const needle = val.toLocaleLowerCase()
                         options.value = stringOptions.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1)
                     })
-                },
-
-                setModel (val) {
-                    model.value = val
                 },
 
                 create_pdf
