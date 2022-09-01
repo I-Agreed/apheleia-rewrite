@@ -152,7 +152,7 @@
     export default defineComponent({
         name: 'People',
         components: {
-            InviteUsers
+            InviteUsers, CloseButton
         },
         setup () {
             return {
