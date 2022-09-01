@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { Archetype, Item } from 'src/scripts/objects'
 
 // fieldTypes: 0 = text, 1 = number, 2 = selection, 3 = date, 4 = checkbox
 
@@ -7,84 +8,47 @@ import { defineStore } from 'pinia'
 //      add methods to add, remove, and edit items in an archetype
 //      associate items & archetypes with a subject
 
+// this is all dummy data, final version will be empty and filled in from api
 export const useInventory = defineStore('inventoryStore', {
     state: () => {
         return {
-            schemes: [{
-                    id: 0,
-                    name: "Foil",
-                    totalItems: 16,
-                    fieldTypes: [0, 1, 2],
-                    fieldNames: ["Tag", "Blade Condition"],
-                    fieldDefault: ["#000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]],
-                    items: [
-                        ["#F001", "Perfect"],
-                        ["#F002", "Perfect"],
-                        ["#F003", "Perfect"],
-                        ["#F004", "Perfect"],
-                        ["#F005", "Minor Damage"],
-                        ["#F006", "Needs Immediate Repair"],
-                        ["#F007", "Needs Immediate Repair"],
-                        ["#F008", "Perfect"],
-                        ["#F009", "Perfect"],
-                        ["#F010", "Perfect"]
-                    ]
-                },
-                {
-                    id: 1,
-                    name: "Sabre",
-                    totalItems: 7,
-                    fieldTypes: [0, 1, 2, 2],
-                    fieldNames: ["Tag", "Blade Condition", "Wire Condition"],
-                    fieldDefault: ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }],
-                        [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]
-                    ],
-                    items: [
-                        ["#S001", "Perfect", "Functional"],
-                        ["#S002", "Perfect", "Inconsistent"],
-                        ["#S003", "Perfect", "Inconsistent"],
-                        ["#S004", "Perfect", "Functional"],
-                        ["#S005", "Minor Damage", "Functional"],
-                        ["#S006", "Needs Immediate Repair", "Functional"],
-                        ["#S007", "Needs Immediate Repair", "Broken"]
-                    ]
-                },
-                {
-                    id: 2,
-                    name: "Epée",
-                    totalItems: 1,
-                    fieldTypes: [0],
-                    fieldNames: ["Name"],
-                    fieldDefault: ["Item"],
-                    items: [
-                        ["I am the only epee blade. I am alone. Please give me friends and attributes."]
-                    ]
-                },
-                {
-                    id: 3,
-                    name: "Camera",
-                    totalItems: 1,
-                    fieldTypes: [0],
-                    fieldNames: ["Name"],
-                    fieldDefault: ["Item"],
-                    items: [
-                        ["I am the only normal camera. Please do not throw me out. Please give me friends and attributes."]
-                    ]
-                },
-                {
-                    id: 4,
-                    name: "Camera Pro",
-                    totalItems: 2,
-                    fieldTypes: [0, 4, 3],
-                    fieldNames: ["Name", "Has Lens", "Date Bought"],
-                    fieldDefault: ["Item", "false", "2022-02-02"],
-                    items: [
-                        ["I have a lover. Please give me friends and attributes.", "false", "2022-02-02"],
-                        ["I have a lover. Please give me friends, they are boring.", "true", "2022-02-02"],
-                        ["RED-H74", "True", "2022-02-02"]
-                    ]
-                },
-                //{name: "Archetype Name n"}
+            schemes: [
+                Archetype("Foil", "Fencing", [0, 1, 2], ["Tag", "Blade Condition"], ["#000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]], [
+                    ["#F001", "Perfect"],
+                    ["#F002", "Perfect"],
+                    ["#F003", "Perfect"],
+                    ["#F004", "Perfect"],
+                    ["#F005", "Minor Damage"],
+                    ["#F006", "Needs Immediate Repair"],
+                    ["#F007", "Needs Immediate Repair"],
+                    ["#F008", "Perfect"],
+                    ["#F009", "Perfect"],
+                    ["#F010", "Perfect"]
+                ]),
+
+                Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]], [{ value: "Perfect" }, { value: "Needs Immediate Repair" }], [
+                    ["#S001", "Perfect", "Functional"],
+                    ["#S002", "Perfect", "Inconsistent"],
+                    ["#S003", "Perfect", "Inconsistent"],
+                    ["#S004", "Perfect", "Functional"],
+                    ["#S005", "Minor Damage", "Functional"],
+                    ["#S006", "Needs Immediate Repair", "Functional"],
+                    ["#S007", "Needs Immediate Repair", "Broken"]
+                ]),
+
+                Archetype("Epee", "Fencing", [0], ["Name"], ["Item"], [
+                    ["I am the only epee blade. I am alone. Please give me friends and attributes."]
+                ]),
+
+                Archetype("Camera", "Film", [0], ["Name"], ["Item"], [
+                    ["I am the only normal camera. Please do not throw me out. Please give me friends and attributes."]
+                ]),
+
+                Archetype("Camera Pro", "Film", [0, 4, 3], ["Name", "Has Lens", "Date Bought"], ["Item", "false", "2022-02-02"], [
+                    ["I have a lover. Please give me friends and attributes.", "false", "2022-02-02"],
+                    ["I have a lover. Please give me friends, they are boring.", "true", "2022-02-02"],
+                    ["RED-H74", "True", "2022-02-02"]
+                ])
             ]
         }
     },

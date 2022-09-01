@@ -1,5 +1,8 @@
 const uri = "http://172.0.0.1:8000"
 
+// all functions here should return false upon failure
+// 'get' functions return data upon success and others should return true
+
 // Get list of items
 export async function get_items() {
     let response = false;
@@ -9,7 +12,7 @@ export async function get_items() {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         }
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     return response.json();
     console.log(response);
@@ -29,9 +32,10 @@ export async function add_item(note, archetype, archetypeData) {
             'Accept': 'application/json'
         },
         json: item
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
+    return true;
 }
 
 // Delete item
@@ -42,9 +46,10 @@ export async function delete_item(id) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         }
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
+    return true;
 }
 
 // Get list of archetypes
@@ -56,7 +61,7 @@ export async function get_archetypes() {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         }
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
     return response.json();
@@ -76,9 +81,10 @@ export async function add_archetype(name, subject_area, schema) {
             'Accept': 'application/json'
         },
         json: item
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
+    return true;
 }
 
 // Delete archetype
@@ -89,9 +95,10 @@ export async function delete_item(id) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         }
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
+    return true;
 }
 
 // Get list of subject areas
@@ -103,7 +110,7 @@ export async function get_subjects() {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         }
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
     return response.json();
@@ -123,9 +130,10 @@ export async function add_archetype(name, subject_area, schema) {
             'Accept': 'application/json'
         },
         json: item
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
+    return true;
 }
 
 // Delete subject area
@@ -136,9 +144,10 @@ export async function delete_item(id) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         }
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
+    return true;
 }
 
 // Get list of users
@@ -150,9 +159,10 @@ export async function get_users() {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         }
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
+    return response.json();
 }
 
 // Get list of roles
@@ -164,7 +174,7 @@ export async function get_roles() {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         }
-    }).then(r => response = r).catch(e => console.log(e));
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
     return response.json();
