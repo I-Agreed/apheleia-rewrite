@@ -29,7 +29,7 @@
                                         </div>
 
                                         <div class="col-10 checkbox-container">
-                                            <q-checkbox left-label v-model="notifications" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
+                                            <q-checkbox left-label v-model="canLoan[scheme.name]" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
                                         </div>
                                     </div>
 
@@ -39,7 +39,7 @@
                                         </div>
 
                                         <div class="col-10 checkbox-container">
-                                            <q-checkbox left-label v-model="notifications" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
+                                            <q-checkbox left-label v-model="canReturn[scheme.name]" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
                                         </div>
                                     </div>
 
@@ -49,7 +49,7 @@
                                         </div>
 
                                         <div class="col-10 checkbox-container">
-                                            <q-checkbox left-label v-model="notifications" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
+                                            <q-checkbox left-label v-model="canModify[scheme.name]" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
                                         </div>
                                     </div>
                                 </div>
@@ -73,15 +73,31 @@
     const peopleSt = usePeople()
     const inventorySt = useInventory()
 
+    // Move this into roles
+    let canLoan = []
+    let canReturn = []
+    let canModify = []
+
+    inventorySt.schemes.forEach(scheme => {
+        canLoan[scheme.name] = false
+        canReturn[scheme.name] = false
+        canModify[scheme.name] = false
+    })
+
     export default defineComponent({
         name: 'Manage Users',
         components: { CloseButton },
         setup () {
             return {
-                tab: ref('role1'),
-                splitterModel: ref(10),
                 peopleSt,
                 inventorySt,
+
+                canLoan: ref(canLoan),
+                canReturn: ref(canReturn),
+                canModify: ref(canModify),
+
+                tab: ref('role1'),
+                splitterModel: ref(10),
                 search: ref("")
             }
         }

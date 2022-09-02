@@ -4,28 +4,32 @@
     <q-page class="absolute-center flex flex-center" id="people-container">
         <!-- Columns to seperate the search bar/buttons from the table -->
         <div class="column" style="width: 100%; height: 80%;">
+            <!-- Header -->
             <div class="col col-1" style="width: 100%;">
-                <!-- Search bar/buttons group -->
-                <div class="row" style="width: 100%; height: 100%;">
-                    <!-- Search bar -->
-                    <div class="col-8">
+                <div class="wide-flexbox row" style="width: 100%; height: 100%;">
+                    <!-- Left, search bar -->
+                    <span style="width: 50%;">
                         <q-input outlined v-model="search" label="Search" style="height: 70%; width: 80%;"/>
-                    </div>
+                        <div class="col-8">
+                        </div>
+                    </span>
 
-                    <!-- Buttons -->
-                    <div class="col-2">
-                        <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
-                    </div>
-                    <div class="col-2">
-                        <q-btn color="primary" label="Invite Users" style="height: 70%; width: 80%; margin-left: 20%;" @click="invite = true"/>
-                    </div>
+                    <!-- Right, buttons -->
+                    <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
+                        <div v-if="selfSt.ADMIN" class="col-2" style="width: 45%; margin-right: auto;">
+                            <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
+                        </div>
+                        <div class="col-2" style="width: 45%;">
+                            <q-btn color="primary" label="Invite Users" style="height: 70%; width: 100%;" @click="invite = true"/>
+                        </div>
+                    </span>
                 </div>
             </div>
 
             <!-- Table -->
             <div class="col col-11" style="width: 100%;">
                 <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
-                <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
+                <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
                     <!-- Roles selection box -->
                     <template v-slot:body-cell-role="props">
                         <q-td :props="props">
@@ -57,14 +61,15 @@
 <script>
     import { defineComponent, ref } from 'vue'
     
+    import { useSelf } from '../stores/useSelf'
     import { usePeople } from '../stores/usePeople'
 
     import InviteUsers from 'src/components/InviteUsers.vue'
     import CloseButton from '../components/CloseButton.vue'
     import ManageUsers from './users/ManageUsers.vue'
 
-    const peopleSt = u
-    sePeople()
+    const peopleSt = usePeople()
+    const selfSt = useSelf()
 
     const columns = [
         { name: 'id',         headerStyle: 'width: 12%', align: "center", label: "School ID",  field: "id",         sortable: true },
@@ -81,19 +86,21 @@
         components: { InviteUsers, CloseButton, ManageUsers },
         setup () {
             return {
+                selfSt,
+                peopleSt,
+
                 invite: ref(false),
                 manage: ref(false),
                 tab: ref('role1'),
                 splitterModel: ref(10),
                 columns,
                 rows,
-                peopleSt,
                 search: ref(""),
 
-                searchFilter(item, param) {
-                    // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
-                    return Object.values(item).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
-                },
+                // searchFilter(item, param) {
+                //     // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
+                //     return Object.values(item).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                // },
             }
         }
     })
@@ -105,5 +112,12 @@
     height: 80%;
 }
 
+.wide-flexbox {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    justify-content: space-between;
+    align-content: baseline;
+}
 
 </style>

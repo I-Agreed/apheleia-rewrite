@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Archetype, Item } from 'src/scripts/objects'
+import { Archetype, Item, History } from 'src/scripts/objects'
 
 // fieldTypes: 0 = text, 1 = number, 2 = selection, 3 = date, 4 = checkbox
 
@@ -49,7 +49,8 @@ export const useInventory = defineStore('inventoryStore', {
                     ["I have a lover. Please give me friends, they are boring.", "true", "2022-02-02"],
                     ["RED-H74", "True", "2022-02-02"]
                 ])
-            ]
+            ],
+            history: new History()
         }
     },
     getters: {},

@@ -1,17 +1,12 @@
 <template>
     <q-dialog>
         <q-card style="width: 100%;">
-            <div class="wide-flexbox">
-                <q-card-section>
-                    <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
-                </q-card-section>
-    
+            <q-card-section class="wide-flexbox">
+                <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
                 <q-card-actions style="padding-bottom: 5%;" align="right">
                     <CloseButton/>
                 </q-card-actions>
-
-            </div>
-
+            </q-card-section>
 
             <q-card-section class="q-pt-none">
             Lend to:
@@ -48,7 +43,8 @@
             </q-card-section>
 
             <q-card-actions align="right">
-            <q-btn flat label="OK" color="primary" v-close-popup />
+                <q-btn flat label="Cancel" color="primary" v-close-popup />
+                <q-btn flat label="Lend" color="primary" v-close-popup />
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -87,3 +83,9 @@ export default defineComponent({
         }
     })
 </script>
+
+<style>
+    .wide-flexbox {
+        display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 100%;
+    }
+</style>

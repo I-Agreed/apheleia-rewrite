@@ -78,6 +78,10 @@ export class History {
         this.loans = loans
         this.notifications = notifications
     }
+
+    fromRawApi(data) {
+        
+    }
 }
 
 export class User {

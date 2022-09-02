@@ -15,7 +15,9 @@
                     <div class="col-2">
                         <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="create_pdf(inventorySt.schemes)"/>
                     </div>
-                    <div class="col-2" v-if="selfSt.role.permissions.canLend">
+                    <!-- TODO: -->
+                    <div class="col-2" v-if="true">
+                    <!-- <div class="col-2" v-if="selfSt.role.permissions.canLend"> -->
                         <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
                     </div>
                 </div>
@@ -24,25 +26,22 @@
             <!-- Contains the items tabs and tables -->
             <div class="col col-11" style="width: 100%;">
                 <q-card style="height: 100%;">
-                    <!-- Top Tabs -->
+                    <!-- Tabs -->
                     <q-tabs v-model="tab" active-color="primary" indicator-color="primary" align="justify">
                         <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" @click="itemsSt.tabbedSchemeName = scheme.name" />
                     </q-tabs>
                     <q-separator />
-                    <!-- Panels containing tavles -->
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
+                        <!-- Panels containing tables -->
                         <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name">
-                            <div>
-                                <!-- The Tables themselves which hold the data -->
-                                <q-table :rows="inventorySt.rows(scheme.name).filter((x) => searchFilter(x, search))" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
-                                    <!-- Lend Item button -->
-                                    <template v-slot:body-cell-lend="props">
-                                        <q-td :props="props">
-                                            <q-btn color="primary" label="Lend Item" @click="lend = true"/>
-                                        </q-td>
-                                    </template>
-                                </q-table>
-                            </div>
+                            <q-table :rows="inventorySt.rows(scheme.name).filter((x) => searchFilter(x, search))" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
+                                <!-- Lend Item button -->
+                                <template v-slot:body-cell-lend="props">
+                                    <q-td :props="props">
+                                        <q-btn color="primary" label="Lend Item" @click="lend = true"/>
+                                    </q-td>
+                                </template>
+                            </q-table>
                         </q-tab-panel>
                     </q-tab-panels>
                 </q-card>
@@ -70,9 +69,9 @@
     
     import { create_pdf } from 'src/scripts/pdf'
 
-    const inventory = useInventory()
-    const itemsPage = itemsLocal()
-    const self = useSelf()
+    const inventorySt = useInventory()
+    const itemsLocalSt = itemsLocal()
+    const selfSt = useSelf()
 
     
     // let columns = {}
@@ -107,14 +106,17 @@
         components: { CloseButton, LendItem, ManageItem, EditArchetype },
         setup () {
             return {
-                tab: ref(inventory.schemes[0].name),
+                inventorySt,
+                itemsLocalSt,
+                selfSt,
+
+                tab: ref(inventorySt.schemes[0].name),
                 tab2: ref("archetype1"),
-                inventorySt: inventory,
-                itemsSt: itemsPage,
-                selfSt: self,
+
                 lend: ref(false),
                 manage: ref(false),
                 editArc: ref(false),
+
                 splitterModel: ref(10),
                 search: ref(""),
 

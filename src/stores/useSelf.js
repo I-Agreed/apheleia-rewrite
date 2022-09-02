@@ -4,7 +4,8 @@ import { Role, Item, User, ArchetypePermissions } from 'src/scripts/objects.js'
 export const useSelf = defineStore('selfStore', {
     state: () => {
         return {
-            // Temporary role
+            // Temporary
+            ADMIN: true,
             user: new User(),
             role: new Role("Teacher"),
             archetypes: [],
