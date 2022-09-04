@@ -133,6 +133,13 @@ export class ItemHistory {
     }
 }
 
+export class GlobalHistory {
+    constructor(loans = [], notifications = []) {
+        this.loans = loans
+        this.notifications = notifications
+    }
+}
+
 export class User {
     constructor(id, first_name, last_name, role, history) {
         this.id = id
