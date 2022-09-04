@@ -46,10 +46,10 @@ export class Archetype {
 }
 
 export class Item {
-    constructor(arch, values, loan = undefined, dbId = "") {
+    constructor(arch, values, dbId = "") {
+        this.dbId = dbId;
         this.arch = arch; // name of archetype
         this.values = values;
-        this.loan = loan; // loan (if applicable)
     }
 
     // TODO: i dont have a lot of time rn, the data.archetype is actually the database id of the archetype, this should be fixed
@@ -66,18 +66,18 @@ export class Role {
     fromRawApi(data) {}
 }
 
-// export class Loan {
-//     constructor(item, loanedBy, loanedTo, dateLoaned, dateDue, dateReturned) {
-//         this.item = item
-//         this.loanedBy = loanedBy
-//         this.loanedTo = loanedTo
-//         this.dateLoaned = dateLoaned
-//         this.dateDue = dateDue
-//         this.dateReturned = dateReturned
-//     }
+export class Loan {
+    constructor(itemId, loanedBy, loanedTo, dateLoaned, dateDue, dateReturned) {
+        this.itemId = itemId
+        this.loanedBy = loanedBy
+        this.loanedTo = loanedTo
+        this.dateLoaned = dateLoaned
+        this.dateDue = dateDue
+        this.dateReturned = dateReturned
+    }
 
-//     fromRawApi(data) {}
-// }
+    fromRawApi(data) {}
+}
 
 export class Notification {
     constructor(title, body, read, author = "System") {

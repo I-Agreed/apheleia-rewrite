@@ -6,64 +6,72 @@
                     <span></span>
                     <CloseButton/>
                 </div>
-                <q-table :rows="inventorySt.archetypeRows('Foil')" :columns="archColumns" row-key="property" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
+                <q-table :rows="inventorySt.archetypeRows(itemsSt.focused_archetype)" :columns="archColumns" row-key="property" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
                     <template v-slot:body="props">
                         <q-tr :props="props">
                             <!-- Modifying the rows of the property column to make them editable -->
                             <q-td key="property" :props="props">
                                 {{ props.row.property }}
-                                <q-popup-edit v-model="props.row.property" :title="`Update Property`" buttons v-slot="scope">
+                                <q-popup-edit v-model="props.row.property" :title="`Update Property`" buttons v-slot="scope" @save="(val) => inventorySt.setArchetypeFieldName(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, val)">
                                     <q-input v-model="scope.value" dense autofocus />
                                 </q-popup-edit>
                             </q-td>
                             
                             <!-- modifying the rows of the property type column to make them editable as a dropdown -->
                             <q-td key="propertyType" :props="props">
-                                <q-select outlined v-model="props.row.propertyType" :options="['text', 'number', 'selection', 'date', 'checkbox']"/>
+                                <q-select outlined v-model="props.row.propertyType" :options="['text', 'number', 'selection', 'date', 'checkbox']" @update:model-value="(val) => inventorySt.setArchetypePropertyType(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, val)"/>
                             </q-td>
 
                             <!-- modifying the rows of the default value column to make them editable depending on the type -->
                             <q-td key="defaultValue" :props="props">
-                                <!-- Plain text editing for text and number type -->
-                                <div v-if="props.row.propertyType === 'text' || props.row.propertyType === 'number'">
+                                <!-- Plain text editing for text type -->
+                                <div v-if="props.row.propertyType === 'text'">
                                     {{ props.row.defaultValue }}
-                                    <q-popup-edit v-model="props.row.defaultValue" :title="`Update Property Default`" buttons v-slot="scope">
+                                    <q-popup-edit v-model="props.row.defaultValue" :title="`Update Property Default`" buttons v-slot="scope" @save="(val) => inventorySt.setArchetypeDefaultField(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, val)">
+                                        <q-input v-model="scope.value" dense autofocus />
+                                    </q-popup-edit>
+                                </div>
+
+                                <!-- Editing for number type -->
+                                <div v-if="props.row.propertyType === 'number'">
+                                    {{ props.row.defaultValue }}
+                                    <q-popup-edit v-model="props.row.defaultValue" :title="`Update Property Default`" buttons v-slot="scope" @save="(val) => inventorySt.setArchetypeDefaultField(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, val)">
                                         <q-input v-model="scope.value" dense autofocus />
                                     </q-popup-edit>
                                 </div>
 
                                 <!-- A list of text input boxes for the selection type -->
                                 <div v-if="props.row.propertyType === 'selection'">
-                                    <div v-for="val in props.row.defaultValue" style="display: flex;">
-                                        <q-input outlined v-model="val.value" style="margin-top: 10px; width: 95%;"/>
+                                    <div v-for="(val, index) in props.row.defaultValue" style="display: flex;">
+                                        <q-input outlined v-model="val.value" style="margin-top: 10px; width: 95%;" @update:model-value="(v) => inventorySt.modifyArchetypeDefaultFieldSelection(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, index, v)" @focus="inventorySt.focusedSelection = val.value"/>
                                         <!-- Delete button for each input box -->
-                                        <q-btn flat round color="red" icon="delete" style="margin-left: 0.6vw;"/>
+                                        <q-btn flat round color="red" icon="delete" style="margin-left: 0.6vw;" @click="inventorySt.removeArchetypeDefaultFieldSelection(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, index)"/>
                                     </div>
                                     <!-- + button to add more input boxes -->
-                                    <q-btn color="primary" label="+" style="height: 70%; width: 10%; margin-top: 1vh;" />
+                                    <q-btn color="primary" label="+" style="height: 70%; width: 10%; margin-top: 1vh;" @click="inventorySt.addArchetypeDefaultFieldSelection(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex)"/>
                                 </div>
 
                                 <!-- Date input for the date type -->
                                 <div v-if="props.row.propertyType === 'date'">
-                                    <q-input v-model="props.row.defaultValue" filled type="date" />
+                                    <q-input v-model="props.row.defaultValue" filled type="date" @update:model-value="(val) => inventorySt.setArchetypeDefaultField(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, val)"/>
                                 </div>
 
                                 <!-- Checkbox input for the checkbox type -->
                                 <div v-if="props.row.propertyType === 'checkbox'">
-                                    <q-select outlined v-model="props.row.defaultValue" :options="['true', 'false']"/>
+                                    <q-checkbox v-model="props.row.defaultValue" @update:model-value="(val) => inventorySt.setArchetypeDefaultField(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, val)"/>
                                 </div>
                             </q-td>
 
                             <!-- Delete button on the right side of each property on table -->
                             <q-td key="delete" :props="props">
-                                <q-btn flat round color="red" icon="delete" />
+                                <q-btn flat round color="red" icon="delete" @click="inventorySt.deleteProperty(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex)"/>
                             </q-td>
                         </q-tr>
                     </template>
                 </q-table>
                 <!-- New Property and Save buttons -->
-                <q-btn color="primary" label="New Property" style="height: 70%; width: 10%; margin-top: 1vh;" />
-                <q-btn color="primary" label="Save" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" @click="editArc = true"/>
+                <q-btn color="primary" label="New Property" style="height: 70%; width: 10%; margin-top: 1vh;" @click="inventorySt.newProperty(inventorySt.getSchemeId(itemsSt.focused_archetype))" />
+                <q-btn color="primary" label="Close" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" v-close-popup/>
             </div>
         </q-card>
     </q-dialog>

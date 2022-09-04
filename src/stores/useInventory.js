@@ -50,7 +50,8 @@ export const useInventory = defineStore('inventoryStore', {
                     ["RED-H74", true, "2022-02-02"]
                 ])
             ],
-            history: new History()
+            history: new History(),
+            focusedSelection: ""
         }
     },
     getters: {},
@@ -161,7 +162,6 @@ export const useInventory = defineStore('inventoryStore', {
         // set item field value by archetype and item index
         setItemField(archetypeIndex, itemIndex, index, value) {
             this.schemes[archetypeIndex].items[itemIndex].values[index] = value;
-            console.log({ ...this.schemes[archetypeIndex] })
         },
 
         // delete item by archetype and item index
@@ -173,6 +173,106 @@ export const useInventory = defineStore('inventoryStore', {
         // create item from default values
         createDefaultItem(archetypeIndex) {
             this.schemes[archetypeIndex].items.push(new Item(this.schemes[archetypeIndex].name, this.schemes[archetypeIndex].getDefaultValues()))
+        },
+
+        // sets archetype field name
+        setArchetypeFieldName(archetypeIndex, fieldIndex, name) {
+            this.schemes[archetypeIndex].fieldNames[fieldIndex] = name;
+        },
+
+        setArchetypePropertyType(archetypeIndex, fieldIndex, type) {
+            const typeTable = { "text": 0, "number": 1, "selection": 2, "date": 3, "checkbox": 4 }
+            
+            switch (type) {
+                case "text": 
+                    this.schemes[archetypeIndex].fieldDefault[fieldIndex] = "Text"
+                    break;
+                
+                case "number":
+                    this.schemes[archetypeIndex].fieldDefault[fieldIndex] = 0
+                    break;
+
+                case "selection":
+                    this.schemes[archetypeIndex].fieldDefault[fieldIndex] = [{value: "Option 1"}, {value: "Option 2"}]
+                    break;
+
+                case "date":
+                    this.schemes[archetypeIndex].fieldDefault[fieldIndex] = "01-01-2022"
+                    break;
+
+                case "checkbox":
+                    this.schemes[archetypeIndex].fieldDefault[fieldIndex] = true
+                    break;
+            }
+
+            for (let i = 0; i < this.schemes[archetypeIndex].items.length; i++) {
+                if (type != "selection") {
+                    this.schemes[archetypeIndex].items[i].values[fieldIndex] = this.schemes[archetypeIndex].fieldDefault[fieldIndex]
+                } else {
+                    this.schemes[archetypeIndex].items[i].values[fieldIndex] = this.schemes[archetypeIndex].fieldDefault[fieldIndex][0].value
+                }
+            }
+
+            this.schemes[archetypeIndex].fieldTypes[fieldIndex] = typeTable[type];
+        },
+
+        setArchetypeDefaultField(archetypeIndex, fieldIndex, value) {
+            this.schemes[archetypeIndex].fieldDefault[fieldIndex] = value;
+        },
+
+        modifyArchetypeDefaultFieldSelection(archetypeIndex, fieldIndex, selectionIndex, value) {      
+            for (let i = 0; i < this.schemes[archetypeIndex].items.length; i++) {
+                if (this.schemes[archetypeIndex].items[i].values[fieldIndex] === this.focusedSelection) {
+                    this.schemes[archetypeIndex].items[i].values[fieldIndex] = value
+                }
+            }
+
+            this.schemes[archetypeIndex].fieldDefault[fieldIndex][selectionIndex].value = value;
+        },
+
+        removeArchetypeDefaultFieldSelection(archetypeIndex, fieldIndex, selectionIndex) {
+            if (this.schemes[archetypeIndex].fieldDefault[fieldIndex].length <= 1) return;
+            let val = this.schemes[archetypeIndex].fieldDefault[fieldIndex][selectionIndex].value
+
+            this.schemes[archetypeIndex].fieldDefault[fieldIndex].splice(selectionIndex, 1)
+
+            for (let i = 0; i < this.schemes[archetypeIndex].items.length; i++) {
+                if (this.schemes[archetypeIndex].items[i].values[fieldIndex] === val) {
+                    this.schemes[archetypeIndex].items[i].values[fieldIndex] = this.schemes[archetypeIndex].fieldDefault[fieldIndex][0].value
+                }
+            }
+        },
+
+        addArchetypeDefaultFieldSelection(archetypeIndex, fieldIndex) {
+            this.schemes[archetypeIndex].fieldDefault[fieldIndex].push({ value: `Option ${this.schemes[archetypeIndex].fieldDefault[fieldIndex].length + 1}` })
+        },
+
+        deleteProperty(archetypeIndex, propertyIndex) {
+            this.schemes[archetypeIndex].fieldTypes.splice(propertyIndex, 1);
+            this.schemes[archetypeIndex].fieldNames.splice(propertyIndex, 1);
+            this.schemes[archetypeIndex].fieldDefault.splice(propertyIndex, 1);
+
+            for (let i = 0; i < this.schemes[archetypeIndex].items.length; i++) {
+                this.schemes[archetypeIndex].items[i].values.splice[propertyIndex]
+            }
+        },
+
+        newProperty(archetypeIndex) {
+            this.schemes[archetypeIndex].fieldTypes.push(0)
+            this.schemes[archetypeIndex].fieldNames.push("Property")
+            this.schemes[archetypeIndex].fieldDefault.push("Default Text")
+
+            for (let i = 0; i < this.schemes[archetypeIndex].items.length; i++) {
+                this.schemes[archetypeIndex].items[i].values.push("Default Text")
+            }
+        },
+
+        deleteArchetype(archetypeIndex) {
+            this.schemes.splice(archetypeIndex, 1)
+        },
+
+        newArchetype() {
+            this.schemes.push(new Archetype("Archetype", "Fencing", [0, 1], ["Property 1", "Property 2"], ["Default Value", 0], [["Default Value", 0]]))
         },
         
         create_item(archetypeId, fields) {

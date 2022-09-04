@@ -15,7 +15,6 @@
                     <div class="col-2">
                         <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="create_pdf(inventorySt.schemes)"/>
                     </div>
-                    <!-- TODO: -->
                     <div class="col-2" v-if="true">
                     <!-- <div class="col-2" v-if="selfSt.role.permissions.canLend"> -->
                         <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
@@ -66,6 +65,7 @@
     import ManageItem from './items/ManageItem.vue'
     
     import { create_pdf } from 'src/scripts/pdf'
+import { stringify } from 'querystring'
 
     const inventorySt = useInventory()
     const itemsLocalSt = itemsLocal()
@@ -122,8 +122,7 @@
                 searchFilter(item, param) {
                     // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
                     console.log("it:", item);
-                    return Object.values(item).reduce((x, y) => x || y.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
-                    //return item
+                    return Object.values(item).reduce((x, y) => x || String(y).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
                 },
 
                 filterFn (val, update, abort) {

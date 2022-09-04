@@ -7,7 +7,8 @@
                 <template v-slot:before>
                     <q-tabs v-model="tab2" vertical class="text-primary">
                         <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" />
-                        <q-btn label="New Achetype" class="absolute-bottom" style="width: 100%;"/>
+                        <!-- New Archetype Button -->
+                        <q-btn label="New Achetype" class="absolute-bottom" style="width: 100%;" @click="inventorySt.newArchetype()"/>
                     </q-tabs>
                 </template>
 
@@ -73,12 +74,13 @@
                                 </q-table>
 
                                 <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
-                                    <div class="wide-flexbox" style="width: 12%;">
+                                    <div class="wide-flexbox" style="width: 20%;">
                                         <q-btn color="primary" label="New Item" class="manage-items-button" @click="inventorySt.createDefaultItem(archIndex)"/>
-                                        <q-btn color="primary" label="Edit Archetype" class="manage-items-button" @click="editArc = true"/>
+                                        <q-btn color="primary" label="Edit Archetype" class="manage-items-button" @click="editArc = true; itemsSt.focused_archetype = scheme.name"/>
+                                        <q-btn color="red" label="Delete Archetype" class="manage-items-button" @click="deleteSelected = [archIndex]; confirmArch = true"/>
                                     </div>
-                                    <div class="wide-flexbox" style="width: 5%;">
-                                        <q-btn color="primary" label="Save and Exit" class="manage-items-button" v-close-popup/>
+                                    <div class="wide-flexbox" style="width: 3%;">
+                                        <q-btn color="primary" label="Exit" class="manage-items-button" v-close-popup/>
                                     </div>
                                 </div>
                             </div>
@@ -102,6 +104,21 @@
             </q-card>
         </q-dialog>
         </q-card>
+
+        <!-- confirm delete archetype dialogue -->
+        <q-dialog v-model="confirmArch" persistent>
+            <q-card>
+                <q-card-section class="row items-center">
+                    <q-avatar icon="delete" color="red" text-color="white" />
+                    <span class="q-ml-sm">Are you sure you want to delete this archetype? This cannot be undone.</span>
+                </q-card-section>
+
+                <q-card-actions align="right">
+                    <q-btn flat label="Cancel" color="primary" v-close-popup />
+                    <q-btn flat label="Delete" color="red" v-close-popup @click="inventorySt.deleteArchetype(deleteSelected[0]); tab2 = inventorySt.schemes[0].name"/>
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
 
         <EditArchetype v-model="editArc"/>
     </q-dialog>
@@ -137,12 +154,12 @@
                 tab2: ref(inventory.schemes[0].name),
                 inventorySt: inventory,
                 itemsSt: itemsPage,
-                itemsLocalSt: itemsLocal,
                 editArc: ref(false),
                 splitterModel: ref(10),
                 search: ref(""),
                 inputErr,
                 confirm: ref(false),
+                confirmArch: ref(false),
                 deleteSelected: ref([]),
 
                 archColumns: archetypeColumns,
