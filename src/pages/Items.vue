@@ -52,7 +52,6 @@
     <!-- Popups -->
     <LendItem      v-model="lend" />
     <ManageItem    v-model="manage" />
-    <EditArchetype v-model="editArc"/>
 </template>
   
 <script>
@@ -65,7 +64,6 @@
     import CloseButton from '../components/CloseButton.vue'
     import LendItem from './items/LendItem.vue'
     import ManageItem from './items/ManageItem.vue'
-    import EditArchetype from './items/EditArchetype.vue'
     
     import { create_pdf } from 'src/scripts/pdf'
 
@@ -103,7 +101,7 @@
 
     export default defineComponent({
         name: 'Items',
-        components: { CloseButton, LendItem, ManageItem, EditArchetype },
+        components: { CloseButton, LendItem, ManageItem },
         setup () {
             return {
                 inventorySt,
@@ -115,7 +113,6 @@
 
                 lend: ref(false),
                 manage: ref(false),
-                editArc: ref(false),
 
                 splitterModel: ref(10),
                 search: ref(""),
