@@ -45,7 +45,7 @@
         </div>
 
         <!-- Popups -->
-        <InviteUsers url="https://apheleia.com/1bh3tg" v-model="invite"/>
+        <InviteUsers url="https://apheleia-rewrite.pages.dev/1bh3tg" v-model="invite"/>
         <ManageUsers v-model="manage" />
     </q-page>
 </template>

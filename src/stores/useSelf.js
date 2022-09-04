@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Role, Item, User, ArchetypePermissions, Settings, History, Notification } from 'src/scripts/objects.js'
+import { Role, Item, User, ArchetypePermissions, Settings, UserHistory, Notification } from 'src/scripts/objects.js'
 import { usePeople } from './usePeople'
 import { useSettings } from './useSettings'
 
@@ -15,20 +15,18 @@ export const useSelf = defineStore('selfStore', {
                 { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
                 { name: 'Item2', lent: '02/02/22', due: '22/02/22' }
             ],
-            history: {
-                loans: [
-                    { id: "000000001", name: "Item1", borrow: "18/02/22", due: "22/03/22", return: "28/02/22" },
-                    { id: "000000010", name: "Item2", borrow: "17/02/22", due: "22/04/22", return: "30/03/22" },
-                    { id: "000000011", name: "Item3", borrow: "19/02/22", due: "27/05/22", return: "03/05/22" },
-                    { id: "000000100", name: "Item4", borrow: "13/02/22", due: "22/06/22", return: "30/09/22" },
-                ],
-                selectedNotification: {},
-                notifications: [
-                    new Notification(0, "Item 1 is due today!", "Item 1 is due today, you should return it to your teacher."),
-                    new Notification(1, "Due date change: Item 2", "The due date for Item 2 has been changed to an earlier date."),
-                    new Notification(2, "Did you know?", "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)")
-                ]
-            }
+            history: new UserHistory([
+                { id: "000000001", name: "Item1", borrow: "18/02/22", due: "22/03/22", return: "28/02/22" },
+                { id: "000000010", name: "Item2", borrow: "17/02/22", due: "22/04/22", return: "30/03/22" },
+                { id: "000000011", name: "Item3", borrow: "19/02/22", due: "27/05/22", return: "03/05/22" },
+                { id: "000000100", name: "Item4", borrow: "13/02/22", due: "22/06/22", return: "30/09/22" },
+            ], 
+            [
+                new Notification(0, "Item 1 is due today!", "Item 1 is due today, you should return it to your teacher."),
+                new Notification(1, "Due date change: Item 2", "The due date for Item 2 has been changed to an earlier date."),
+                new Notification(2, "Did you know?", "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)")
+            ]),
+            selectedNotification: {}
         }
     },
     getters: { // these use variable naming because they arent accessed as functions

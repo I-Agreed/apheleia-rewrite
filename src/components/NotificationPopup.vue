@@ -4,11 +4,11 @@
             <!-- Popup body -->
             <div class="q-pa-md">
                 <div class="wide-flexbox">
-                    <h5>{{ selfSt.history.selectedNotification.title }}</h5>
+                    <h5>{{ selfSt.selectedNotification.title }}</h5>
                     <CloseButton />
                 </div>
                 <div>
-                    <p>{{ selfSt.history.selectedNotification.body }}</p>
+                    <p>{{ selfSt.selectedNotification.body }}</p>
                 </div>
             </div>
         </q-card>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Archetype, Item, History } from 'src/scripts/objects'
+import { Archetype, Item, GlobalHistory } from 'src/scripts/objects'
 
 // fieldTypes: 0 = text, 1 = number, 2 = selection, 3 = date, 4 = checkbox
 
@@ -51,7 +51,7 @@ export const useInventory = defineStore('inventoryStore', {
                     ["RED-H74", true, "2022-02-02"]
                 ])
             ],
-            history: new History(),
+            history: new GlobalHistory(),
             focusedSelection: ""
         }
     },
