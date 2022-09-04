@@ -24,23 +24,42 @@
                 </span>
             </div>
 
-            <!-- Table -->
+            <!-- List -->
             <div class="col col-11" style="width: 100%;">
+
+                <q-list class="list-container">
+                    <q-item class="people-list-item">
+                        <span class="list-id list-title">ID</span><q-separator vertical class="separator"/>
+                        <span>First Name</span><q-separator vertical class="separator"/>
+                        <span>Last Name</span><q-separator vertical class="separator"/>
+                        <span></span>
+                    </q-item>
+                    <q-separator />
+                    <q-item class="people-list-item" v-for="person in peopleSt.users">
+                        <span class="list-id">{{ person.id }}</span>
+                        <q-separator vertical class="separator"/>
+                        <span>{{ person.first_name }}</span>
+                        <q-separator vertical class="separator"/>
+                        <span>{{ person.last_name }}</span>
+                        <q-separator vertical class="separator"/>
+                        <q-select v-model="a" :options="a" />
+                    </q-item>
+                </q-list>
                 <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
-                <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]">
+                <!-- <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
                     <!-- Roles selection box -->
-                    <template v-slot:body-cell-role="props">
+                    <!-- <template v-slot:body-cell-role="props">
                         <q-td :props="props">
                             <div>
                                 <q-select filled v-model="roles" :options="roles"/>
                             </div>
-                        </q-td>
+                        </q-td> -->
                         <!-- Delete user -->
                         <!-- <q-td :props="props">
                             <q-btn color="red" label="Remove user" @click="peopleSt.removeUser()"/>
-                        </q-td> -->
+                        </q-td>
                     </template>
-                </q-table>
+                </q-table> -->
             </div>
         </div>
 
@@ -116,6 +135,31 @@
     width: 100%;
     justify-content: space-between;
     align-content: baseline;
+}
+
+.list-container {
+    margin: auto 7vw;
+    margin-top: 20px;
+}
+
+.people-list-item {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.people-list-item > * {
+    width: 20%;
+}
+
+.separator {
+    width: 1px;
+}
+
+.list-id {
+    width: 10%;
+    text-align: right;
 }
 
 </style>
