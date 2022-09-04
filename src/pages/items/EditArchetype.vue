@@ -43,9 +43,9 @@
                                 <!-- A list of text input boxes for the selection type -->
                                 <div v-if="props.row.propertyType === 'selection'">
                                     <div v-for="(val, index) in props.row.defaultValue" style="display: flex;">
-                                        <q-input outlined v-model="val.value" style="margin-top: 10px; width: 95%;" @update:model-value="(v) => inventorySt.modifyArchetypeDefaultFieldSelection(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, index, v)" @focus="inventorySt.focusedSelection = val.value"/>
+                                        <q-input outlined v-model="val.value" style="margin-top: 10px; width: 95%;" @update:model-value="(v) => {inventorySt.modifyArchetypeDefaultFieldSelection(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, index, v); inventorySt.focusedSelection = val.value}" @focus="inventorySt.focusedSelection = val.value"/>
                                         <!-- Delete button for each input box -->
-                                        <q-btn flat round color="red" icon="delete" style="margin-left: 0.6vw;" @click="inventorySt.removeArchetypeDefaultFieldSelection(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, index)"/>
+                                        <q-btn flat round color="red" icon="delete" style="margin-left: 0.6vw;" @click="confirmSel=true; deleteSelected=[inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex, index]"/>
                                     </div>
                                     <!-- + button to add more input boxes -->
                                     <q-btn color="primary" label="+" style="height: 70%; width: 10%; margin-top: 1vh;" @click="inventorySt.addArchetypeDefaultFieldSelection(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex)"/>
@@ -64,7 +64,7 @@
 
                             <!-- Delete button on the right side of each property on table -->
                             <q-td key="delete" :props="props">
-                                <q-btn flat round color="red" icon="delete" @click="inventorySt.deleteProperty(inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex)"/>
+                                <q-btn flat round color="red" icon="delete" @click="confirmProp = true; deleteSelected = [inventorySt.getSchemeId(itemsSt.focused_archetype), props.rowIndex]"/>
                             </q-td>
                         </q-tr>
                     </template>
@@ -74,6 +74,37 @@
                 <q-btn color="primary" label="Close" style="height: 70%; width: 10%; margin-left: 1vw; margin-top: 1vh;" v-close-popup/>
             </div>
         </q-card>
+
+        
+        <!-- confirm delete property dialogue -->
+        <q-dialog v-model="confirmProp" persistent>
+            <q-card>
+                <q-card-section class="row items-center">
+                    <q-avatar icon="delete" color="red" text-color="white" />
+                    <span class="q-ml-sm">Are you sure you want to delete this property? This cannot be undone.</span>
+                </q-card-section>
+
+                <q-card-actions align="right">
+                    <q-btn flat label="Cancel" color="primary" v-close-popup />
+                    <q-btn flat label="Delete" color="red" v-close-popup @click="inventorySt.deleteProperty(deleteSelected[0], deleteSelected[1]);"/>
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
+
+        <!-- confirm delete selection field dialogue -->
+        <q-dialog v-model="confirmSel" persistent>
+            <q-card>
+                <q-card-section class="row items-center">
+                    <q-avatar icon="delete" color="red" text-color="white" />
+                    <span class="q-ml-sm">Are you sure you want to delete this field? This cannot be undone.</span>
+                </q-card-section>
+
+                <q-card-actions align="right">
+                    <q-btn flat label="Cancel" color="primary" v-close-popup />
+                    <q-btn flat label="Delete" color="red" v-close-popup @click="inventorySt.removeArchetypeDefaultFieldSelection(deleteSelected[0], deleteSelected[1], deleteSelected[2]);"/>
+                </q-card-actions>
+            </q-card>
+        </q-dialog>
     </q-dialog>
 </template>
 
@@ -113,6 +144,9 @@
                 lend: ref(false),
                 manage: ref(false),
                 editArc: ref(false),
+                confirmProp: ref(false),
+                confirmSel: ref(false),
+                deleteSelected: ref([]),
                 splitterModel: ref(10),
                 search: ref(""),
 

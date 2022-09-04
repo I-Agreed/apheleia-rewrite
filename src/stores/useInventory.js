@@ -51,7 +51,8 @@ export const useInventory = defineStore('inventoryStore', {
                     ["RED-H74", true, "2022-02-02"]
                 ])
             ],
-            history: new History()
+            history: new History(),
+            focusedSelection: ""
         }
     },
     getters: {},
@@ -273,7 +274,7 @@ export const useInventory = defineStore('inventoryStore', {
         },
 
         newArchetype() {
-            this.schemes.push(new Archetype("Archetype", "Fencing", [0, 1], ["Property 1", "Property 2"], ["Default Value", 0], [["Default Value", 0]]))
+            this.schemes.push(new Archetype(`Archetype ${this.schemes.length + 1}`, "Fencing", [0, 1], ["Property 1", "Property 2"], ["Default Value", 0], [["Default Value", 0]]))
         },
         
         create_item(archetypeId, fields) {
