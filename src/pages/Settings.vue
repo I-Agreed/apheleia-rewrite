@@ -38,11 +38,11 @@
 
     import { Settings } from 'src/scripts/objects'
 
-    selfSt     = useSelf()
-    settingsSt = useSettings()
+    const selfSt     = useSelf()
+    const settingsSt = useSettings()
     
-    originalSettings = settingsSt.notificationSettings.copy()
-    currentSettings = settingsSt.notificationSettings.copy()
+    let originalSettings = settingsSt.notificationSettings.copy()
+    let currentSettings = settingsSt.notificationSettings.copy()
 
     export default defineComponent({
         name: 'Settings',

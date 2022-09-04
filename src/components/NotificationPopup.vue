@@ -1,5 +1,5 @@
 <template>
-    <q-dialog v-model="editArc" full-width>
+    <q-dialog full-width>
         <q-card style="height: 40%; margin: 10% 30%">
             <!-- Popup body -->
             <div class="q-pa-md">
