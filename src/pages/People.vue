@@ -18,7 +18,7 @@
                     <div v-if="selfSt.role.managePeople == true" class="col-2" style="width: 45%; margin-right: auto;">
                         <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
                     </div>
-                    <div class="col-2" style="width: 45%;">
+                    <div v-if="selfSt.role.managePeople == true" class="col-2" style="width: 45%;">
                         <q-btn color="primary" label="Invite Users" style="height: 70%; width: 100%;" @click="invite = true"/>
                     </div>
                 </span>
@@ -31,8 +31,8 @@
                     <q-item class="people-list-item">
                         <span class="list-id list-title">ID</span><q-separator vertical class="separator"/>
                         <span>First Name</span><q-separator vertical class="separator"/>
-                        <span>Last Name</span><q-separator vertical class="separator"/>
-                        <span></span>
+                        <span>Last Name</span><q-separator v-if="selfSt.role.managePeople == true" vertical class="separator"/>
+                        <span v-if="selfSt.role.managePeople == true" ></span>
                     </q-item>
                     <q-separator />
                     <q-item class="people-list-item" v-for="person in peopleSt.users">
@@ -41,8 +41,8 @@
                         <span>{{ person.first_name }}</span>
                         <q-separator vertical class="separator"/>
                         <span>{{ person.last_name }}</span>
-                        <q-separator vertical class="separator"/>
-                        <q-select v-model="a" :options="a" />
+                        <q-separator v-if="selfSt.role.managePeople == true" vertical class="separator"/>
+                        <q-select v-if="selfSt.role.managePeople == true" v-model="a" :options="a" />
                     </q-item>
                 </q-list>
                 <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
