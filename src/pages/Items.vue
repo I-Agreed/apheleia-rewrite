@@ -121,7 +121,6 @@ import { stringify } from 'querystring'
 
                 searchFilter(item, param) {
                     // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
-                    console.log("it:", item);
                     return Object.values(item).reduce((x, y) => x || String(y).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
                 },
 

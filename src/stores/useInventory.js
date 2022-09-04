@@ -104,6 +104,7 @@ export const useInventory = defineStore('inventoryStore', {
                 for (let i = 0; i < currentScheme.items.length; ++i) {
                     // Create an item
                     let item = currentScheme.items[i]
+                    console.log(item)
                     let outItem = {};
                     
                     // Populate the item with { fieldName1: value1, fieldName2: value2... }
