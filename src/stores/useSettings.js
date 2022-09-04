@@ -1,18 +1,17 @@
 import { defineStore } from 'pinia'
+import { Settings } from 'src/scripts/objects'
 
 export const useSettings = defineStore('settingsStore', {
     state: () => {
         return {
-            notificationEnabled: false,
-            notificationTime: 0, // number of days before
-            notificationEmail: "",
-            notificationImportant: false,
+            notificationSettings: new Settings(),
+
+            // Colour theme
             theme: "default",
         }
-    }, 
+    },
     getters: {
         // returns if the page should display in dark mode
-        // this is sketchy as hell
         isDarkTheme: (state) => {
             //console.log(window.matchMedia("(prefers-color-scheme: dark)").matches);
             //console.log(state.theme);
@@ -38,6 +37,14 @@ export const useSettings = defineStore('settingsStore', {
                 root.classList.add("root-light");
             }
             return output;
+        }
+    },
+    actions: {
+        setSettings(settings) {
+            this.notificationSettings = settings.copy()
+        },
+        validEmail(email) {
+            return (email.contains("@") ? true : false) || (email == "")
         }
     }
 })

@@ -11,47 +11,11 @@ import { Archetype, Item, History } from 'src/scripts/objects'
 // this is all dummy data, final version will be empty and filled in from api
 export const useInventory = defineStore('inventoryStore', {
     state: () => {
+        loadFromDatabase()
         return {
-            schemes: [
-                new Archetype("Foil", "Fencing", [0, 2], ["Tag", "Blade Condition"], ["#000", [{ value: "Perfect" }, { value: "Minor Damage" }, { value: "Needs Immediate Repair" }]], [
-                    ["#F001", "Perfect"], 
-                    ["#F002", "Perfect"],
-                    ["#F003", "Perfect"],
-                    ["#F004", "Perfect"],
-                    ["#F005", "Minor Damage"],
-                    ["#F006", "Needs Immediate Repair"],
-                    ["#F007", "Needs Immediate Repair"],
-                    ["#F008", "Perfect"],
-                    ["#F009", "Perfect"],
-                    ["#F010", "Perfect"]
-                ]),
-
-                new Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }], [{ value: "Functional" }, { value: "Inconsistent" }, { value: "Broken" }]], [
-                    ["name1", "#S001", "Perfect", "Functional"],
-                    ["name2", "#S002", "Perfect", "Inconsistent"],
-                    ["name3", "#S003", "Perfect", "Inconsistent"],
-                    ["name4", "#S004", "Perfect", "Functional"],
-                    ["name5", "#S005", "Minor Damage", "Functional"],
-                    ["name6", "#S006", "Needs Immediate Repair", "Functional"],
-                    ["name7", "#S007", "Needs Immediate Repair", "Broken"]
-                ]),
-
-                new Archetype("Epee", "Fencing", [0], ["Name"], ["Item"], [
-                    ["I am the only epee blade. I am alone. Please give me friends and attributes."]
-                ]),
-
-                new Archetype("Camera", "Film", [0], ["Name"], ["Item"], [
-                    ["I am the only normal camera. Please do not throw me out. Please give me friends and attributes."]
-                ]),
-
-                new Archetype("Camera Pro", "Film", [0, 4, 3], ["Name", "Has Lens", "Date Bought"], ["Item", false, "2022-02-02"], [
-                    ["I have a lover. Please give me friends and attributes.", false, "2022-02-02"],
-                    ["I have a lover. Please give me friends, they are boring.", true, "2022-02-02"],
-                    ["RED-H74", true, "2022-02-02"]
-                ])
-            ],
-            history: new History(),
-            focusedSelection: ""
+            // Schemes, meaning archetypes
+            schemes,
+            history: new History()
         }
     },
     getters: {},
@@ -290,6 +254,47 @@ export const useInventory = defineStore('inventoryStore', {
         },
         modify_archetype() {
 
+        },
+        loadFromDatabase() {
+            // TODO: Brendan was away
+            this.schemes = [
+                new Archetype("Foil", "Fencing", [0, 2], ["Tag", "Blade Condition"], ["#000", [{ value: "Perfect" }, { value: "Minor Damage" }, { value: "Needs Immediate Repair" }]], [
+                    ["#F001", "Perfect"], 
+                    ["#F002", "Perfect"],
+                    ["#F003", "Perfect"],
+                    ["#F004", "Perfect"],
+                    ["#F005", "Minor Damage"],
+                    ["#F006", "Needs Immediate Repair"],
+                    ["#F007", "Needs Immediate Repair"],
+                    ["#F008", "Perfect"],
+                    ["#F009", "Perfect"],
+                    ["#F010", "Perfect"]
+                ]),
+
+                new Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }], [{ value: "Functional" }, { value: "Inconsistent" }, { value: "Broken" }]], [
+                    ["name1", "#S001", "Perfect", "Functional"],
+                    ["name2", "#S002", "Perfect", "Inconsistent"],
+                    ["name3", "#S003", "Perfect", "Inconsistent"],
+                    ["name4", "#S004", "Perfect", "Functional"],
+                    ["name5", "#S005", "Minor Damage", "Functional"],
+                    ["name6", "#S006", "Needs Immediate Repair", "Functional"],
+                    ["name7", "#S007", "Needs Immediate Repair", "Broken"]
+                ]),
+
+                new Archetype("Epee", "Fencing", [0], ["Name"], ["Item"], [
+                    ["I am the only epee blade. I am alone. Please give me friends and attributes."]
+                ]),
+
+                new Archetype("Camera", "Film", [0], ["Name"], ["Item"], [
+                    ["I am the only normal camera. Please do not throw me out. Please give me friends and attributes."]
+                ]),
+
+                new Archetype("Camera Pro", "Film", [0, 4, 3], ["Name", "Has Lens", "Date Bought"], ["Item", false, "2022-02-02"], [
+                    ["I have a lover. Please give me friends and attributes.", false, "2022-02-02"],
+                    ["I have a lover. Please give me friends, they are boring.", true, "2022-02-02"],
+                    ["RED-H74", true, "2022-02-02"]
+                ])
+            ]
         }
     }
 })

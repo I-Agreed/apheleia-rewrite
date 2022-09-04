@@ -1,21 +1,47 @@
 import { defineStore } from 'pinia'
 
-import { User, Role } from 'src/scripts/objects.js'
+import { User, Role, ArchetypePermissions } from 'src/scripts/objects.js'
+import { useInventory } from 'src/stores/useInventory'
 
 //TODO: make these into a struct with a constructor that accepts api output
 //      add perms for roles per archetype in the same subject
 //      add methods to add, remove, and edit items in an archetype
 
-const roles = [
-    new Role("Teacher", {}),
-    new Role("Student", {})
-]
 
 export const usePeople = defineStore('peopleStore', {
     state: () => {
+        loadFromDatabase()
         return {
-            roles: roles,
-            users: [
+            roles,
+            users
+        }
+    },
+    actions: {
+        setRoles(roles) {
+            roles.forEach(role => {
+                this.roles.push(role.copy())
+            })
+        },
+        loadFromDatabase() {
+            // TODO: Brendan was away
+            
+            let teacherPermissions = []
+            let studentPermissions = []
+
+            inventorySt = useInventory()
+
+            inventorySt.schemes.forEach(scheme => {
+                teacherPermissions.push(new ArchetypePermissions(scheme.name, true, true, true))
+                studentPermissions.push(new ArchetypePermissions(scheme.name, false, false, false))
+            });
+
+            const roles = [
+                new Role("Teacher", teacherPermissions),
+                new Role("Student", studentPermissions)
+            ]
+
+            this.roles = roles
+            this.users = [
                 new User(444444444, "Dat", "Huynh", roles[0]),
                 new User(444444444, "Jennifer", "May", roles[0]),
                 new User(444444444, "Rebecca", "Dam", roles[0]),

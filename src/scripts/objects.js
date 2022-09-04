@@ -7,19 +7,18 @@ Other things, such as loans, roles, and subjects should also have classes but i 
 */
 
 export class Archetype {
-    constructor(name, subject, fieldTypes, fieldNames, fieldDefault, items = [], dbId = "", perms = { loan: false, handBack: false, edit: false }) {
+    constructor(name, subject, fieldTypes, fieldNames, fieldDefault, items = [], dbId = "", perms = { }) {
         this.name = name
         this.subject = subject // name of subject
         this.fieldTypes = fieldTypes
         this.fieldNames = fieldNames
         this.fieldDefault = fieldDefault
         this.dbId = dbId // id for use with backend api, might be undefined until saved if archetype is created by user
-        this.perms = perms // stores what the current user is able to do with items of this archetype
 
         // fill item objects
         this.items = [];
         for (let i = 0; i < items.length; i++) {
-            this.items.push(new Item(this.name, items[i]));
+            this.items.push(new Item(this.name, items[i].values, items[i].loan));
         }
     }
 
@@ -58,9 +57,38 @@ export class Item {
     }
 }
 
+export class ArchetypePermissions {
+    constructor(arch = "", loan = false, handBack = false, edit = false) {
+        this.arch = arch
+        this.setPerms(loan, handBack, edit)
+    }
+
+    setPerms(loan, handBack, edit) {
+        this.loan = loan
+        this.handBack = handBack
+        this.edit = edit
+    }
+}
+
 export class Role {
-    constructor(name) {
+    constructor(name = "", archetypePermissions = new ArchetypePermissions(), managePeople = false) {
         this.name = name
+        this.archetypePermissions = archetypePermissions // An list of ArchetypePermissions for each archetype
+        this.manage_people = managePeople
+    }
+
+    // Get the ArchetypePermissions for an archetype by name
+    getArchetypePerms(arch) {
+        // Loop through the role's archetype_permissions and return the one corresponding to a certain Archetype (by name)
+        this.archetypePermissions.forEach(archetypePermissions => {
+            if (archetypePermissions.arch == arch) {
+                return archetypePermissions
+            }
+        });
+    }
+
+    copy() {
+        return new Role(this.name, this.archetypePermissions, this.manage_people)
     }
 
     fromRawApi(data) {}
@@ -110,5 +138,20 @@ export class User {
 
     fromRawApi(data) {
 
+    }
+}
+
+// Notifications may include announcements and loan date changes.
+// If remind is true, an email will be sent remindDaysBefore days before an item is due.
+export class Settings {
+    constructor(notify = false, remind = false, remindDaysBefore = 1, email = "") {
+        this.notify = notify
+        this.remind = remind
+        this.remindDaysBefore = remindDaysBefore
+        this.email = email
+    }
+
+    copy() {
+        return new Settings(this.notify, this.remind, this.remindDaysBefore, this.email)
     }
 }

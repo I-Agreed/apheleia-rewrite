@@ -27,7 +27,7 @@
                 <q-card style="height: 100%;">
                     <!-- Tabs -->
                     <q-tabs v-model="tab" active-color="primary" indicator-color="primary" align="justify">
-                        <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" />
+                        <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" @click="inventorySt.tabbedSchemeName = scheme.name" />
                     </q-tabs>
                     <q-separator />
                     <q-tab-panels v-model="tab" animated style="height: 95%;">

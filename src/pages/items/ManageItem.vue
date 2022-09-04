@@ -178,3 +178,13 @@
         }
     })
 </script>
+
+<style scoped>
+    .manage-items-button {
+        height: 70%; width: 46%; margin-top: 1vh;
+    }
+
+    .wide-flexbox {
+        display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 100%;
+    }
+</style>
