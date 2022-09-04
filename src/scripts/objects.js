@@ -71,24 +71,24 @@ export class ArchetypePermissions {
 }
 
 export class Role {
-    constructor(name = "", archetype_permissions = new ArchetypePermissions(), manage_people = false) {
+    constructor(name = "", archetypePermissions = new ArchetypePermissions(), managePeople = false) {
         this.name = name
-        this.archetype_permissions = archetype_permissions // An list of ArchetypePermissions for each archetype
-        this.manage_people = manage_people
+        this.archetypePermissions = archetypePermissions // An list of ArchetypePermissions for each archetype
+        this.manage_people = managePeople
     }
 
     // Get the ArchetypePermissions for an archetype by name
     getArchetypePerms(arch) {
         // Loop through the role's archetype_permissions and return the one corresponding to a certain Archetype (by name)
-        this.archetype_permissions.forEach(archetype_permission => {
-            if (archetype_permission.arch == arch) {
-                return archetype_permission
+        this.archetypePermissions.forEach(archetypePermissions => {
+            if (archetypePermissions.arch == arch) {
+                return archetypePermissions
             }
         });
     }
 
     copy() {
-        return new Role(this.name, this.archetype_permissions, this.manage_people)
+        return new Role(this.name, this.archetypePermissions, this.manage_people)
     }
 
     fromRawApi(data) {}

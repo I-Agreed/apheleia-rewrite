@@ -15,7 +15,7 @@
 
                 <!-- Right: Buttons -->
                 <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
-                    <div v-if="selfSt.ADMIN" class="col-2" style="width: 45%; margin-right: auto;">
+                    <div v-if="selfSt.role.managePeople" class="col-2" style="width: 45%; margin-right: auto;">
                         <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
                     </div>
                     <div class="col-2" style="width: 45%;">

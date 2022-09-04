@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Settings } from 'objects.js'
+import { Settings } from 'src/scripts/objects'
 
 export const useSettings = defineStore('settingsStore', {
     state: () => {

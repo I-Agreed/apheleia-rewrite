@@ -36,7 +36,7 @@
   
 <script>
   import { defineComponent } from 'vue'
-  import CloseButton from './CloseButton.vue';
+  import CloseButton from 'src/components/CloseButton.vue';
   
   export default defineComponent({
     name: "InviteUsers",

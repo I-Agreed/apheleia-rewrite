@@ -36,7 +36,7 @@
                                     <q-separator />
                                     <!-- Rows -->
                                     <!-- Iterates through role.archetype instead of inventorySt.schemes because all schemes and their permissions are added to the role in the People Store -->
-                                    <q-card v-for="scheme in role.archetype_permissions" class="archetype-rows">
+                                    <q-card v-for="scheme in role.archetypePermissions" class="archetype-rows">
                                         <span class="roles-popup-text">{{ scheme.name }}</span>
                                         <q-checkbox v-model="scheme.loan"/>
                                         <q-checkbox v-model="scheme.handBack"/>
