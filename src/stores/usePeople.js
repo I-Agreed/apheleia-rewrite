@@ -7,13 +7,36 @@ import { useInventory } from 'src/stores/useInventory'
 //      add perms for roles per archetype in the same subject
 //      add methods to add, remove, and edit items in an archetype
 
+let teacherPermissions = []
+let studentPermissions = []
+
+const inventorySt = useInventory()
+
+inventorySt.schemes.forEach(scheme => {
+    teacherPermissions.push(new ArchetypePermissions(scheme.name, true, true, true))
+    studentPermissions.push(new ArchetypePermissions(scheme.name, false, false, false))
+});
+
+const roles = [
+    new Role("Teacher", teacherPermissions, true),
+    new Role("Student", studentPermissions)
+]
+
+const users = [
+    new User(444444444, "Dat", "Huynh", roles[0]),
+    new User(444444444, "Jennifer", "May", roles[0]),
+    new User(444444444, "Rebecca", "Dam", roles[0]),
+    new User(444444444, "Johnathan", "Min", roles[1]),
+    new User(444444444, "Brendan", "Alcorn", roles[1]),
+    new User(444444444, "Kai", "Cao", roles[1]),
+    new User(444444444, "Klim", "Tsoutsman", roles[1])
+]
 
 export const usePeople = defineStore('peopleStore', {
     state: () => {
-        loadFromDatabase()
         return {
-            roles,
-            users
+            roles: roles,
+            users: users
         }
     },
     actions: {
@@ -21,35 +44,7 @@ export const usePeople = defineStore('peopleStore', {
             roles.forEach(role => {
                 this.roles.push(role.copy())
             })
-        },
-        loadFromDatabase() {
-            // TODO: Brendan was away
-            
-            let teacherPermissions = []
-            let studentPermissions = []
-
-            inventorySt = useInventory()
-
-            inventorySt.schemes.forEach(scheme => {
-                teacherPermissions.push(new ArchetypePermissions(scheme.name, true, true, true))
-                studentPermissions.push(new ArchetypePermissions(scheme.name, false, false, false))
-            });
-
-            const roles = [
-                new Role("Teacher", teacherPermissions),
-                new Role("Student", studentPermissions)
-            ]
-
-            this.roles = roles
-            this.users = [
-                new User(444444444, "Dat", "Huynh", roles[0]),
-                new User(444444444, "Jennifer", "May", roles[0]),
-                new User(444444444, "Rebecca", "Dam", roles[0]),
-                new User(444444444, "Johnathan", "Min", roles[1]),
-                new User(444444444, "Brendan", "Alcorn", roles[1]),
-                new User(444444444, "Kai", "Cao", roles[1]),
-                new User(444444444, "Klim", "Tsoutsman", roles[1])
-            ]
         }
+        
     }
 })

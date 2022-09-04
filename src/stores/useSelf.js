@@ -3,14 +3,13 @@ import { Role, Item, User, ArchetypePermissions, Settings, History } from 'src/s
 import { usePeople } from './usePeople'
 import { useSettings } from './useSettings'
 
-peopleSt = usePeople()
-settingsSt = useSettings()
+const peopleSt = usePeople()
+const settingsSt = useSettings()
 
 export const useSelf = defineStore('selfStore', {
     state: () => {
-        loadFromDatabase()
         return {
-            role,
+            role: peopleSt.roles[0],
             currentLoans: [
                 // new Item("Foil", ["#001", "Perfect"], this.user),
                 { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
@@ -79,15 +78,6 @@ export const useSelf = defineStore('selfStore', {
         },
         becomeTeacher() {
             this.role = peopleSt.roles[0]
-        },
-        loadFromDatabase() {
-            // TODO: Brendan was away
-            this.role = this.becomeTeacher()
-            // this.currentLoans = [
-            //     // new Item("Foil", ["#001", "Perfect"], this.user),
-            //     { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
-            //     { name: 'Item2', lent: '02/02/22', due: '22/02/22' }
-            // ]
         }
     }
 })

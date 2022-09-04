@@ -74,7 +74,7 @@ export class Role {
     constructor(name = "", archetypePermissions = new ArchetypePermissions(), managePeople = false) {
         this.name = name
         this.archetypePermissions = archetypePermissions // An list of ArchetypePermissions for each archetype
-        this.manage_people = managePeople
+        this.managePeople = managePeople
     }
 
     // Get the ArchetypePermissions for an archetype by name
@@ -88,7 +88,7 @@ export class Role {
     }
 
     copy() {
-        return new Role(this.name, this.archetypePermissions, this.manage_people)
+        return new Role(this.name, this.archetypePermissions, this.managePeople)
     }
 
     fromRawApi(data) {}
