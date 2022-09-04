@@ -1,29 +1,27 @@
 <template>
-    <!-- People title -->
     <h3 class="absolute-left" style="padding-left: 10%;">people.</h3>
     <q-page class="absolute-center flex flex-center" id="people-container">
-        <!-- Columns to seperate the search bar/buttons from the table -->
+        <!-- Main Content -->
         <div class="column" style="width: 100%; height: 80%;">
-            <!-- Header -->
-            <div class="col col-1" style="width: 100%;">
-                <div class="wide-flexbox row" style="width: 100%; height: 100%;">
-                    <!-- Left, search bar -->
-                    <span style="width: 50%;">
-                        <q-input outlined v-model="search" label="Search" style="height: 70%; width: 80%;"/>
-                        <div class="col-8">
-                        </div>
-                    </span>
 
-                    <!-- Right, buttons -->
-                    <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
-                        <div v-if="selfSt.ADMIN" class="col-2" style="width: 45%; margin-right: auto;">
-                            <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
-                        </div>
-                        <div class="col-2" style="width: 45%;">
-                            <q-btn color="primary" label="Invite Users" style="height: 70%; width: 100%;" @click="invite = true"/>
-                        </div>
-                    </span>
-                </div>
+            <!-- Header -->
+            <div class="col col-1 wide-flexbox row" style="width: 100%;">
+                <!-- Left: Search bar -->
+                <span style="width: 50%;">
+                    <q-input outlined v-model="search" label="Search" style="height: 70%; width: 80%;"/>
+                    <div class="col-8">
+                    </div>
+                </span>
+
+                <!-- Right: Buttons -->
+                <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
+                    <div v-if="selfSt.ADMIN" class="col-2" style="width: 45%; margin-right: auto;">
+                        <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
+                    </div>
+                    <div class="col-2" style="width: 45%;">
+                        <q-btn color="primary" label="Invite Users" style="height: 70%; width: 100%;" @click="invite = true"/>
+                    </div>
+                </span>
             </div>
 
             <!-- Table -->
@@ -46,14 +44,8 @@
             </div>
         </div>
 
-        <!-- popups -->
-
-        <!-- Invite user popup -->
-        <q-dialog v-model="invite">
-            <InviteUsers url="https://apheleia.com/1bh3tg"/>
-        </q-dialog>
-
-        <!-- manage users popup -->
+        <!-- Popups -->
+        <InviteUsers url="https://apheleia.com/1bh3tg" v-model="invite"/>
         <ManageUsers v-model="manage" />
     </q-page>
 </template>
@@ -64,8 +56,8 @@
     import { useSelf } from '../stores/useSelf'
     import { usePeople } from '../stores/usePeople'
 
-    import InviteUsers from 'src/components/InviteUsers.vue'
     import CloseButton from '../components/CloseButton.vue'
+    import InviteUsers from './users/InviteUsers.vue'
     import ManageUsers from './users/ManageUsers.vue'
 
     const peopleSt = usePeople()
@@ -83,7 +75,7 @@
 
     export default defineComponent({
         name: 'People',
-        components: { InviteUsers, CloseButton, ManageUsers },
+        components: { CloseButton, InviteUsers, ManageUsers },
         setup () {
             return {
                 selfSt,

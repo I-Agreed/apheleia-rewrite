@@ -1,21 +1,70 @@
 import { defineStore } from 'pinia'
 
-import { User, Role } from 'src/scripts/objects.js'
+import { User, Role, ArchetypePermissions } from 'src/scripts/objects.js'
+import useInventory from './useInventory'
 
 //TODO: make these into a struct with a constructor that accepts api output
 //      add perms for roles per archetype in the same subject
 //      add methods to add, remove, and edit items in an archetype
 
-const roles = [
-    new Role("Teacher", {}),
-    new Role("Student", {})
-]
 
 export const usePeople = defineStore('peopleStore', {
     state: () => {
+        loadFromDatabase()
         return {
-            roles: roles,
-            users: [
+            roles,
+            users
+        }
+    },
+    actions: {
+        // Set a role's permissions by name of the role
+        setRolePermissions(roleName, permissions) {
+            roleToUpdate = new Role()
+            found = false
+
+            this.roles.forEach(role => {
+                if (role.name == roleName) {
+                    roleToUpdate = role
+                    found = true
+                }
+            })
+
+            if (found == true) {
+                roleToUpdate.archetype_permissions.setPerms(permissions)
+            }
+            else {
+                console.log("Error: Role not found, called by usePeople.js -> usePeople -> actions -> setRolePermissions(roleName, permissions) with roleName = ", roleName)
+            }
+        },
+        // Set multiple roles' permissions with a list of role names and permissions
+        setListOfRolesPermissions(roleNameList, permissionsList) {
+            if (roleNameList.length == permissionsList.length) {
+                
+            }
+            else {
+                console.log("Error: List lengths do not match, called by usePeople.js -> usePeople -> actions -> setListOfRolesPermissions(roleNameList, permissionsList) with lengths: ", roleNameList.length, " and ", permissionsList.length)
+            }
+        },
+        loadFromDatabase() {
+            // TODO: Brendan was away
+            
+            let teacherPermissions = []
+            let studentPermissions = []
+
+            inventorySt = useInventory()
+
+            inventorySt.schemes.forEach(scheme => {
+                teacherPermissions.push(new ArchetypePermissions(scheme.name, true, true, true))
+                studentPermissions.push(new ArchetypePermissions(scheme.name, false, false, false))
+            });
+
+            const roles = [
+                new Role("Teacher", teacherPermissions),
+                new Role("Student", studentPermissions)
+            ]
+
+            this.roles = roles
+            this.users = [
                 new User(444444444, "Dat", "Huynh", roles[0]),
                 new User(444444444, "Jennifer", "May", roles[0]),
                 new User(444444444, "Rebecca", "Dam", roles[0]),

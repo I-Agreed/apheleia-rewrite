@@ -1,30 +1,21 @@
 import { defineStore } from 'pinia'
-import { Role, Item, User, ArchetypePermissions } from 'src/scripts/objects.js'
+import { Role, Item, User, ArchetypePermissions, Settings, History } from 'src/scripts/objects.js'
+import { usePeople } from './usePeople'
+import { useSettings } from './useSettings'
+
+peopleSt = usePeople()
+settingsSt = useSettings()
 
 export const useSelf = defineStore('selfStore', {
     state: () => {
+        loadFromDatabase()
         return {
-            // Temporary
-            ADMIN: true,
-            user: new User(),
-            role: new Role("Teacher"),
-            archetypes: [],
+            role,
             currentLoans: [
                 // new Item("Foil", ["#001", "Perfect"], this.user),
                 { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
                 { name: 'Item2', lent: '02/02/22', due: '22/02/22' }
             ],
-            settings: {
-                email: "my_email@gmail.com",
-                mark_as_important: true,
-                notification_frequency: 3,
-                page_theme: 1,
-                receive_announcements: true,
-                receive_updates: true,
-                receive_reminders: true,
-                receive_emails: true,
-                receive_echoes: true
-            },
             history: {
                 loans: [
                     { id: "000000001", name: "Item1", borrow: "18/02/22", due: "22/03/22", return: "28/02/22" },
@@ -80,7 +71,23 @@ export const useSelf = defineStore('selfStore', {
         },
         unreadNotifications() {
             return this.history.notifications.filter(notification => notification.read != true)
+        },
+
+        // For presentation
+        becomeStudent() {
+            this.role = peopleSt.roles[1]
+        },
+        becomeTeacher() {
+            this.role = peopleSt.roles[0]
+        },
+        loadFromDatabase() {
+            // TODO: Brendan was away
+            this.role = this.becomeTeacher()
+            // this.currentLoans = [
+            //     // new Item("Foil", ["#001", "Perfect"], this.user),
+            //     { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
+            //     { name: 'Item2', lent: '02/02/22', due: '22/02/22' }
+            // ]
         }
     }
-    
 })
