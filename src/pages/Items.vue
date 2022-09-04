@@ -1,7 +1,7 @@
 <template>
     <h3 class="absolute-left" style="padding-left: 10%;">items.</h3>
     <q-page class="absolute-center flex flex-center" id="items-container">
-        <!-- Columns to seperate the search bar/buttons and the tavle -->
+        <!-- Columns to seperate the search bar/buttons and the table -->
         <div class="column" style="width: 100%; height: 80%;">
             <!-- Contains search bar and buttons -->
             <div class="col col-1" style="width: 100%;">
@@ -52,7 +52,6 @@
     <!-- Popups -->
     <LendItem      v-model="lend" />
     <ManageItem    v-model="manage" />
-    <EditArchetype v-model="editArc"/>
 </template>
   
 <script>
@@ -65,7 +64,6 @@
     import CloseButton from '../components/CloseButton.vue'
     import LendItem from './items/LendItem.vue'
     import ManageItem from './items/ManageItem.vue'
-    import EditArchetype from './items/EditArchetype.vue'
     
     import { create_pdf } from 'src/scripts/pdf'
 
@@ -103,7 +101,7 @@
 
     export default defineComponent({
         name: 'Items',
-        components: { CloseButton, LendItem, ManageItem, EditArchetype },
+        components: { CloseButton, LendItem, ManageItem },
         setup () {
             return {
                 inventorySt,
@@ -115,7 +113,6 @@
 
                 lend: ref(false),
                 manage: ref(false),
-                editArc: ref(false),
 
                 splitterModel: ref(10),
                 search: ref(""),
@@ -124,8 +121,9 @@
 
                 searchFilter(item, param) {
                     // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
-                    console.log(item);
-                    return item.reduce((x, y) => x || y.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                    console.log("it:", item);
+                    return Object.values(item).reduce((x, y) => x || y.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                    //return item
                 },
 
                 filterFn (val, update, abort) {

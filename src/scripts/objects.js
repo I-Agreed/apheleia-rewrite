@@ -28,6 +28,21 @@ export class Archetype {
     fromRawApi(data) {
         return new Archetype(data.name, data.subject_area, data.schema, data.schema, [], data.id);
     }
+
+    // collapse the values for selectors and return array
+    getDefaultValues() {
+        let out = []
+
+        for (let i = 0; i < this.fieldTypes.length; i++) {
+            if (this.fieldTypes[i] === 2) {
+                out.push(this.fieldDefault[i][0].value)
+            } else {
+                out.push(this.fieldDefault[i])
+            }
+        }
+
+        return out;
+    }
 }
 
 export class Item {

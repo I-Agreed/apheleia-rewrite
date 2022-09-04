@@ -8,7 +8,8 @@ export const itemsLocal = defineStore('itemsLocal', {
             searchParams: "",
             tabbedScheme: "",
             tabbedSchemeName: "",
-            pdf_preview: false
+            pdf_preview: false,
+            focused_archetype: ""
         }
     },
     getters: {
@@ -22,7 +23,8 @@ export const itemsLocal = defineStore('itemsLocal', {
         // show_manage() {this.showManageMenu = true},
         hide_manage() {this.showManageMenu = false},
         toggle_filters() {this.showFilters = !this.showFilters},
-        set_tabbed(scheme) { this.tabbedScheme = scheme; this.tabbedSchemeName = scheme.name }
+        set_tabbed(scheme) { this.tabbedScheme = scheme; this.tabbedSchemeName = scheme.name },
+        set_focused_archetype(arch) { this.focused_archetype= arch }
         // show_filters() {this.showFilters = true},
         // hide_filters() {this.showFilters = false}
     }

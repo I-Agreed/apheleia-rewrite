@@ -9,7 +9,7 @@
                 <HistoryPanel />
             </div>
             <!-- Right column -->
-            <div class="col-5">\
+            <div class="col-5">
                 <NotificationsPanel />
             </div>
         </div>
