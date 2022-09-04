@@ -52,6 +52,7 @@
     <!-- Popups -->
     <LendItem      v-model="lend" />
     <ManageItem    v-model="manage" />
+    <EditLend      v-model="editLend" />
 </template>
   
 <script>
@@ -63,6 +64,7 @@
     import { itemsLocal } from '../stores/itemsLocal'
     import CloseButton from '../components/CloseButton.vue'
     import LendItem from './items/LendItem.vue'
+    import EditLend from './items/EditLend.vue'
     import ManageItem from './items/ManageItem.vue'
     
     import { create_pdf } from 'src/scripts/pdf'
@@ -102,7 +104,7 @@
 
     export default defineComponent({
         name: 'Items',
-        components: { CloseButton, LendItem, ManageItem },
+        components: { CloseButton, LendItem, ManageItem, EditLend },
         setup () {
             return {
                 inventorySt,

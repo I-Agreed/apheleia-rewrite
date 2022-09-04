@@ -51,7 +51,7 @@ export const useInventory = defineStore('inventoryStore', {
                     ["RED-H74", true, "2022-02-02"]
                 ])
             ],
-            history: new GlobalHistory([{id: "000000", name: "#F001", itemId: "Foil1", borrower: "John Smith", borrow: "18/02/22", due: "22/03/22", return: ""}]),
+            history: new GlobalHistory([{id: "000000", name: "#F001", itemId: "Foil1", borrower: "John Smith", borrow: "2022-02-02", due: "2022-03-02", return: ""}]),
             focusedSelection: ""
         }
     },
@@ -291,8 +291,7 @@ export const useInventory = defineStore('inventoryStore', {
         createLoan(itemId, user, due) {
             const d = new Date()
             
-            this.history.loans.push({id: "000000", name: this.getItemById(itemId).values[0], itemId: itemId, borrower: user, borrow: `${d.getFullYear()}-${("0" + d.getMonth()).slice(-2)}-${("0" + d.getDate()).slice(-2)}`, due: due, return: ""})
-            console.log({id: "000000", name: this.getItemById(itemId).values[0], itemId: itemId, borrower: user, borrow: `${d.getFullYear()}-${("0" + d.getMonth()).slice(-2)}-${("0" + d.getDate()).slice(-2)}`, due: due, return: ""})
+            this.history.loans.push({id: "000000", name: this.getItemById(itemId).values[0], itemId: itemId, borrower: user, borrow: `${d.getFullYear()}-${("0" + (d.getMonth() + 1)).slice(-2)}-${("0" + d.getDate()).slice(-2)}`, due: due, return: ""})
         },
 
         getItemById(itemId) {
@@ -306,6 +305,36 @@ export const useInventory = defineStore('inventoryStore', {
             })
 
             return it
+        },
+
+        getLoanByItemId(itemId) {
+            let outLoan;
+            this.history.loans.forEach(loan => {
+                if (loan.itemId === itemId) {
+                    outLoan = loan
+                }
+            })
+
+            return outLoan
+        },
+
+        editLendDates(itemId, borrow, due) {
+            for (let i = 0; i < this.history.loans.length; i++) {
+                if(this.history.loans[i].itemId === itemId) {
+                    this.history.loans[i].borrow = borrow
+                    this.history.loans[i].due = due
+                }
+            }
+        },
+
+        returnItem(itemId) {
+            const d = new Date()
+
+            for (let i = 0; i < this.history.loans.length; i++) {
+                if(this.history.loans[i].itemId === itemId) {
+                    this.history.loans[i].return = `${d.getFullYear()}-${("0" + (d.getMonth() + 1)).slice(-2)}-${("0" + d.getDate()).slice(-2)}`
+                }
+            }
         },
 
         modify_item() {

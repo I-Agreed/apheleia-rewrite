@@ -10,7 +10,9 @@ export const itemsLocal = defineStore('itemsLocal', {
             tabbedSchemeName: "",
             pdf_preview: false,
             focused_archetype: "",
-            focused_item: ""
+            focused_item: "",
+            focused_due: "",
+            focused_borrowed: ""
         }
     },
     getters: {
