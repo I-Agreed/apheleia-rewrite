@@ -2,7 +2,7 @@
     <div class="col col-6">
         <div class="q-pa-md" style="height: 100%;">
             <h5>Loan History</h5>
-            <q-table :rows="selfSt.historyLoansRows" :columns="selfSt.historyLoansColumns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell"/>
+            <q-table :rows="selfSt.historyLoansRows()" :columns="selfSt.historyLoansColumns" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell"/>
         </div>
     </div>
 </template>

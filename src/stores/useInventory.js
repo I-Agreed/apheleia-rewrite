@@ -26,14 +26,14 @@ export const useInventory = defineStore('inventoryStore', {
                     ["#F010", "Perfect"]
                 ]),
 
-                new Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]], [{ value: "Perfect" }, { value: "Needs Immediate Repair" }], [
-                    ["#S001", "Perfect", "Functional"],
-                    ["#S002", "Perfect", "Inconsistent"],
-                    ["#S003", "Perfect", "Inconsistent"],
-                    ["#S004", "Perfect", "Functional"],
-                    ["#S005", "Minor Damage", "Functional"],
-                    ["#S006", "Needs Immediate Repair", "Functional"],
-                    ["#S007", "Needs Immediate Repair", "Broken"]
+                new Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }], [{ value: "Perfect" }, { value: "Needs Immediate Repair" }]], [
+                    ["name1", "#S001", "Perfect", "Functional"],
+                    ["name2", "#S002", "Perfect", "Inconsistent"],
+                    ["name3", "#S003", "Perfect", "Inconsistent"],
+                    ["name4", "#S004", "Perfect", "Functional"],
+                    ["name5", "#S005", "Minor Damage", "Functional"],
+                    ["name6", "#S006", "Needs Immediate Repair", "Functional"],
+                    ["name7", "#S007", "Needs Immediate Repair", "Broken"]
                 ]),
 
                 new Archetype("Epee", "Fencing", [0], ["Name"], ["Item"], [
@@ -84,6 +84,7 @@ export const useInventory = defineStore('inventoryStore', {
 
                 // Add the last column for lending and return
                 outColumns.push({ name: 'lend', headerStyle: 'width: 10%', align: "center", label: "", field: "lend", sortable: false })
+                console.log("cols:", outColumns)
                 return outColumns
             } else {
                 console.log("Error in useInventory.js, actions, columns(schemeName)")
@@ -97,26 +98,25 @@ export const useInventory = defineStore('inventoryStore', {
             if (schemeId != -1) {
                 let outRows = []
                 let currentScheme = this.schemes[schemeId]
-                console.log(currentScheme);
                 // Add the item data to the rows
                 // Loop through all the items
                 for (let i = 0; i < currentScheme.items.length; ++i) {
                     // Create an item
-                    let item = currentScheme.items[i].values
-                        /*
-                        // Populate the item with { fieldName1: value1, fieldName2: value2... }
-                        for (let fieldIndex = 0; fieldIndex < currentScheme.fieldNames.length; ++fieldIndex) {
-                            let key = this.stringToKey(currentScheme.fieldNames[fieldIndex])
+                    let item = currentScheme.items[i]
+                    let outItem = {};
+                    
+                    // Populate the item with { fieldName1: value1, fieldName2: value2... }
+                    for (let i = 0; i < currentScheme.fieldNames.length; i++) {
+                        let key = this.stringToKey(currentScheme.fieldNames[i])
 
-                            item[key] = currentScheme.items[i][fieldIndex]
-                        }
-                        */
+                        outItem[key] = item.values[i]
+                    }
 
                     // Add the item to the rows list
-                    outRows.push(item)
+                    outRows.push(outItem)
                 }
 
-                console.log(outRows)
+                console.log("rows:", outRows)
                 return outRows
             } else {
                 console.log("Error in useInventory.js, actions, rows(schemeName)")
