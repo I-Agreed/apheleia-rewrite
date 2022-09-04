@@ -15,7 +15,7 @@
 
                 <!-- Right: Buttons -->
                 <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
-                    <div v-if="selfSt.role.managePeople" class="col-2" style="width: 45%; margin-right: auto;">
+                    <div v-if="selfSt.role.managePeople == true" class="col-2" style="width: 45%; margin-right: auto;">
                         <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
                     </div>
                     <div class="col-2" style="width: 45%;">
@@ -32,13 +32,13 @@
                     <template v-slot:body-cell-role="props">
                         <q-td :props="props">
                             <div>
-                                <q-select filled v-model="props.value" :options="['Teacher', '2', '3']"/>
+                                <q-select filled v-model="roles" :options="roles"/>
                             </div>
                         </q-td>
                         <!-- Delete user -->
-                        <q-td :props="props">
-                            <q-btn color="red" label="Remove user" @click="lend = true"/>
-                        </q-td>
+                        <!-- <q-td :props="props">
+                            <q-btn color="red" label="Remove user" @click="peopleSt.removeUser()"/>
+                        </q-td> -->
                     </template>
                 </q-table>
             </div>
@@ -73,6 +73,11 @@
     const rows = [
     ]
 
+    
+
+    let roles = []
+    peopleSt.roles.forEach(role => {roles.push(role.name)})
+
     export default defineComponent({
         name: 'People',
         components: { CloseButton, InviteUsers, ManageUsers },
@@ -88,6 +93,7 @@
                 columns,
                 rows,
                 search: ref(""),
+                roles: ref(roles)
 
                 // searchFilter(item, param) {
                 //     // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches

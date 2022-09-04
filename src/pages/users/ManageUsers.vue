@@ -13,7 +13,7 @@
 
                 <!-- Panels -->
                 <template v-slot:after>
-                    <div class="wide-flexbox">
+                    <div class="wide-flexbox" style="padding-left: 2%;">
                         <h3>Manage Users and Roles</h3>
                         <span>
                             <!-- TODO: Help button -->
@@ -128,7 +128,7 @@
                 originalRoles,
                 currentRoles,
 
-                tab: ref(currentRoles[0].name),
+                tab: ref(''),
                 splitterModel: ref(10)
             }
         }
@@ -156,7 +156,7 @@
     }
 
     .wide-flexbox {
-        display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 100%;
+        display: flex; flex-flow: row nowrap; align-content: center; justify-content: space-between; width: 100%;
     }
 
     .column * {
