@@ -13,25 +13,7 @@
             </q-card-section>
 
             <q-card-section style="padding-top: 0px;">
-                <q-select
-                    filled
-                    :model-value="model"
-                    use-input
-                    hide-selected
-                    fill-input
-                    input-debounce="0"
-                    :options="options"
-                    @input-value="setModel"
-                    style="width: 250px; padding-bottom: 32px"
-                >     
-                    <template v-slot:no-option>
-                        <q-item>
-                            <q-item-section class="text-grey">
-                                No results
-                            </q-item-section>
-                        </q-item>
-                    </template>
-                </q-select>
+                <q-select outlined v-model="model" :options="options" />
             </q-card-section>
 
             <q-card-section class="q-pt-none">
@@ -44,7 +26,7 @@
 
             <q-card-actions align="right">
                 <q-btn flat label="Cancel" color="primary" v-close-popup />
-                <q-btn flat label="Lend" color="primary" v-close-popup />
+                <q-btn flat label="Lend" color="primary" v-close-popup @click="inventorySt.createLoan(itemsLocalSt.focused_item, model, time)" />
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -55,26 +37,31 @@
     import { ref } from 'vue'
     import { defineComponent } from 'vue'
 
+    import { usePeople } from "../../stores/usePeople.js"
+    import { useInventory } from "../../stores/useInventory.js"
+    import { itemsLocal } from '../../stores/itemsLocal'
     import CloseButton from 'src/components/CloseButton.vue'
 
-    const lendOptions = [
-        "abcd",
-        "efgh",
-        "ijkl",
-        "mnop",
-        "1234"
-    ]
+    const people = usePeople()
+    const inv = useInventory()
+    const itemsLocalSt = itemsLocal()
+
+    const lendOptions = people.users.map(user => `${user.first_name} ${user.last_name}`)
 
 export default defineComponent({
         name: 'Lend Item',
         components: { CloseButton },
         setup () {
-            const model = ref(null)
+            const model = ref(lendOptions[0])
             const options = ref(lendOptions)
 
             return {
                 model,
                 options,
+                peopleSt: people,
+                inventorySt: inv,
+                time: ref("2022-01-01"),
+                itemsLocalSt,
                 
                 setModel (val) {
                     model.value = val

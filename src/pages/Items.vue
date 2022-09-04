@@ -37,7 +37,8 @@
                                 <!-- Lend Item button -->
                                 <template v-slot:body-cell-lend="props">
                                     <q-td :props="props">
-                                        <q-btn color="primary" label="Lend Item" @click="lend = true"/>
+                                        <q-btn v-if="!inventorySt.history.checkIfLoaned(props.row.itemId)" color="primary" label="Lend Item" @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"/>
+                                        <q-btn v-if="inventorySt.history.checkIfLoaned(props.row.itemId)" color="black" label="Edit Lend" @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"/>
                                     </q-td>
                                 </template>
                             </q-table>
@@ -65,7 +66,7 @@
     import ManageItem from './items/ManageItem.vue'
     
     import { create_pdf } from 'src/scripts/pdf'
-import { stringify } from 'querystring'
+    import { stringify } from 'querystring'
 
     const inventorySt = useInventory()
     const itemsLocalSt = itemsLocal()
@@ -112,6 +113,7 @@ import { stringify } from 'querystring'
                 tab2: ref("archetype1"),
 
                 lend: ref(false),
+                editLend: ref(false),
                 manage: ref(false),
 
                 splitterModel: ref(10),

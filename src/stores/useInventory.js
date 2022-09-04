@@ -51,7 +51,7 @@ export const useInventory = defineStore('inventoryStore', {
                     ["RED-H74", true, "2022-02-02"]
                 ])
             ],
-            history: new GlobalHistory(),
+            history: new GlobalHistory([{id: "000000", name: "#F001", itemId: "Foil1", borrower: "John Smith", borrow: "18/02/22", due: "22/03/22", return: ""}]),
             focusedSelection: ""
         }
     },
@@ -105,7 +105,6 @@ export const useInventory = defineStore('inventoryStore', {
                 for (let i = 0; i < currentScheme.items.length; ++i) {
                     // Create an item
                     let item = currentScheme.items[i]
-                    console.log(item)
                     let outItem = {};
                     
                     // Populate the item with { fieldName1: value1, fieldName2: value2... }
@@ -114,6 +113,10 @@ export const useInventory = defineStore('inventoryStore', {
 
                         outItem[key] = item.values[i]
                     }
+
+                    outItem["itemId"] = item.dbId
+
+                    console.log(outItem)
 
                     // Add the item to the rows list
                     outRows.push(outItem)
@@ -284,6 +287,27 @@ export const useInventory = defineStore('inventoryStore', {
                 }
             })
         },
+
+        createLoan(itemId, user, due) {
+            const d = new Date()
+            
+            this.history.loans.push({id: "000000", name: this.getItemById(itemId).values[0], itemId: itemId, borrower: user, borrow: `${d.getFullYear()}-${("0" + d.getMonth()).slice(-2)}-${("0" + d.getDate()).slice(-2)}`, due: due, return: ""})
+            console.log({id: "000000", name: this.getItemById(itemId).values[0], itemId: itemId, borrower: user, borrow: `${d.getFullYear()}-${("0" + d.getMonth()).slice(-2)}-${("0" + d.getDate()).slice(-2)}`, due: due, return: ""})
+        },
+
+        getItemById(itemId) {
+            let it;
+            this.schemes.forEach(arch => {
+                arch.items.forEach(item => {
+                    if (item.dbId === itemId) {
+                        it = item
+                    }
+                })
+            })
+
+            return it
+        },
+
         modify_item() {
 
         },

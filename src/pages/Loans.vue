@@ -11,7 +11,7 @@
             
             <!-- table -->
             <div class="col col-11" style="width: 100%;">
-                <q-table :rows="selfSt.history.loans.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
+                <q-table :rows="inventorySt.history.loans.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
             </div>
         </div>
     </q-page>
@@ -21,21 +21,25 @@
     import { defineComponent, ref } from 'vue'
   
     import { useSelf } from '../stores/useSelf'
+    import { useInventory } from '../stores/useInventory.js'
 
     const selfSt = useSelf()
+    const inventory = useInventory()
 
     const columns = [
-        { name: 'id',     headerStyle: 'width: 10%', align: "center", label: "ID",            field: "id",     sortable: true },
-        { name: 'name',   headerStyle: 'width: 45%', align: "center", label: "Item Name",     field: "name",   sortable: true },
-        { name: 'borrow', headerStyle: 'width: 15%', align: "center", label: "Borrow Date",   field: "borrow", sortable: true },
-        { name: 'due',    headerStyle: 'width: 15%', align: "center", label: "Due Date",      field: "due",    sortable: true },
-        { name: 'return', headerStyle: 'width: 15%', align: "center", label: "Returned Date", field: "return", sortable: true }
+        { name: 'id',       headerStyle: 'width: 10%', align: "center", label: "ID",            field: "id",       sortable: true },
+        { name: 'name',     headerStyle: 'width: 40%', align: "center", label: "Item Name",     field: "name",     sortable: true },
+        { name: 'borrower', headerStyle: 'width: 20%', align: "center", label: "Borrower",      field: "borrower", sortable: true },
+        { name: 'borrow',   headerStyle: 'width: 10%', align: "center", label: "Borrow Date",   field: "borrow",   sortable: true },
+        { name: 'due',      headerStyle: 'width: 10%', align: "center", label: "Due Date",      field: "due",      sortable: true },
+        { name: 'return',   headerStyle: 'width: 10%', align: "center", label: "Returned Date", field: "return",   sortable: true }
     ]
 
     export default defineComponent({
         name: 'Loans',
         setup () {
             return {
+                inventorySt: inventory,
                 search: ref(""),
                 searchFilter (loan, params) {
                     return loan["name"].toLowerCase().includes(params.toLowerCase());

@@ -18,7 +18,7 @@ export class Archetype {
         // fill item objects
         this.items = [];
         for (let i = 0; i < items.length; i++) {
-            this.items.push(new Item(this.name, items[i], items[i].loan));
+            this.items.push(new Item(this.name, items[i], `${this.name}${i}`));
         }
     }
 
@@ -95,7 +95,8 @@ export class Role {
 }
 
 export class Loan {
-    constructor(itemId, loanedBy, loanedTo, dateLoaned, dateDue, dateReturned) {
+    constructor(loanId, itemId, loanedBy, loanedTo, dateLoaned, dateDue, dateReturned) {
+        this.loanId = loanId
         this.itemId = itemId
         this.loanedBy = loanedBy
         this.loanedTo = loanedTo
@@ -137,6 +138,17 @@ export class GlobalHistory {
     constructor(loans = [], notifications = []) {
         this.loans = loans
         this.notifications = notifications
+    }
+
+    checkIfLoaned(itemId) {
+        let out = false
+        this.loans.forEach(loan => {
+            if (loan.itemId === itemId && loan.return === "") {
+                out = true
+            }
+        })
+
+        return out
     }
 }
 

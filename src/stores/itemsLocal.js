@@ -9,7 +9,8 @@ export const itemsLocal = defineStore('itemsLocal', {
             tabbedScheme: "",
             tabbedSchemeName: "",
             pdf_preview: false,
-            focused_archetype: ""
+            focused_archetype: "",
+            focused_item: ""
         }
     },
     getters: {
