@@ -16,11 +16,13 @@
 <script>
     import { defineComponent, ref } from 'vue'
     import { useSelf } from '../../stores/useSelf'
+    import NotificationPopup from '../../components/NotificationPopup.vue'
 
     const selfSt = useSelf()
 
     export default defineComponent({
         name: 'Dashboard Notifications',
+        components: { NotificationPopup },
         setup () {
             return {
                 selfSt,
