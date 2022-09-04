@@ -117,14 +117,19 @@ export class Notification {
     }
 }
 
-export class History {
+export class UserHistory {
     constructor(loans = [], notifications = []) {
         this.loans = loans
         this.notifications = notifications
     }
 
     fromRawApi(data) {
-        
+    }
+}
+
+export class ItemHistory {
+    constructor(loans = []) {
+        this.loans = loans
     }
 }
 
@@ -138,7 +143,6 @@ export class User {
     }
 
     fromRawApi(data) {
-
     }
 }
 
