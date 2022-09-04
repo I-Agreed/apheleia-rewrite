@@ -108,11 +108,12 @@ export class Loan {
 }
 
 export class Notification {
-    constructor(title, body, read, author = "System") {
+    constructor(id, title, body, read = false, author = "System") {
+        this.id = id
         this.title = title
         this.body = body
         this.read = read
-        this.author = sentFrom
+        this.author = author
     }
 }
 

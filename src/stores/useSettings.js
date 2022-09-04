@@ -44,7 +44,7 @@ export const useSettings = defineStore('settingsStore', {
             this.notificationSettings = settings.copy()
         },
         validEmail(email) {
-            return (email.contains("@") ? true : false) || (email == "")
+            return (email.includes("@") ? true : false) || (email == "")
         }
     }
 })

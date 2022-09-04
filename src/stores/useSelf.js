@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Role, Item, User, ArchetypePermissions, Settings, History } from 'src/scripts/objects.js'
+import { Role, Item, User, ArchetypePermissions, Settings, History, Notification } from 'src/scripts/objects.js'
 import { usePeople } from './usePeople'
 import { useSettings } from './useSettings'
 
@@ -24,9 +24,9 @@ export const useSelf = defineStore('selfStore', {
                 ],
                 selectedNotification: {},
                 notifications: [
-                    { title: "Item 1 is due today!", body: "Item 1 is due today, you should return it to your teacher.", read: false },
-                    { title: "Due date change: Item 2", body: "The due date for Item 2 has been changed to an earlier date.", read: false },
-                    { title: "Did you know?", body: "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)", read: false }
+                    new Notification(0, "Item 1 is due today!", "Item 1 is due today, you should return it to your teacher."),
+                    new Notification(1, "Due date change: Item 2", "The due date for Item 2 has been changed to an earlier date."),
+                    new Notification(2, "Did you know?", "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)")
                 ]
             }
         }
@@ -70,6 +70,13 @@ export const useSelf = defineStore('selfStore', {
         },
         unreadNotifications() {
             return this.history.notifications.filter(notification => notification.read != true)
+        },
+        readNotification(id) {
+            this.history.notifications.forEach(notification => {
+                if (notification.id == id) {
+                    notification.read = true
+                }
+            })
         },
 
         // For presentation
