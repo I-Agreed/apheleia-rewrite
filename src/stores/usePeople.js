@@ -17,33 +17,10 @@ export const usePeople = defineStore('peopleStore', {
         }
     },
     actions: {
-        // Set a role's permissions by name of the role
-        setRolePermissions(roleName, permissions) {
-            roleToUpdate = new Role()
-            found = false
-
-            this.roles.forEach(role => {
-                if (role.name == roleName) {
-                    roleToUpdate = role
-                    found = true
-                }
+        setRoles(roles) {
+            roles.forEach(role => {
+                this.roles.push(role.copy())
             })
-
-            if (found == true) {
-                roleToUpdate.archetype_permissions.setPerms(permissions)
-            }
-            else {
-                console.log("Error: Role not found, called by usePeople.js -> usePeople -> actions -> setRolePermissions(roleName, permissions) with roleName = ", roleName)
-            }
-        },
-        // Set multiple roles' permissions with a list of role names and permissions
-        setListOfRolesPermissions(roleNameList, permissionsList) {
-            if (roleNameList.length == permissionsList.length) {
-                
-            }
-            else {
-                console.log("Error: List lengths do not match, called by usePeople.js -> usePeople -> actions -> setListOfRolesPermissions(roleNameList, permissionsList) with lengths: ", roleNameList.length, " and ", permissionsList.length)
-            }
         },
         loadFromDatabase() {
             // TODO: Brendan was away

@@ -81,8 +81,13 @@
                             <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
                                 <span></span>
                                 <div class="wide-flexbox" style="width: 5%;">
-                                    <q-btn color="red" label="Revert" class="manage-users-button" @click="currentRoles = []; originalRoles.forEach(role => {currentRoles.push(role.copy())})"/>
-                                    <q-btn color="primary" label="Save and Exit" class="manage-users-button" v-close-popup/>
+                                    <q-btn color="red" label="Revert" class="manage-users-button"
+                                        @click="currentRoles = [];
+                                                originalRoles.forEach(role => {currentRoles.push(role.copy())})"
+                                    />
+                                    <q-btn color="primary" label="Save and Exit" class="manage-users-button" v-close-popup
+                                        @click="peopleSt.setRoles(currentRoles)"
+                                    />
                                 </div>
                             </div>
                         </q-tab-panel>
