@@ -157,6 +157,24 @@ export const useInventory = defineStore('inventoryStore', {
 
             return rows
         },
+
+        // set item field value by archetype and item index
+        setItemField(archetypeIndex, itemIndex, index, value) {
+            this.schemes[archetypeIndex].items[itemIndex].values[index] = value;
+            console.log({ ...this.schemes[archetypeIndex] })
+        },
+
+        // delete item by archetype and item index
+        deleteItem(archetypeIndex, itemIndex) {
+            console.log(archetypeIndex, itemIndex)
+            this.schemes[archetypeIndex].items.splice(itemIndex, 1)
+        },
+
+        // create item from default values
+        createDefaultItem(archetypeIndex) {
+            this.schemes[archetypeIndex].items.push(new Item(this.schemes[archetypeIndex].name, this.schemes[archetypeIndex].getDefaultValues()))
+        },
+        
         create_item(archetypeId, fields) {
             this.schemes.forEach(scheme => {
                 if (archetypeId == scheme.id) {
