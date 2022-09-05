@@ -65,8 +65,20 @@ export const useSelf = defineStore('selfStore', {
                 }
             })
 
-            console.log(this.currentLoans)
-            return this.currentLoans
+            if(this.hasAnyPerm()) {
+                this.role.archetypePermissions.forEach(perms => {
+                    if (perms.loan || perms.handBack) {
+                        inventorySt.history.loans.forEach(loan => {
+                            console.log(loan)
+                            if(inventorySt.getItemById(loan.itemId).arch === perms.arch && loan.return === "") {
+                                this.currentLoans.push(loan)
+                            }
+                        })
+                    }
+                })
+            }
+
+            return [...new Set(this.currentLoans)]
         },
         historyLoansRows() {
             this.history.loans = []
@@ -75,7 +87,20 @@ export const useSelf = defineStore('selfStore', {
                     this.history.loans.push(loan)
                 }
             })
-            return this.history.loans
+
+            if(this.hasAnyPerm()) {
+                this.role.archetypePermissions.forEach(perms => {
+                    if (perms.loan || perms.handBack) {
+                        inventorySt.history.loans.forEach(loan => {
+                            if(inventorySt.getItemById(loan.itemId).arch === perms.arch && loan.return != "") {
+                                this.currentLoans.push(loan)
+                            }
+                        })
+                    }
+                })
+            }
+
+            return [...new Set(this.history.loans)]
         },
         unreadNotifications() {
             return this.history.notifications.filter(notification => notification.read != true)
