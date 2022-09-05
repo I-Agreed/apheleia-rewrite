@@ -1,7 +1,7 @@
 <!-- Contains the component for the link buttons in MainLayout -->
 <template>
   <!-- Link Button -->
-  <q-item clickable tag="a" :to="link" v-ripple style="height: 70px">
+  <q-item v-if="selfSt.hasAnyPerm() || (title != 'Items' && title != 'People')" clickable tag="a" :to="link" v-ripple style="height: 70px">
     <!-- Icon for link -->
     <q-item-section v-if="icon" avatar >
       <q-icon :name="icon" size="md" color="white"/>
@@ -16,6 +16,9 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { useSelf } from '../stores/useSelf'
+
+const selfSt = useSelf()
 
 export default defineComponent({
   name: 'NavbarLink',
@@ -35,6 +38,11 @@ export default defineComponent({
       type: String,
       default: ''
     }
-  }
+  },
+  setup () {
+    return {   
+      selfSt
+    }
+  } 
 })
 </script>
