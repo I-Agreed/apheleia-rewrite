@@ -3,6 +3,7 @@
         <q-card style="height: 100%;">
             <div class="q-pa-md">
                 <div class="wide-flexbox" style="padding-bottom: 1em;">
+                    <h3 style="margin-top: 1vh; margin-bottom: 1vh;">Edit Archetype.</h3>
                     <span></span>
                     <CloseButton/>
                 </div>

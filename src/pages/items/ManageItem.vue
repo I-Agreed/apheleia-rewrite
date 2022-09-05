@@ -6,7 +6,9 @@
                 <!-- Tabs on the left -->
                 <template v-slot:before>
                     <q-tabs v-model="tab2" vertical class="text-primary">
-                        <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" />
+                        <div v-for="scheme in inventorySt.schemes">
+                            <q-tab v-if="selfSt.role.getArchetypePerms(scheme.name).edit" :name="scheme.name" :label="scheme.name" />
+                        </div>
                         <!-- New Archetype Button -->
                         <q-btn label="New Achetype" class="absolute-bottom" style="width: 100%;" @click="inventorySt.newArchetype()"/>
                     </q-tabs>
@@ -19,13 +21,14 @@
                         <q-tab-panel v-for="(scheme, archIndex) in inventorySt.schemes" :name="scheme.name">
                             <!-- Close Button -->
                             <div style="display: flex; align-content: space-between; justify-content: space-between;">
+                                <h3 style="margin-top: 1vh; margin-bottom: 1vh;">Manage Items.</h3>
                                 <span></span>
                                 <CloseButton/>
                             </div>
 
                             <!-- Table -->
                             <div class="q-pa-md">
-                                <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" style="height: 83vh; margin-bottom: 1.5vh;" separator="cell" :rows-per-page-options="[0]">
+                                <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" style="height: 79vh; margin-bottom: 1.5vh;" separator="cell" :rows-per-page-options="[0]">
                                     <!-- Allows for custom html in each table slot -->
                                     <template v-slot:body="props">
                                         <q-tr :props="props">
@@ -133,9 +136,11 @@
     import EditArchetype from './EditArchetype.vue'
     import { itemsLocal } from '/src/stores/itemsLocal'
     import { create_pdf } from '/src/scripts/pdf'
+    import { useSelf } from '../../stores/useSelf'
 
     const inventory = useInventory()
     const itemsPage = itemsLocal()
+    const selfSt = useSelf()
 
     const archetypeColumns = [
         { name: 'property', align: "center", label: "Property", field: "property", sortable: true },
@@ -154,6 +159,7 @@
                 tab2: ref(inventory.schemes[0].name),
                 inventorySt: inventory,
                 itemsSt: itemsPage,
+                selfSt,
                 editArc: ref(false),
                 splitterModel: ref(10),
                 search: ref(""),

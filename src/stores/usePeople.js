@@ -17,6 +17,8 @@ inventorySt.schemes.forEach(scheme => {
     studentPermissions.push(new ArchetypePermissions(scheme.name, false, false, false))
 });
 
+teacherPermissions[0] = new ArchetypePermissions("Foil", true, true, true)
+
 const roles = [
     new Role("Teacher", teacherPermissions, true),
     new Role("Student", studentPermissions)

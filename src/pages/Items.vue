@@ -12,10 +12,10 @@
                     </div>
 
                     <!-- Buttons -->
-                    <div class="col-2">
+                    <div class="col-2" v-if="selfSt.role.getArchetypePerms(tab).edit">
                         <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="create_pdf(inventorySt.schemes)"/>
                     </div>
-                    <div class="col-2" v-if="true">
+                    <div class="col-2" v-if="selfSt.role.getArchetypePerms(tab).edit">
                     <!-- <div class="col-2" v-if="selfSt.role.permissions.canLend"> -->
                         <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
                     </div>
@@ -37,8 +37,8 @@
                                 <!-- Lend Item button -->
                                 <template v-slot:body-cell-lend="props">
                                     <q-td :props="props">
-                                        <q-btn v-if="!inventorySt.history.checkIfLoaned(props.row.itemId)" color="primary" label="Lend Item" @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"/>
-                                        <q-btn v-if="inventorySt.history.checkIfLoaned(props.row.itemId)" color="black" label="Edit Lend" @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"/>
+                                        <q-btn v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.role.getArchetypePerms(tab).loan" color="primary" label="Lend Item" @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"/>
+                                        <q-btn v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.role.getArchetypePerms(tab).handBack" color="black" label="Edit Lend" @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"/>
                                     </q-td>
                                 </template>
                             </q-table>
