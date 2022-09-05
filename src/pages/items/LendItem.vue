@@ -42,13 +42,13 @@
     import { itemsLocal } from '../../stores/itemsLocal'
     import CloseButton from 'src/components/CloseButton.vue'
 
-    const people = usePeople()
-    const inv = useInventory()
+    const peopleSt = usePeople()
+    const inventorySt = useInventory()
     const itemsLocalSt = itemsLocal()
 
-    const lendOptions = people.users.map(user => `${user.first_name} ${user.last_name}`)
+    const lendOptions = peopleSt.users.map(user => `${user.first_name} ${user.last_name}`)
 
-export default defineComponent({
+    export default defineComponent({
         name: 'Lend Item',
         components: { CloseButton },
         setup () {
@@ -56,12 +56,13 @@ export default defineComponent({
             const options = ref(lendOptions)
 
             return {
+                peopleSt,
+                inventorySt,
+                itemsLocalSt,
+                
                 model,
                 options,
-                peopleSt: people,
-                inventorySt: inv,
                 time: ref("2022-01-01"),
-                itemsLocalSt,
                 
                 setModel (val) {
                     model.value = val

@@ -11,6 +11,7 @@ const inventorySt = useInventory()
 export const useSelf = defineStore('selfStore', {
     state: () => {
         return {
+            user: peopleSt.users[0],
             role: peopleSt.roles[0],
             currentLoans: [
                 
@@ -121,6 +122,15 @@ export const useSelf = defineStore('selfStore', {
             })
 
             return out;
+        },
+
+        // For presentation
+        becomeUser(name) {
+            peopleSt.users.forEach(user => {
+                if (user.first_name == name) {
+                    this.user = user
+                }
+            })
         }
     }
 })

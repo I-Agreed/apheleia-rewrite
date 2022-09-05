@@ -47,7 +47,11 @@ export const usePeople = defineStore('peopleStore', {
             roles.forEach(role => {
                 this.roles.push(role.copy())
             })
+        },
+        sortUsers() {
+            this.users.sort((a, b) => {
+                return a.last_name > b.last_name
+            })
         }
-        
     }
 })

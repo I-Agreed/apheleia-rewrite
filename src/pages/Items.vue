@@ -12,11 +12,11 @@
                     </div>
 
                     <!-- Buttons -->
-                    <div class="col-2" v-if="selfSt.role.getArchetypePerms(tab).edit">
+                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab).edit">
                         <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="create_pdf(inventorySt.schemes)"/>
                     </div>
-                    <div class="col-2" v-if="selfSt.role.getArchetypePerms(tab).edit">
-                    <!-- <div class="col-2" v-if="selfSt.role.permissions.canLend"> -->
+                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab).edit">
+                    <!-- <div class="col-2" v-if="selfSt.user.role.permissions.canLend"> -->
                         <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
                     </div>
                 </div>
@@ -37,8 +37,8 @@
                                 <!-- Lend Item button -->
                                 <template v-slot:body-cell-lend="props">
                                     <q-td :props="props">
-                                        <q-btn v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.role.getArchetypePerms(tab).loan" color="primary" label="Lend Item" @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"/>
-                                        <q-btn v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.role.getArchetypePerms(tab).handBack" color="black" label="Edit Lend" @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"/>
+                                        <q-btn v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).loan" color="primary" label="Lend Item" @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"/>
+                                        <q-btn v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).handBack" color="black" label="Edit Lend" @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"/>
                                     </q-td>
                                 </template>
                             </q-table>
@@ -125,7 +125,11 @@
 
                 searchFilter(item, param) {
                     // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
-                    return Object.values(item).reduce((x, y) => x || String(y).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                    return Object.values(item)
+                                 .reduce((x, y) => x || String(y).normalize("NFD")
+                                                                 .replace(/[\u0300-\u036f]/g, "")
+                                                                 .toLowerCase()
+                                                                 .includes(param.toLowerCase()), false)
                 },
 
                 filterFn (val, update, abort) {

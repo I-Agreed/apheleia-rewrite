@@ -7,18 +7,17 @@
             <!-- Header -->
             <div class="col col-1 wide-flexbox row" style="width: 100%;">
                 <!-- Left: Search bar -->
-                <span style="width: 50%;">
-                    <q-input outlined v-model="search" label="Search" style="height: 70%; width: 80%;"/>
-                    <div class="col-8">
-                    </div>
+                <span style="display: flex; justify-content: flex-start; width: 50%;">
+                    <q-input outlined v-model="search" label="Search" style="display: inline; height: 70%; width: 80%;"/>
+                    <span style="margin: auto auto; color: grey;">*Sorted by last name</span>
                 </span>
 
                 <!-- Right: Buttons -->
                 <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
-                    <div v-if="selfSt.role.managePeople == true" class="col-2" style="width: 45%; margin-right: auto;">
+                    <div v-if="selfSt.user.role.managePeople == true" class="col-2" style="width: 45%; margin-right: auto;">
                         <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
                     </div>
-                    <div v-if="selfSt.role.managePeople == true" class="col-2" style="width: 45%;">
+                    <div v-if="selfSt.user.role.managePeople == true" class="col-2" style="width: 45%;">
                         <q-btn color="primary" label="Invite Users" style="height: 70%; width: 100%;" @click="invite = true"/>
                     </div>
                 </span>
@@ -30,19 +29,19 @@
                 <q-list class="list-container">
                     <q-item class="people-list-item">
                         <span class="list-id list-title">ID</span><q-separator vertical class="separator"/>
-                        <span>First Name</span><q-separator vertical class="separator"/>
-                        <span>Last Name</span><q-separator v-if="selfSt.role.managePeople == true" vertical class="separator"/>
-                        <span v-if="selfSt.role.managePeople == true" ></span>
+                        <span>Last Name</span><q-separator vertical class="separator"/>
+                        <span>First Name</span><q-separator v-if="selfSt.user.role.managePeople == true" vertical class="separator"/>
+                        <span v-if="selfSt.user.role.managePeople == true" ></span>
                     </q-item>
                     <q-separator />
                     <q-item class="people-list-item" v-for="person in peopleSt.users">
                         <span class="list-id">{{ person.id }}</span>
                         <q-separator vertical class="separator"/>
-                        <span>{{ person.first_name }}</span>
-                        <q-separator vertical class="separator"/>
                         <span>{{ person.last_name }}</span>
-                        <q-separator v-if="selfSt.role.managePeople == true" vertical class="separator"/>
-                        <q-select v-if="selfSt.role.managePeople == true" v-model="a" :options="a" />
+                        <q-separator vertical class="separator"/>
+                        <span>{{ person.first_name }}</span>
+                        <q-separator v-if="selfSt.user.role.managePeople == true" vertical class="separator"/>
+                        <q-select v-if="selfSt.user.role.managePeople == true" v-model="a" :options="a" />
                     </q-item>
                 </q-list>
                 <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
@@ -81,6 +80,8 @@
 
     const peopleSt = usePeople()
     const selfSt = useSelf()
+
+    peopleSt.sortUsers()
 
     const columns = [
         { name: 'id',         headerStyle: 'width: 12%', align: "center", label: "School ID",  field: "id",         sortable: true },

@@ -22,8 +22,8 @@
             </div>
 
             <div style="display: flex; width: 100%;">
-                <q-btn color="primary" label="Become Student" @click="selfSt.becomeStudent()"/>
-                <q-btn color="primary" label="Become Teacher" @click="selfSt.becomeTeacher()"/>
+                <q-btn color="primary" label="Become User" @click="selfSt.becomeUser(activeUser)"/>
+                <q-select outlined v-model="activeUser" :options="becomeOptions" />
             </div>
         </div>
     </q-page>
@@ -35,14 +35,18 @@
 
     import { useSelf } from 'src/stores/useSelf'
     import { useSettings } from 'src/stores/useSettings'
+    import { usePeople } from 'src/stores/usePeople'
 
     import { Settings } from 'src/scripts/objects'
 
     const selfSt     = useSelf()
     const settingsSt = useSettings()
+    const peopleSt   = usePeople()
+
+    const becomeOptions = peopleSt.users.map(user => user.first_name)
     
     let originalSettings = settingsSt.notificationSettings.copy()
-    let currentSettings = settingsSt.notificationSettings.copy()
+    let currentSettings  = settingsSt.notificationSettings.copy()
 
     export default defineComponent({
         name: 'Settings',
@@ -52,7 +56,10 @@
                 settingsSt,
 
                 originalSettings: ref(originalSettings),
-                currentSettings: ref(currentSettings)
+                currentSettings: ref(currentSettings),
+
+                becomeOptions: ref(becomeOptions),
+                activeUser: ref('')
             }
         }
     })
