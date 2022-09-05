@@ -128,13 +128,6 @@
                     return Object.values(item).reduce((x, y) => x || String(y).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
                 },
 
-                filterFn (val, update, abort) {
-                    update(() => {
-                        const needle = val.toLocaleLowerCase()
-                        options.value = stringOptions.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1)
-                    })
-                },
-
                 create_pdf
             }
         }

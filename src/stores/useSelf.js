@@ -102,6 +102,9 @@ export const useSelf = defineStore('selfStore', {
 
             return [...new Set(this.history.loans)]
         },
+        allLoanRows() {
+            return [...new Set(this.currentLoansRows().concat(this.historyLoansRows()))]
+        },
         unreadNotifications() {
             return this.history.notifications.filter(notification => notification.read != true)
         },
