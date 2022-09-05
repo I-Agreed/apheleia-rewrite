@@ -2,24 +2,21 @@ import { defineStore } from 'pinia'
 import { Role, Item, User, ArchetypePermissions, Settings, UserHistory, Notification } from 'src/scripts/objects.js'
 import { usePeople } from './usePeople'
 import { useSettings } from './useSettings'
+import { useInventory } from './useInventory'
 
 const peopleSt = usePeople()
 const settingsSt = useSettings()
+const inventorySt = useInventory()
 
 export const useSelf = defineStore('selfStore', {
     state: () => {
         return {
             role: peopleSt.roles[0],
             currentLoans: [
-                // new Item("Foil", ["#001", "Perfect"], this.user),
-                { name: 'Item1', lent: '02/02/22', due: '22/02/22' },
-                { name: 'Item2', lent: '02/02/22', due: '22/02/22' }
+                
             ],
             history: new UserHistory([
-                { id: "000000001", name: "Item1", borrow: "18/02/22", due: "22/03/22", return: "28/02/22" },
-                { id: "000000010", name: "Item2", borrow: "17/02/22", due: "22/04/22", return: "30/03/22" },
-                { id: "000000011", name: "Item3", borrow: "19/02/22", due: "27/05/22", return: "03/05/22" },
-                { id: "000000100", name: "Item4", borrow: "13/02/22", due: "22/06/22", return: "30/09/22" },
+
             ], 
             [
                 new Notification(0, "Item 1 is due today!", "Item 1 is due today, you should return it to your teacher."),
@@ -44,9 +41,9 @@ export const useSelf = defineStore('selfStore', {
         },
         currentLoansColumns: () => {
             return [
-                { name: 'name', align: "center", label: "Item",    field: "name", sortable: true },
-                { name: 'lent', align: "center", label: "Lent On", field: "lent", sortable: true },
-                { name: 'due',  align: "center", label: "Due By",  field: "due",  sortable: true }
+                { name: 'name', align: "center", label: "Item",    field: "name",   sortable: true },
+                { name: 'lent', align: "center", label: "Lent On", field: "borrow", sortable: true },
+                { name: 'due',  align: "center", label: "Due By",  field: "due",    sortable: true }
             ]
         },
         historyLoansColumns: () => {
@@ -60,10 +57,23 @@ export const useSelf = defineStore('selfStore', {
     },
     actions: {
         currentLoansRows() {
+            this.currentLoans = []
+            inventorySt.history.loans.forEach(loan => {
+                if(loan.borrower === sessionStorage["givenName"] + " " + sessionStorage["surname"] && loan.return === "") {
+                    this.currentLoans.push(loan)
+                }
+            })
+
             console.log(this.currentLoans)
             return this.currentLoans
         },
         historyLoansRows() {
+            this.history.loans = []
+            inventorySt.history.loans.forEach(loan => {
+                if(loan.borrower === sessionStorage["givenName"] + " " + sessionStorage["surname"] && loan.return != "") {
+                    this.history.loans.push(loan)
+                }
+            })
             return this.history.loans
         },
         unreadNotifications() {
@@ -75,14 +85,6 @@ export const useSelf = defineStore('selfStore', {
                     notification.read = true
                 }
             })
-        },
-
-        // For presentation
-        becomeStudent() {
-            this.role = peopleSt.roles[1]
-        },
-        becomeTeacher() {
-            this.role = peopleSt.roles[0]
         }
     }
 })

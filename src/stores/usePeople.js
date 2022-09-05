@@ -31,7 +31,8 @@ const users = [
     new User(444444444, "Johnathan", "Min", roles[1]),
     new User(444444444, "Brendan", "Alcorn", roles[1]),
     new User(444444444, "Kai", "Cao", roles[1]),
-    new User(444444444, "Klim", "Tsoutsman", roles[1])
+    new User(444444444, "Klim", "Tsoutsman", roles[1]),
+    new User(444444444, "John", "Smith", roles[1])
 ]
 
 export const usePeople = defineStore('peopleStore', {
