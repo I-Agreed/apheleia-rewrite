@@ -44,6 +44,7 @@ export const usePeople = defineStore('peopleStore', {
     },
     actions: {
         setRoles(roles) {
+            this.roles.length = 0
             roles.forEach(role => {
                 this.roles.push(role.copy())
             })
@@ -57,6 +58,56 @@ export const usePeople = defineStore('peopleStore', {
                        a.last_name  > b.last_name  ||
                        a.first_name > b.first_name
             })
+        },
+        updateRoles() {
+            // Update user.role for each user
+            this.users.forEach(user => {
+                this.roles.forEach(role => {
+                    if (role.name == user.role.name) {
+                        user.role = role
+                    }
+                })
+            })
+        },
+        updateUser(firstName, lastName, roleName) {
+            // Find the role in the store with a matching role name
+            selectedRole = new Role("INVALID_ROLE")
+            this.roles.forEach(role => {
+                if (role.name == roleName) {
+                    selectedRole = role.copy()
+                }
+            })
+
+            if (selectedRole.name != "INVALID_ROLE") {
+                selectedUser = new User(-1, "INVALID_USER")
+                userIndex = -1
+
+                // Find index of matching user in the store by name
+                for (let i = 0; i < this.users.length; ++i) {
+                    if (user.first_name == firstName && user.last_name == lastName) {
+                        selectedUser = user.copy()
+                        userIndex = i
+                        break
+                    }
+                }
+
+                if (selectedUser.firstName != "INVALID_USER" && selectedUser.id != -1 && userIndex != -1) {
+                    this.users.splice(userIndex, 1) // Remove the user from the store
+
+                    // Give the user the new role and add them to the store
+                    selectedUser.role = selectedRole
+                    this.users.push(selectedUser)
+
+                    updateRoles()
+                    sortUsers()
+                }
+                else {
+                    console.log("Error! usePeople.js usePeople actions updateUser(firstName, lastName, roleName) could not find the user by name")
+                }
+            }
+            else {
+                console.log("Error! usePeople.js usePeople actions updateUser(firstName, lastName, roleName) could not find the role by roleName")
+            }
         }
     }
 })

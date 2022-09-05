@@ -17,18 +17,19 @@
                         <h3>Manage Roles</h3>
                         <span>
                             <!-- TODO: Help button -->
+                            <HelpButton />
                             <CloseButton />
                         </span>
                     </div>
 
                     <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
-                        <q-tab-panel v-for="role in currentRoles" :name="role.name" style="margin-left: 2vw;">
+                        <q-tab-panel v-for="role in currentRoles" :name="role.name" style="margin-left: 2vw; width: 94%;">
                             <div>
                                 <h3>{{ role.name }}</h3>
 
                                 <q-list>
                                     <q-item class="archetype-rows">
-                                        <span></span>
+                                        <span class="archetype-permission"></span>
                                         <span class="roles-popup-titles">Can Loan</span>
                                         <span class="roles-popup-titles">Can Return</span>
                                         <span class="roles-popup-titles">Can Modify</span>
@@ -37,10 +38,10 @@
                                     <!-- Rows -->
                                     <!-- Iterates through role.archetype instead of inventorySt.schemes because all schemes and their permissions are added to the role in the People Store -->
                                     <q-item v-for="scheme in role.archetypePermissions" class="archetype-rows">
-                                        <span class="roles-popup-text">{{ scheme.arch }}</span>
-                                        <span><q-checkbox v-model="scheme.loan"/></span>
-                                        <span><q-checkbox v-model="scheme.handBack"/></span>
-                                        <span><q-checkbox v-model="scheme.edit"/></span>
+                                        <span class="roles-popup-text archetype-permission">{{ scheme.arch }}</span>
+                                        <span class="archetype-permission"><q-checkbox v-model="scheme.loan"/></span>
+                                        <span class="archetype-permission"><q-checkbox v-model="scheme.handBack"/></span>
+                                        <span class="archetype-permission"><q-checkbox v-model="scheme.edit"/></span>
                                     </q-item>
                                 </q-list>
 
@@ -78,20 +79,21 @@
                                     </div>
                                 </div> -->
                             </div>
-                            <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
-                                <span></span>
-                                <div class="wide-flexbox" style="width: 5%;">
-                                    <q-btn color="red" label="Revert" class="manage-users-button"
-                                        @click="currentRoles = [];
-                                                originalRoles.forEach(role => {currentRoles.push(role.copy())})"
-                                    />
-                                    <q-btn color="primary" label="Save and Exit" class="manage-users-button" v-close-popup
-                                        @click="peopleSt.setRoles(currentRoles); currentRoles.forEach(role => {originalRoles.push(role.copy())})"
-                                    />
-                                </div>
-                            </div>
                         </q-tab-panel>
                     </q-tab-panels>
+                    <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 95%;">
+                        <span></span>
+                        <div class="wide-flexbox" style="width: 20%;">
+                            <q-btn color="red" label="Revert" class="manage-users-button"
+                                @click="currentRoles = [];
+                                        originalRoles.forEach(role => {currentRoles.push(role.copy())})"/>
+                            <q-btn color="primary" label="Save and Exit" class="manage-users-button" v-close-popup
+                                @click="peopleSt.setRoles(currentRoles);
+                                        currentRoles.forEach(role => {originalRoles.push(role.copy())})
+                                        peopleSt.updateRoles()"
+                            />
+                        </div>
+                    </div>
                 </template>
             </q-splitter>
         </q-card>
@@ -139,11 +141,6 @@
 </script>
 
 <style scoped>
-    .roles-popup-titles {
-        font-size: 18pt;
-        width: 100%;
-    }
-
     .checkbox-container {
         display: flex;
         flex-flow: column nowrap;
@@ -160,6 +157,10 @@
         display: flex; flex-flow: row nowrap; align-content: center; justify-content: space-between; width: 100%;
         padding: 0;
         margin: 0;
+    }
+
+    .wide-flexbox > * {
+        margin: 20px;
     }
 
     .column * {
@@ -184,12 +185,17 @@
         align-content: center;
     }
 
-    .archetype-row > * {
+    .roles-popup-titles {
+        font-size: 18pt;
         width: 25%;
     }
-    
+
+    .archetype-permission {
+        width: 25%;
+    }
+
     .manage-users-button {
-        height: 70%; width: 46%; margin-top: 1vh;
+        height: 70%; width: 100%; margin-top: 1vh;
     }
 
     h3 {

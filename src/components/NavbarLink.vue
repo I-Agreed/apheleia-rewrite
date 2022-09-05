@@ -1,7 +1,7 @@
 <!-- Contains the component for the link buttons in MainLayout -->
 <template>
   <!-- Link Button -->
-  <q-item v-if="selfSt.hasAnyPerm() || (title != 'Items' && title != 'People')" clickable tag="a" :to="link" v-ripple style="height: 70px">
+  <q-item v-if="selfSt.hasAnyPerm() || (title != 'Items')" clickable tag="a" :to="link" v-ripple style="height: 70px">
     <!-- Icon for link -->
     <q-item-section v-if="icon" avatar >
       <q-icon :name="icon" size="md" color="white"/>

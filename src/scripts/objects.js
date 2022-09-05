@@ -172,6 +172,10 @@ export class User {
 
     fromRawApi(data) {
     }
+
+    copy() {
+        return new User(this.id, this.first_name, this.last_name, this.role, this.history)
+    }
 }
 
 // Notifications may include announcements and loan date changes.

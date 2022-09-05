@@ -44,7 +44,10 @@
                         <span class="list-id">{{ user.id }}</span><q-separator vertical class="separator"/>
                         <span>{{ user.last_name }}</span>         <q-separator vertical class="separator"/>
                         <span>{{ user.first_name }}</span>        <q-separator vertical class="separator"/>
-                        <q-select v-model="a" :options="roles" 
+                        <!-- @input-value Pass in the user's first and last name and their updated role (by name) to the People store to get updated -->
+                        <q-select v-model="nameToRoles[user.first_name + user.last_name]" :options="roles"
+                                 @click="peopleSt.updateUser(user.first_name, user.last_name, nameToRoles[user.first_name + user.last_name]);
+                                         peopleSt.updateRoles()"
                                   v-if="selfSt.user.role.managePeople == true"/>
                         <span     v-else>{{ user.role.name }}</span>
                     </q-item>
@@ -98,10 +101,12 @@
     // const rows = []
 
     let users = []
-    peopleSt.users.forEach(user => {users.push(user)})
-
     let roles = []
+    let nameToRoles = {} // Stores the user's name (e.g JohnSmith) as a key to their role's name (e.g Teacher)
+    
+    peopleSt.users.forEach(user => {users.push(user)})
     peopleSt.roles.forEach(role => {roles.push(role.name)})
+    peopleSt.users.forEach(user => {nameToRoles[user.first_name + user.last_name] = user.role.name})
 
     export default defineComponent({
         name: 'People',
@@ -121,7 +126,8 @@
 
                 search: ref(""),
                 users: ref(users),
-                roles: ref(roles)
+                roles: ref(roles),
+                nameToRoles: ref (nameToRoles)
 
                 // searchFilter(item, param) {
                 //     // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
