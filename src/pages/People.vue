@@ -14,11 +14,15 @@
 
                 <!-- Right: Buttons -->
                 <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
-                    <div v-if="selfSt.user.role.managePeople == true" class="col-2" style="width: 45%; margin-right: auto;">
-                        <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
+                    <div class="col-2" style="width: 45%; margin-right: auto;"
+                         v-if="selfSt.user.role.managePeople == true">
+                        <q-btn color="primary" label="Manage Roles" class="people-manage-buttons"
+                              @click="manage = true"/>
                     </div>
-                    <div v-if="selfSt.user.role.managePeople == true" class="col-2" style="width: 45%;">
-                        <q-btn color="primary" label="Invite Users" style="height: 70%; width: 100%;" @click="invite = true"/>
+                    <div class="col-2" style="width: 45%;"
+                         v-if="selfSt.user.role.managePeople == true">
+                        <q-btn color="primary" label="Invite Users" class="people-manage-buttons"
+                              @click="invite = true"/>
                     </div>
                 </span>
             </div>
@@ -29,19 +33,20 @@
                 <q-list class="list-container">
                     <q-item class="people-list-item">
                         <span class="list-id list-title">ID</span><q-separator vertical class="separator"/>
-                        <span>Last Name</span><q-separator vertical class="separator"/>
-                        <span>First Name</span><q-separator v-if="selfSt.user.role.managePeople == true" vertical class="separator"/>
-                        <span v-if="selfSt.user.role.managePeople == true" ></span>
+                        <span>Last Name</span>                    <q-separator vertical class="separator"/>
+                        <span>First Name</span>                   <q-separator vertical class="separator"/>
+                        <span>Role</span>
                     </q-item>
                     <q-separator />
-                    <q-item class="people-list-item" v-for="person in peopleSt.users">
-                        <span class="list-id">{{ person.id }}</span>
-                        <q-separator vertical class="separator"/>
-                        <span>{{ person.last_name }}</span>
-                        <q-separator vertical class="separator"/>
-                        <span>{{ person.first_name }}</span>
-                        <q-separator v-if="selfSt.user.role.managePeople == true" vertical class="separator"/>
-                        <q-select v-if="selfSt.user.role.managePeople == true" v-model="a" :options="a" />
+                    
+                    <q-item class="people-list-item"
+                            v-for="user in users">
+                        <span class="list-id">{{ user.id }}</span><q-separator vertical class="separator"/>
+                        <span>{{ user.last_name }}</span>         <q-separator vertical class="separator"/>
+                        <span>{{ user.first_name }}</span>        <q-separator vertical class="separator"/>
+                        <q-select v-model="a" :options="roles" 
+                                  v-if="selfSt.user.role.managePeople == true"/>
+                        <span     v-else>{{ user.role.name }}</span>
                     </q-item>
                 </q-list>
                 <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
@@ -83,17 +88,17 @@
 
     peopleSt.sortUsers()
 
-    const columns = [
-        { name: 'id',         headerStyle: 'width: 12%', align: "center", label: "School ID",  field: "id",         sortable: true },
-        { name: 'first_name', headerStyle: 'width: 30%', align: "center", label: "First Name", field: "first_name", sortable: true },
-        { name: 'last_name',  headerStyle: 'width: 30%', align: "center", label: "Last Name",  field: "last_name",  sortable: true },
-        { name: 'role',       headerStyle: 'width: 20%', align: "center", label: "Role",       field: "roles",      sortable: true }
-    ]
+    // const columns = [
+    //     { name: 'id',         headerStyle: 'width: 12%', align: "center", label: "School ID",  field: "id",         sortable: true },
+    //     { name: 'first_name', headerStyle: 'width: 30%', align: "center", label: "First Name", field: "first_name", sortable: true },
+    //     { name: 'last_name',  headerStyle: 'width: 30%', align: "center", label: "Last Name",  field: "last_name",  sortable: true },
+    //     { name: 'role',       headerStyle: 'width: 20%', align: "center", label: "Role",       field: "roles",      sortable: true }
+    // ]
 
-    const rows = [
-    ]
+    // const rows = []
 
-    
+    let users = []
+    peopleSt.users.forEach(user => {users.push(user)})
 
     let roles = []
     peopleSt.roles.forEach(role => {roles.push(role.name)})
@@ -110,9 +115,12 @@
                 manage: ref(false),
                 tab: ref('role1'),
                 splitterModel: ref(10),
-                columns,
-                rows,
+                // columns,
+                // rows,
+
+
                 search: ref(""),
+                users: ref(users),
                 roles: ref(roles)
 
                 // searchFilter(item, param) {
@@ -125,42 +133,45 @@
 </script>
 
 <style scoped>
-#people-container {
-    width: 80%;
-    height: 80%;
-}
+    #people-container {
+        width: 80%;
+        height: 80%;
+    }
 
-.wide-flexbox {
-    display: flex;
-    flex-flow: row nowrap;
-    width: 100%;
-    justify-content: space-between;
-    align-content: baseline;
-}
+    .wide-flexbox {
+        display: flex;
+        flex-flow: row nowrap;
+        width: 100%;
+        justify-content: space-between;
+        align-content: baseline;
+    }
 
-.list-container {
-    margin: auto 7vw;
-    margin-top: 20px;
-}
+    .list-container {
+        margin: auto 7vw;
+        margin-top: 20px;
+    }
 
-.people-list-item {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-}
+    .people-list-item {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.people-list-item > * {
-    width: 20%;
-}
+    .people-list-item > * {
+        width: 20%;
+    }
 
-.separator {
-    width: 1px;
-}
+    .separator {
+        width: 1px;
+    }
 
-.list-id {
-    width: 10%;
-    text-align: right;
-}
+    .list-id {
+        width: 10%;
+        text-align: right;
+    }
 
+    .people-manage-buttons {
+        height: 70%; width: 100%;
+    }
 </style>

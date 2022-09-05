@@ -50,7 +50,12 @@ export const usePeople = defineStore('peopleStore', {
         },
         sortUsers() {
             this.users.sort((a, b) => {
-                return a.last_name > b.last_name
+                // First sort by (a.role.name > b.role.name ), true = swap
+                // If false, then sort by (a.last_name > b.last_name), true = swap
+                // If also false, then sort by (a.first_name > b.first_name)
+                return a.role.name  > b.role.name  ||
+                       a.last_name  > b.last_name  ||
+                       a.first_name > b.first_name
             })
         }
     }

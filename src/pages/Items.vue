@@ -13,11 +13,12 @@
 
                     <!-- Buttons -->
                     <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab).edit">
-                        <q-btn color="primary" label="Print Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="create_pdf(inventorySt.schemes)"/>
+                        <q-btn color="primary" label="Print Items" class="item-function-buttons"
+                              @click="create_pdf(inventorySt.schemes)"/>
                     </div>
                     <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab).edit">
-                    <!-- <div class="col-2" v-if="selfSt.user.role.permissions.canLend"> -->
-                        <q-btn color="primary" label="Manage Items" style="height: 70%; width: 80%; margin-left: 20%;" @click="manage = true"/>
+                        <q-btn color="primary" label="Manage Items" class="item-function-buttons"
+                              @click="manage = true"/>
                     </div>
                 </div>
             </div>
@@ -27,18 +28,30 @@
                 <q-card style="height: 100%;">
                     <!-- Tabs -->
                     <q-tabs v-model="tab" active-color="primary" indicator-color="primary" align="justify">
-                        <q-tab v-for="scheme in inventorySt.schemes" :name="scheme.name" :label="scheme.name" @click="inventorySt.tabbedSchemeName = scheme.name" />
+                        <q-tab :name="scheme.name"
+                               :label="scheme.name"
+                               @click="inventorySt.tabbedSchemeName = scheme.name"
+                                v-for="scheme in inventorySt.schemes"/>
                     </q-tabs>
                     <q-separator />
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
                         <!-- Panels containing tables -->
-                        <q-tab-panel v-for="scheme in inventorySt.schemes" :name="scheme.name">
-                            <q-table :rows="inventorySt.rows(scheme.name).filter((x) => searchFilter(x, search))" :columns="inventorySt.columns(scheme.name)" row-key="name" :hide-pagination="true" :rows-per-page-options="[0]" style="height: 100%;" separator="cell">
+                        <q-tab-panel :name="scheme.name"
+                                      v-for="scheme in inventorySt.schemes" >
+                            <q-table row-key="name" style="height: 100%;" separator="cell"
+                                    :rows="inventorySt.rows(scheme.name).filter((x) => searchFilter(x, search))"
+                                    :columns="inventorySt.columns(scheme.name)"
+                                    :hide-pagination="true"
+                                    :rows-per-page-options="[0]">
                                 <!-- Lend Item button -->
                                 <template v-slot:body-cell-lend="props">
                                     <q-td :props="props">
-                                        <q-btn v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).loan" color="primary" label="Lend Item" @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"/>
-                                        <q-btn v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).handBack" color="black" label="Edit Lend" @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"/>
+                                        <q-btn color="primary" label="Lend Item"
+                                              @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"
+                                               v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).loan" />
+                                        <q-btn color="black" label="Edit Lend"
+                                              @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"
+                                               v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).handBack"/>
                                     </q-td>
                                 </template>
                             </q-table>
@@ -157,5 +170,9 @@
 
     .wide-flexbox {
         display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 100%;
+    }
+
+    .item-function-buttons {
+        height: 70%; width: 80%; margin-left: 20%;
     }
 </style>
