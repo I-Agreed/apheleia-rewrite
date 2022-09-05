@@ -24,8 +24,7 @@ export const useSelf = defineStore('selfStore', {
                 new Notification(1, "Due date change: Item 2", "The due date for Item 2 has been changed to an earlier date."),
                 new Notification(2, "Did you know?", "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)")
             ]),
-            selectedNotification: {},
-            test: true
+            selectedNotification: {}
         }
     },
     getters: { // these use variable naming because they arent accessed as functions
@@ -115,7 +114,7 @@ export const useSelf = defineStore('selfStore', {
         },
         hasAnyPerm() {
             let out = false;
-            this.role.archetypePermissions.forEach(perms => {
+            this.user.role.archetypePermissions.forEach(perms => {
                 if (perms.loan || perms.handBack || perms.Edit) {
                     out = true
                 }

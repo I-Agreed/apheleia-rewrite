@@ -13,8 +13,8 @@
 
                 <!-- Panels -->
                 <template v-slot:after>
-                    <div class="wide-flexbox" style="padding-left: 2%;">
-                        <h3>Manage Users and Roles</h3>
+                    <div class="wide-flexbox" style="padding: 2%;">
+                        <h3>Manage Roles</h3>
                         <span>
                             <!-- TODO: Help button -->
                             <CloseButton />
@@ -22,27 +22,27 @@
                     </div>
 
                     <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
-                        <q-tab-panel v-for="role in currentRoles.roles" :name="role.name" style="margin-left: 2vw;">
+                        <q-tab-panel v-for="role in currentRoles" :name="role.name" style="margin-left: 2vw;">
                             <div>
                                 <h3>{{ role.name }}</h3>
 
-                                <q-card>
-                                    <q-card class="archetype-rows">
+                                <q-list>
+                                    <q-item class="archetype-rows">
                                         <span></span>
                                         <span class="roles-popup-titles">Can Loan</span>
                                         <span class="roles-popup-titles">Can Return</span>
                                         <span class="roles-popup-titles">Can Modify</span>
-                                    </q-card>
+                                    </q-item>
                                     <q-separator />
                                     <!-- Rows -->
                                     <!-- Iterates through role.archetype instead of inventorySt.schemes because all schemes and their permissions are added to the role in the People Store -->
-                                    <q-card v-for="scheme in role.archetypePermissions" class="archetype-rows">
-                                        <span class="roles-popup-text">{{ scheme.name }}</span>
-                                        <q-checkbox v-model="scheme.loan"/>
-                                        <q-checkbox v-model="scheme.handBack"/>
-                                        <q-checkbox v-model="scheme.edit"/>
-                                    </q-card>
-                                </q-card>
+                                    <q-item v-for="scheme in role.archetypePermissions" class="archetype-rows">
+                                        <span class="roles-popup-text">{{ scheme.arch }}</span>
+                                        <span><q-checkbox v-model="scheme.loan"/></span>
+                                        <span><q-checkbox v-model="scheme.handBack"/></span>
+                                        <span><q-checkbox v-model="scheme.edit"/></span>
+                                    </q-item>
+                                </q-list>
 
                                 <!-- 3 Columns -->
                                 <!-- <div class="column" style="height: 70vh; display: flex; flex-flow: row nowrap; justify-content: space-between; width: 100%;">
@@ -86,7 +86,7 @@
                                                 originalRoles.forEach(role => {currentRoles.push(role.copy())})"
                                     />
                                     <q-btn color="primary" label="Save and Exit" class="manage-users-button" v-close-popup
-                                        @click="peopleSt.setRoles(currentRoles)"
+                                        @click="peopleSt.setRoles(currentRoles); currentRoles.forEach(role => {originalRoles.push(role.copy())})"
                                     />
                                 </div>
                             </div>
@@ -117,6 +117,8 @@
         currentRoles.push(role.copy())
     })
 
+    let tab = currentRoles[0].name
+
     export default defineComponent({
         name: 'Manage Users',
         components: { CloseButton },
@@ -125,10 +127,10 @@
                 peopleSt,
                 inventorySt,
 
-                originalRoles,
-                currentRoles,
+                originalRoles: ref(originalRoles),
+                currentRoles: ref(currentRoles),
 
-                tab: ref(''),
+                tab: ref(tab),
                 splitterModel: ref(10)
             }
         }
@@ -152,11 +154,12 @@
 
     .roles-popup-text {
         font-size: 14pt;
-        width: 100%;
     }
 
     .wide-flexbox {
         display: flex; flex-flow: row nowrap; align-content: center; justify-content: space-between; width: 100%;
+        padding: 0;
+        margin: 0;
     }
 
     .column * {
@@ -181,9 +184,16 @@
         align-content: center;
     }
 
+    .archetype-row > * {
+        width: 25%;
+    }
     
     .manage-users-button {
         height: 70%; width: 46%; margin-top: 1vh;
+    }
+
+    h3 {
+        margin: 0;
     }
 
 </style>

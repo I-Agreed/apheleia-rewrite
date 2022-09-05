@@ -68,6 +68,10 @@ export class ArchetypePermissions {
         this.handBack = handBack
         this.edit = edit
     }
+
+    copy() {
+        return new ArchetypePermissions(this.arch, this.loan, this.handBack, this.edit)
+    }
 }
 
 export class Role {
@@ -91,7 +95,9 @@ export class Role {
     }
 
     copy() {
-        return new Role(this.name, this.archetypePermissions, this.managePeople)
+        let archPermissionsList = []
+        this.archetypePermissions.forEach(perm => archPermissionsList.push(perm.copy()))
+        return new Role(this.name, archPermissionsList, this.managePeople)
     }
 
     fromRawApi(data) {}
