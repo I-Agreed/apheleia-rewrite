@@ -1,4 +1,4 @@
-const uri = "http://172.0.0.1:8000"
+const uri = "http://localhost:8000"
 
 // all functions here should return false upon failure
 // 'get' functions return data upon success and others should return true
@@ -14,8 +14,8 @@ export async function get_items() {
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
-    return response.json();
     console.log(response);
+    return response.json();
 }
 
 // Add new item
@@ -117,7 +117,7 @@ export async function get_subjects() {
 }
 
 // Create subject area
-export async function add_archetype(name, subject_area, schema) {
+export async function add_subject(name, subject_area, schema) {
     let item = {
         name: name,
         subject_area: subject_area,
