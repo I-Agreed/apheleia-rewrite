@@ -27,6 +27,7 @@
                         <q-tab-panel name="dashboard">
                             <div class="text-h4 q-mb-md">Dashboard</div>
                             <p>The dashboard is a general overview of the information on other pages. Most users won't have to interact with anything else. It displays a brief summary of current loans, past loans and your unread notifications. Click on notifications to expand them.</p>
+                            <img src="../../img/dash.png" alt="" style="width: 100%; display: block;" />
                         </q-tab-panel>
                         <q-tab-panel name="items" v-if="selfSt.hasAnyPerm()">
                             <div class="text-h4 q-mb-md">Items</div>
@@ -67,13 +68,14 @@
                             </div>
                         </q-tab-panel>
                         <q-tab-panel name="loans">
-                                <div class="text-h4 q-mb-md">Loans</div>
-                                <p>On this page you will find all the past loans you have access to. For most users this will be limited to their own, but others may be presented with a history of every loan associated with the inventory in the past.</p>
+                            <div class="text-h4 q-mb-md">Loans</div>
+                            <p>On this page you will find all the past loans you have access to. For most users this will be limited to their own, but others may be presented with a history of every loan associated with the inventory in the past.</p>
+                            <img src="../../img/loans.png" alt="" style="width: 100%; display: block;" />
                         </q-tab-panel>
                         <q-tab-panel name="notifications">
-                                <div class="text-h4 q-mb-md">Notifications</div>
-                                <p>Click on notifications to expand them. Notifications will be sent depending on the settings chosen in the settings page. The notifications will remind you of upcoming due dates, over due loans or due date alterations by your equipment manager.</p>
-                                <img src="../../img/notification.png" alt="" style="width: 100%; display: block;" >
+                            <div class="text-h4 q-mb-md">Notifications</div>
+                            <p>Click on notifications to expand them. Notifications will be sent depending on the settings chosen in the settings page. The notifications will remind you of upcoming due dates, over due loans or due date alterations by your equipment manager.</p>
+                            <img src="../../img/notification.png" alt="" style="width: 100%; display: block;" >
                         </q-tab-panel>
                     </q-tab-panels>
                 </template>
