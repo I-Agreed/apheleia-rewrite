@@ -44,7 +44,7 @@
                     
                     <!-- Note: Used 'person in peopleSt.users' over 'user in peopleSt.users' to differentiate between 'user' and 'selfSt.user' -->
                     <q-item class="people-list-item"
-                            v-for="person in peopleSt.users">
+                            v-for="person in peopleSt.users.filter((x) => searchFilter(x, search))">
                         <span class="list-id">{{ person.id }}</span><q-separator vertical class="separator"/>
                         <span>{{ person.last_name }}</span>         <q-separator vertical class="separator"/>
                         <span>{{ person.first_name }}</span>        <q-separator vertical class="separator"/>
@@ -107,13 +107,12 @@
                 removeUserFirstName: ref(''),
                 removeUserLastName: ref(''),
 
+                search: ref(""),
 
-                search: ref("")
-
-                // searchFilter(item, param) {
-                //     // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
-                //     return Object.values(item).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
-                // },
+                searchFilter(item, param) {
+                    // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
+                    return Object.values(item).filter((x) => x !== undefined).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                },
             }
         }
     })
