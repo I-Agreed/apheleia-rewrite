@@ -21,9 +21,10 @@ export async function get_items() {
 
 // Add new item 
 export async function add_item(newItem) {
+    let response = false;
     let item = {
         note: "",
-        archetype: newItem.archetype.dbId,
+        archetype: newItem.dbId,
         archetype_data: newItem.archetypeData
     }
     await fetch(uri + "/items", {
@@ -32,7 +33,7 @@ export async function add_item(newItem) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Content-Type': 'application/json'
         },
-        json: item
+        body: JSON.stringify(item)
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     let data = response.json();
     console.log(response);
@@ -41,6 +42,7 @@ export async function add_item(newItem) {
 }
 
 export async function modify_item(modItem) {
+    let response = false;
     let item = {
         note: "",
         archetype: newItem.archetype.dbId,
@@ -52,7 +54,7 @@ export async function modify_item(modItem) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Content-Type': 'application/json'
         },
-        json: item
+        body: JSON.stringify(item)
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     console.log(response);
     return true;
@@ -134,7 +136,7 @@ export async function modify_archetype(archetype) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Content-Type': 'application/json'
         },
-        json: item
+        body: JSON.stringify(item)
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     let data = response.json();
     archetype.dbId = data.id;
@@ -179,6 +181,7 @@ export async function add_subject(name, admin) {
 
 // Delete subject area
 export async function delete_subject(id) {
+    let response = false;
     await fetch(uri + `/subject_areas/${id}`, {
         method: "DELETE",
         headers: {
@@ -219,7 +222,7 @@ export async function add_user(user) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         },
-        json: item
+        body: JSON.stringify(item)
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     console.log(response);
     return true;
