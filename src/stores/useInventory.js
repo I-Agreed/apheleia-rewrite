@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { Archetype, Item, GlobalHistory } from 'src/scripts/objects'
+import { get_archetypes, add_archetype, add_subject, get_subjects, get_users } from '../scripts/backendApi.js'
 
 // fieldTypes: 0 = text, 1 = number, 2 = selection, 3 = date, 4 = checkbox
 
@@ -371,6 +372,21 @@ export const useInventory = defineStore('inventoryStore', {
         },
         modify_archetype() {
 
+        },
+
+        updateArchetypes() {
+            const data = {
+                fieldTypes: [0, 1, 1],
+                fieldNames: ["Name", "ID", "Tag"],
+                fieldDefault: ["Blade", 0, 0]
+            }
+
+            add_subject("Fencing", "437333289")
+            add_archetype("Foil", "Fencing", JSON.stringify(data))
+            get_subjects().then(data => console.log("sub", data))
+            get_archetypes().then(data => console.log(data))
+            get_users().then(data => console.log("usr", data))
+            console.log("Bearer " + localStorage["accessToken"])
         }
     }
 })

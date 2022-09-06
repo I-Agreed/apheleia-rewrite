@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { User, Role, ArchetypePermissions } from 'src/scripts/objects.js'
+import { User, Role, ArchetypePermissions, Notification } from 'src/scripts/objects.js'
 import { useInventory } from 'src/stores/useInventory'
 
 //TODO: make these into a struct with a constructor that accepts api output
@@ -20,20 +20,26 @@ inventorySt.schemes.forEach(scheme => {
 teacherPermissions[0] = new ArchetypePermissions("Foil", true, true, true)
 
 const roles = [
-    new Role("Teacher", teacherPermissions, true),
-    new Role("Student", studentPermissions)
+    new Role("Management", teacherPermissions, true),
+    new Role("Captain", teacherPermissions),
+    new Role("Group Leader", studentPermissions),
+    new Role("Scouts", studentPermissions),
+    new Role("Default", studentPermissions)
 ]
 
-const users = [
+let users = [
     new User(444444444, "Dat", "Huynh", roles[0]),
     new User(444444444, "Jennifer", "May", roles[0]),
     new User(444444444, "Rebecca", "Dam", roles[0]),
     new User(444444444, "Johnathan", "Min", roles[1]),
     new User(444444444, "Brendan", "Alcorn", roles[1]),
-    new User(444444444, "Kai", "Cao", roles[1]),
+    new User(437333289, "Kevin", "Cao", roles[1]),
     new User(444444444, "Klim", "Tsoutsman", roles[1]),
     new User(444444444, "John", "Smith", roles[1])
 ]
+
+users[3].notify(new Notification(0, "Item 1 is due today!", "Item 1 is due today, you should return it to your teacher.")) // Johnathan
+users[4].notify(new Notification(2, "Did you know?", "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)")) // Brendan
 
 export const usePeople = defineStore('peopleStore', {
     state: () => {
