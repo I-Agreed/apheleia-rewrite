@@ -145,5 +145,6 @@
 
     .item-function-buttons {
         height: 70%; width: 80%; margin-left: 20%;
+        font-size: 12px;
     }
 </style>
