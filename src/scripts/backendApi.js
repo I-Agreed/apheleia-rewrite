@@ -25,11 +25,11 @@ export async function get_items() {
 }
 
 // Add new item 
-export async function add_item(item) {
+export async function add_item(newItem) {
     let item = {
         note: "",
-        archetype: item.archetype.dbId,
-        archetype_data: item.archetypeData
+        archetype: newItem.archetype.dbId,
+        archetype_data: newItem.archetypeData
     }
     await fetch(uri + "/items", {
         method: "POST",
@@ -41,7 +41,25 @@ export async function add_item(item) {
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     let data = response.json();
     console.log(response);
-    item.dbId = data.id;
+    newItem.dbId = data.id;
+    return true;
+}
+
+export async function modify_item(modItem) {
+    let item = {
+        note: "",
+        archetype: newItem.archetype.dbId,
+        archetype_data: newItem.archetypeData
+    }
+    await fetch(uri + "/items", {
+        method: "PUT",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        },
+        json: item
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    console.log(response);
     return true;
 }
 
