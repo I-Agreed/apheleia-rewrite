@@ -44,10 +44,46 @@ export const usePeople = defineStore('peopleStore', {
     },
     actions: {
         setRoles(roles) {
+            this.roles.length = 0
             roles.forEach(role => {
                 this.roles.push(role.copy())
             })
+        },
+        sortUsers() {
+            this.users.sort((a, b) => {
+                // First sort by (a.role.name > b.role.name ), true = swap
+                // If false, then sort by (a.last_name > b.last_name), true = swap
+                // If also false, then sort by (a.first_name > b.first_name)
+                return a.role.name  > b.role.name  ||
+                       a.last_name  > b.last_name  ||
+                       a.first_name > b.first_name
+            })
+        },
+        updateRoles() {
+            // Update user.role for each user
+            this.users.forEach(user => {
+                this.roles.forEach(role => {
+                    if (role.name == user.role.name) {
+                        user.role = role
+                    }
+                })
+            })
+        },
+        removeUser(firstName, lastName) {
+            let userIndex = -1
+            for (let i = 0; i < this.users.length; ++i) {
+                if (this.users[i].first_name == firstName && this.users[i].last_name == lastName) {
+                    userIndex = i
+                    break
+                }
+            }
+
+            if (userIndex != -1) {
+                this.users.splice(userIndex, 1) // Remove the user
+            }
+            else {
+                console.log("Error! usePeople.js usePeople actions removeUser(firstName, lastName) could not find the user by name")
+            }
         }
-        
     }
 })

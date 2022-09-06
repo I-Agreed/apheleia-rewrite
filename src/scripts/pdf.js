@@ -84,7 +84,7 @@ function create_table(page, rows, cols, titles, data, fontSizes, fonts) {
     for (let r = 0; r < data.length; r++) {
         for (let c = 0; c < cols; c++) {
             // find highest length of a item in this column (including padding)
-            minColWidths[c] = Math.max(minColWidths[c], get_text_width(data[r][c]) + (rowHeight - fontSizes[0]))
+            minColWidths[c] = Math.max(minColWidths[c], get_text_width(data[r].values[c].toString()) + (rowHeight - fontSizes[0]))
         }
     }
     let totalMinWidth = minColWidths.reduce((x, y) => x + y, 0); // sum min widths;
@@ -100,7 +100,7 @@ function create_table(page, rows, cols, titles, data, fontSizes, fonts) {
     for (let r = 1; r < actualRows; r++) { // first row is title row, also accounts for data that is shorter than number of rows
         x = tX;
         for (let c = 0; c < cols; c++) {
-            create_cell(page, x, tY + rowHeight * (rows - r - 1), colWidths[c], rowHeight, data[r - 1][c], fontSizes[0], fonts[0]);
+            create_cell(page, x, tY + rowHeight * (rows - r - 1), colWidths[c], rowHeight, data[r - 1].values[c].toString(), fontSizes[0], fonts[0]);
             x += colWidths[c];
         }
     }
@@ -135,6 +135,8 @@ async function create_pdf(schemes) {
 
     // create page for each archetype
     for (let i = 0; i < schemes.length; i++) {
+        console.log("PDF:");
+        console.log(schemes[i])
         create_page(pdfDoc, schemes[i], fontSizes, fonts);
     }
 

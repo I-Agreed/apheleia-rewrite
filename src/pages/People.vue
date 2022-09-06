@@ -7,19 +7,22 @@
             <!-- Header -->
             <div class="col col-1 wide-flexbox row" style="width: 100%;">
                 <!-- Left: Search bar -->
-                <span style="width: 50%;">
-                    <q-input outlined v-model="search" label="Search" style="height: 70%; width: 80%;"/>
-                    <div class="col-8">
-                    </div>
+                <span style="display: flex; justify-content: flex-start; width: 50%;">
+                    <q-input outlined v-model="search" label="Search" style="display: inline; height: 70%; width: 80%;"/>
+                    <span style="margin: auto auto; color: grey;">*Sorted by last name</span>
                 </span>
 
                 <!-- Right: Buttons -->
                 <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
-                    <div v-if="selfSt.role.managePeople == true" class="col-2" style="width: 45%; margin-right: auto;">
-                        <q-btn color="primary" label="Manage Roles" style="height: 70%; width: 100%;" @click="manage = true"/>
+                    <div class="col-2" style="width: 45%; margin-right: auto;"
+                         v-if="selfSt.user.role.managePeople == true">
+                        <q-btn color="primary" label="Manage Roles" class="people-manage-buttons"
+                              @click="managePop = true"/>
                     </div>
-                    <div v-if="selfSt.role.managePeople == true" class="col-2" style="width: 45%;">
-                        <q-btn color="primary" label="Invite Users" style="height: 70%; width: 100%;" @click="invite = true"/>
+                    <div class="col-2" style="width: 45%;"
+                         v-if="selfSt.user.role.managePeople == true">
+                        <q-btn color="primary" label="Invite Users" class="people-manage-buttons"
+                              @click="invitePop = true"/>
                     </div>
                 </span>
             </div>
@@ -30,42 +33,44 @@
                 <q-list class="list-container">
                     <q-item class="people-list-item">
                         <span class="list-id list-title">ID</span><q-separator vertical class="separator"/>
-                        <span>First Name</span><q-separator vertical class="separator"/>
-                        <span>Last Name</span><q-separator v-if="selfSt.role.managePeople == true" vertical class="separator"/>
-                        <span v-if="selfSt.role.managePeople == true" ></span>
+                        <span>Last Name</span>                    <q-separator vertical class="separator"/>
+                        <span>First Name</span>                   <q-separator vertical class="separator"/>
+                        <span>Role</span>
+                        <q-separator vertical class="separator"/>
+
+                        <span v-if="selfSt.user.role.managePeople == true"></span>
                     </q-item>
                     <q-separator />
-                    <q-item class="people-list-item" v-for="person in peopleSt.users">
-                        <span class="list-id">{{ person.id }}</span>
+                    
+                    <!-- Note: Used 'person in peopleSt.users' over 'user in peopleSt.users' to differentiate between 'user' and 'selfSt.user' -->
+                    <q-item class="people-list-item"
+                            v-for="person in peopleSt.users.filter((x) => searchFilter(x, search))">
+                        <span class="list-id">{{ person.id }}</span><q-separator vertical class="separator"/>
+                        <span>{{ person.last_name }}</span>         <q-separator vertical class="separator"/>
+                        <span>{{ person.first_name }}</span>        <q-separator vertical class="separator"/>
+                        <!-- Only show the change role select if the current user can managePeople,
+                             they aren't changing their own role -->
+                        <q-select v-model="person.role" :options="peopleSt.roles" option-label="name"
+                                  v-if="selfSt.user.role.managePeople == true &&
+                                        selfSt.user.first_name != person.first_name"/>
+                        <span v-else>{{ person.role.name }}</span>
                         <q-separator vertical class="separator"/>
-                        <span>{{ person.first_name }}</span>
-                        <q-separator vertical class="separator"/>
-                        <span>{{ person.last_name }}</span>
-                        <q-separator v-if="selfSt.role.managePeople == true" vertical class="separator"/>
-                        <q-select v-if="selfSt.role.managePeople == true" v-model="a" :options="a" />
+
+                        <q-btn color="red" label="Remove user"
+                              @click="removeUserPop = true;
+                                      removeUserFirstName = person.first_name;
+                                      removeUserLastName = person.last_name;"
+                               v-if="selfSt.user.role.managePeople == true && selfSt.user.first_name != person.first_name"/>
+                        <span v-else></span>
                     </q-item>
                 </q-list>
-                <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
-                <!-- <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
-                    <!-- Roles selection box -->
-                    <!-- <template v-slot:body-cell-role="props">
-                        <q-td :props="props">
-                            <div>
-                                <q-select filled v-model="roles" :options="roles"/>
-                            </div>
-                        </q-td> -->
-                        <!-- Delete user -->
-                        <!-- <q-td :props="props">
-                            <q-btn color="red" label="Remove user" @click="peopleSt.removeUser()"/>
-                        </q-td>
-                    </template>
-                </q-table> -->
             </div>
         </div>
 
         <!-- Popups -->
-        <InviteUsers url="https://apheleia-rewrite.pages.dev/1bh3tg" v-model="invite"/>
-        <ManageUsers v-model="manage" />
+        <InviteUsers url="https://apheleia-rewrite.pages.dev/1bh3tg" v-model="invitePop"/>
+        <ManageRoles v-model="managePop" />
+        <ConfirmRemoveUser v-model="removeUserPop" :firstName="removeUserFirstName" :lastName="removeUserLastName" />
     </q-page>
 </template>
   
@@ -77,89 +82,82 @@
 
     import CloseButton from '../components/CloseButton.vue'
     import InviteUsers from './users/InviteUsers.vue'
-    import ManageUsers from './users/ManageUsers.vue'
+    import ManageRoles from './users/ManageRoles.vue'
+    import ConfirmRemoveUser from './users/ConfirmRemoveUser.vue'
 
     const peopleSt = usePeople()
     const selfSt = useSelf()
 
-    const columns = [
-        { name: 'id',         headerStyle: 'width: 12%', align: "center", label: "School ID",  field: "id",         sortable: true },
-        { name: 'first_name', headerStyle: 'width: 30%', align: "center", label: "First Name", field: "first_name", sortable: true },
-        { name: 'last_name',  headerStyle: 'width: 30%', align: "center", label: "Last Name",  field: "last_name",  sortable: true },
-        { name: 'role',       headerStyle: 'width: 20%', align: "center", label: "Role",       field: "roles",      sortable: true }
-    ]
+    peopleSt.sortUsers()
 
-    const rows = [
-    ]
-
-    
-
-    let roles = []
-    peopleSt.roles.forEach(role => {roles.push(role.name)})
+    let removeUserFirstName = ''
 
     export default defineComponent({
         name: 'People',
-        components: { CloseButton, InviteUsers, ManageUsers },
+        components: { CloseButton, InviteUsers, ManageRoles, ConfirmRemoveUser },
         setup () {
             return {
                 selfSt,
                 peopleSt,
 
-                invite: ref(false),
-                manage: ref(false),
-                tab: ref('role1'),
-                splitterModel: ref(10),
-                columns,
-                rows,
-                search: ref(""),
-                roles: ref(roles)
+                invitePop: ref(false),
+                managePop: ref(false),
+                removeUserPop: ref(false),
 
-                // searchFilter(item, param) {
-                //     // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
-                //     return Object.values(item).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
-                // },
+                removeUserFirstName: ref(''),
+                removeUserLastName: ref(''),
+
+                search: ref(""),
+
+                searchFilter(item, param) {
+                    // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
+                    return Object.values(item).filter((x) => x !== undefined).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                },
             }
         }
     })
 </script>
 
 <style scoped>
-#people-container {
-    width: 80%;
-    height: 80%;
-}
+    #people-container {
+        width: 80%;
+        height: 80%;
+    }
 
-.wide-flexbox {
-    display: flex;
-    flex-flow: row nowrap;
-    width: 100%;
-    justify-content: space-between;
-    align-content: baseline;
-}
+    .wide-flexbox {
+        display: flex;
+        flex-flow: row nowrap;
+        width: 100%;
+        justify-content: space-between;
+        align-content: baseline;
+    }
 
-.list-container {
-    margin: auto 7vw;
-    margin-top: 20px;
-}
+    .list-container {
+        margin: auto 7vw;
+        margin-top: 20px;
+    }
 
-.people-list-item {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-}
+    .people-list-item {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.people-list-item > * {
-    width: 20%;
-}
+    .people-list-item > * {
+        width: 20%;
+    }
 
-.separator {
-    width: 1px;
-}
+    .separator {
+        width: 1px;
+    }
 
-.list-id {
-    width: 10%;
-    text-align: right;
-}
+    .list-id {
+        width: 10%;
+        text-align: right;
+    }
 
+    .people-manage-buttons {
+        height: 70%; width: 100%;
+    }
 </style>
