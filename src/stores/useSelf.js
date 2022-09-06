@@ -60,7 +60,7 @@ export const useSelf = defineStore('selfStore', {
         currentLoansRows() {
             this.currentLoans = []
             inventorySt.history.loans.forEach(loan => {
-                if(loan.borrower === sessionStorage["givenName"] + " " + sessionStorage["surname"] && loan.return === "") {
+                if(loan.borrower === this.user.first_name + " " + this.user.last_name && loan.return === "") {
                     this.currentLoans.push(loan)
                 }
             })
@@ -83,7 +83,7 @@ export const useSelf = defineStore('selfStore', {
         historyLoansRows() {
             this.history.loans = []
             inventorySt.history.loans.forEach(loan => {
-                if(loan.borrower === sessionStorage["givenName"] + " " + sessionStorage["surname"] && loan.return != "") {
+                if(loan.borrower === this.user.first_name + " " + this.user.last_name && loan.return != "") {
                     this.history.loans.push(loan)
                 }
             })
@@ -101,6 +101,9 @@ export const useSelf = defineStore('selfStore', {
             }
 
             return [...new Set(this.history.loans)]
+        },
+        allLoanRows() {
+            return [...new Set(this.currentLoansRows().concat(this.historyLoansRows()))]
         },
         unreadNotifications() {
             return this.history.notifications.filter(notification => notification.read != true)

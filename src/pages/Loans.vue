@@ -11,7 +11,7 @@
             
             <!-- table -->
             <div class="col col-11" style="width: 100%;">
-                <q-table :rows="inventorySt.history.loans.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
+                <q-table :rows="selfSt.allLoanRows().filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
             </div>
         </div>
     </q-page>
@@ -42,7 +42,7 @@
                 inventorySt: inventory,
                 search: ref(""),
                 searchFilter (loan, params) {
-                    return loan["name"].toLowerCase().includes(params.toLowerCase());
+                    return Object.values(loan).reduce((x, y) => x || String(y).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(params.toLowerCase()), false);
                 },
 
                 selfSt,
