@@ -2,7 +2,7 @@
     <q-dialog full-width>
         <q-card style="height: 40%; margin: 6% 30%">
             <!-- Popup card body -->
-            <div class="q-pa-md">
+            <div class="q-pa-md" style="padding: 0px 40px;">
                 <div class="wide-flexbox">
                     <h5>{{ notification.title }}</h5>
                     <CloseButton />
@@ -45,5 +45,13 @@
         align-content: baseline;
         justify-content: space-between;
         width: 100%; 
+    }
+
+    h5 {
+        font-size: 36px;
+    }
+
+    p {
+        font-size: 24px;
     }
 </style>
