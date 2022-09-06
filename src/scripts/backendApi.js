@@ -1,7 +1,12 @@
+import { useInventory } from "src/stores/useInventory";
+import { Archetype, Item } from "src/scripts/objects"
+
 const uri = "http://localhost:8000"
 
 // all functions here should return false upon failure
 // 'get' functions return data upon success and others should return true
+
+const inventorySt = useInventory()
 
 // Get list of items
 export async function get_items() {
@@ -13,17 +18,18 @@ export async function get_items() {
             'Accept': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
+    let data = response.json();
     console.log(response);
-    return response.json();
+    let items = data.map((x) => new Item(inventorySt.getArchetypeById(x.archetype, x.archetype_data, x.id)));
+    return items;
 }
 
-// Add new item
-export async function add_item(note, archetype, archetypeData) {
+// Add new item 
+export async function add_item(newItem) {
     let item = {
-        note: note,
-        archetype: archetype,
-        archetype_data: archetypeData
+        note: "",
+        archetype: newItem.archetype.dbId,
+        archetype_data: newItem.archetypeData
     }
     await fetch(uri + "/items", {
         method: "POST",
@@ -33,7 +39,26 @@ export async function add_item(note, archetype, archetypeData) {
         },
         json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
+    let data = response.json();
+    console.log(response);
+    newItem.dbId = data.id;
+    return true;
+}
+
+export async function modify_item(modItem) {
+    let item = {
+        note: "",
+        archetype: newItem.archetype.dbId,
+        archetype_data: newItem.archetypeData
+    }
+    await fetch(uri + "/items/" + modItem.dbId, {
+        method: "PUT",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        },
+        json: item
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
     console.log(response);
     return true;
 }
@@ -62,17 +87,18 @@ export async function get_archetypes() {
             'Accept': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
+    let data = response.json();
     console.log(response);
-    return response.json();
+    let arches = data.map((x) => new Archetype(x.name, x.subject_area, x.schema.fieldTypes, x.schema.fieldNames, x.schema.fieldDefault, dbId = x.id));
+    return arches;
 }
 
 // Create Archetype
-export async function add_archetype(name, subject_area, schema) {
+export async function add_archetype(archetype) {
     let item = {
-        name: name,
-        subject_area: subject_area,
-        schema: schema
+        name: archetype.name,
+        subject_area: archetype.subject,
+        schema: { fieldNames: archetype.fieldNames, fieldTypes: archetype.fieldTypes, fieldDefault: archetype.fieldDefault }
     }
     await fetch(uri + "/archetypes", {
         method: "POST",
@@ -82,7 +108,8 @@ export async function add_archetype(name, subject_area, schema) {
         },
         json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
+    let data = response.json();
+    archetype.dbId = data.id;
     console.log(response);
     return true;
 }
@@ -97,6 +124,27 @@ export async function delete_archetype(id) {
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
+    console.log(response);
+    return true;
+}
+
+// Modify Archetype
+export async function add_archetype(archetype) {
+    let item = {
+        name: archetype.name,
+        subject_area: archetype.subject,
+        schema: { fieldNames: archetype.fieldNames, fieldTypes: archetype.fieldTypes, fieldDefault: archetype.fieldDefault }
+    }
+    await fetch(uri + "/archetypes/" + archetype.dbId, {
+        method: "PUT",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        },
+        json: item
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    let data = response.json();
+    archetype.dbId = data.id;
     console.log(response);
     return true;
 }
