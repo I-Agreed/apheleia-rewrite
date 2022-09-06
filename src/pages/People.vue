@@ -40,7 +40,7 @@
                     <q-separator />
                     
                     <q-item class="people-list-item"
-                            v-for="user in users">
+                            v-for="user in users.filter((x) => searchFilter(x, search))">
                         <span class="list-id">{{ user.id }}</span><q-separator vertical class="separator"/>
                         <span>{{ user.last_name }}</span>         <q-separator vertical class="separator"/>
                         <span>{{ user.first_name }}</span>        <q-separator vertical class="separator"/>
@@ -127,12 +127,12 @@
                 search: ref(""),
                 users: ref(users),
                 roles: ref(roles),
-                nameToRoles: ref (nameToRoles)
+                nameToRoles: ref (nameToRoles),
 
-                // searchFilter(item, param) {
-                //     // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
-                //     return Object.values(item).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
-                // },
+                searchFilter(item, param) {
+                    // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
+                    return Object.values(item).filter((x) => x !== undefined).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                },
             }
         }
     })
