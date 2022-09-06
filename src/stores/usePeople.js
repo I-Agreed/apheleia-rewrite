@@ -58,9 +58,9 @@ export const usePeople = defineStore('peopleStore', {
                 // First sort by (a.role.name > b.role.name ), true = swap
                 // If false, then sort by (a.last_name > b.last_name), true = swap
                 // If also false, then sort by (a.first_name > b.first_name)
-                return a.role.name.localeCompare(b.role.name)  ||
-                       a.last_name.localeCompare(b.last_name)  ||
-                       a.first_name.localeCompare(b.first_name)
+                return a.role.name.localeCompare(b.role.name) ||
+                    a.last_name.localeCompare(b.last_name) ||
+                    a.first_name.localeCompare(b.first_name)
             })
         },
         updateRoles() {
@@ -84,8 +84,7 @@ export const usePeople = defineStore('peopleStore', {
 
             if (userIndex != -1) {
                 this.users.splice(userIndex, 1) // Remove the user
-            }
-            else {
+            } else {
                 console.log("Error! usePeople.js usePeople actions removeUser(firstName, lastName) could not find the user by name")
             }
         },
@@ -95,8 +94,11 @@ export const usePeople = defineStore('peopleStore', {
                 archetypePerms.push(new ArchetypePermissions(inventorySt.schemes[i].name, false, false, false))
                 console.log("HELLO WORLD")
             }
-            
+
             this.roles.push(new Role("New Role"), archetypePerms)
+        },
+        getRoleById(id) {
+            return this.roles.filter((x) => x.id == id)[0];
         }
     }
 })

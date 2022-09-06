@@ -1,5 +1,5 @@
 export class Archetype {
-    constructor(name, subject, fieldTypes, fieldNames, fieldDefault, items = [], dbId = "", perms = { }) {
+    constructor(name, subject, fieldTypes, fieldNames, fieldDefault, items = [], dbId = "", perms = {}) {
         this.name = name
         this.subject = subject // name of subject
         this.fieldTypes = fieldTypes
@@ -47,6 +47,11 @@ export class Item {
     fromRawApi(data) {
         return new Item(data.archetype, data.archetype_data, data.id);
     }
+
+    // adds this item to its archetype's item list
+    addToArchetype(invStore) {
+        invStore.schemes.filter((x) => x.name == this.arch)[0].items.push(this);
+    }
 }
 
 export class ArchetypePermissions {
@@ -67,11 +72,12 @@ export class ArchetypePermissions {
 }
 
 export class Role {
-    constructor(name = "", archetypePermissions = new Array(new ArchetypePermissions()), managePeople = false) {
+    constructor(name = "", archetypePermissions = new Array(new ArchetypePermissions()), managePeople = false, id = undefined) {
         this.name = name
         this.archetypePermissions = archetypePermissions // An list of ArchetypePermissions for each archetype
         this.managePeople = managePeople
         this.identifier = name
+        this.id = id;
     }
 
     // Get the ArchetypePermissions for an archetype by name
@@ -137,8 +143,7 @@ export class UserHistory {
         this.notifications = notifications
     }
 
-    fromRawApi(data) {
-    }
+    fromRawApi(data) {}
 }
 
 export class ItemHistory {
@@ -174,8 +179,7 @@ export class User {
         this.history = history
     }
 
-    fromRawApi(data) {
-    }
+    fromRawApi(data) {}
 
     copy() {
         return new User(this.id, this.first_name, this.last_name, this.role, this.history)

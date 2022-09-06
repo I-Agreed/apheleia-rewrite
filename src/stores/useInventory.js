@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { Archetype, Item, GlobalHistory } from 'src/scripts/objects'
-import { get_archetypes, add_archetype, add_subject, get_subjects, get_users } from '../scripts/backendApi.js'
+import { get_archetypes, add_archetype, add_subject, get_subjects, get_users, get_items } from '../scripts/backendApi.js'
 
 // fieldTypes: 0 = text, 1 = number, 2 = selection, 3 = date, 4 = checkbox
 
@@ -345,6 +345,10 @@ export const useInventory = defineStore('inventoryStore', {
             return this.schemes.filter((x) => x.dbId === archId)[0];
         },
 
+        getSubjectById(subId) {
+            return this.schemes.filter((x) => x.dbId === archId)[0];
+        },
+
         editLendDates(itemId, borrow, due) {
             for (let i = 0; i < this.history.loans.length; i++) {
                 if (this.history.loans[i].itemId === itemId) {
@@ -375,18 +379,8 @@ export const useInventory = defineStore('inventoryStore', {
         },
 
         updateArchetypes() {
-            const data = {
-                name: "Foil",
-                subject: "4a736583-6660-4c0d-a6cf-85f9cc852403",
-                fieldTypes: [0, 1, 1],
-                fieldNames: ["Name", "ID", "Tag"],
-                fieldDefault: ["Blade", 0, 0]
-            }
-
-            //add_subject("Test", 437333289)
-            //add_archetype(data)
-            //get_subjects().then(data => console.log("sub", data))
-            //get_archetypes().then(data => console.log(data))
+            get_archetypes().then(data => console.log(data))
+            get_items().then(data => console.log(data))
         }
     }
 })
