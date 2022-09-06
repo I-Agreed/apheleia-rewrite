@@ -3,7 +3,7 @@
         <q-card>
             <q-card-section class="row items-center">
                 <q-avatar icon="delete" color="red" text-color="white" />
-                <span class="q-ml-sm">Are you sure you want to remove this user? This cannot be undone.</span>
+                <span class="q-ml-sm">Are you sure you want to remove this user? ({{ firstName + " " + lastName }}) This cannot be undone.</span>
             </q-card-section>
 
             <q-card-actions align="right">

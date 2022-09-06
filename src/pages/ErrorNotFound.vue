@@ -9,23 +9,21 @@
         Page Not Found
       </div>
 
-      <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
-        unelevated
-        to="/"
-        label="Go Home"
-        no-caps
-      />
+      <q-btn no-caps
+             unelevated
+             class="q-mt-xl"
+             color="white"
+             text-color="blue"
+             to="/"
+             label="Go Home"/>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+    import { defineComponent } from 'vue'
 
-export default defineComponent({
-  name: 'ErrorNotFound'
-})
+    export default defineComponent({
+        name: 'ErrorNotFound'
+    })
 </script>

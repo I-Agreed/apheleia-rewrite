@@ -30,8 +30,8 @@
                     <!-- List Headings -->
                     <q-item class="people-list-item">
                         <span class="list-id list-title">ID</span><q-separator vertical class="separator"/>
-                        <span>Last Name</span>                    <q-separator vertical class="separator"/>
-                        <span>First Name</span>                   <q-separator vertical class="separator"/>
+                        <!--<span>Last Name</span>                    <q-separator vertical class="separator"/>-->
+                        <!--<span>First Name</span>                   <q-separator vertical class="separator"/>-->
 
                         <span>Role</span>                         <q-separator vertical class="separator"/>
 
@@ -42,15 +42,16 @@
                     <q-separator />
                     
                     <!-- Variable name (person in peopleSt.users) is used over (user in peopleSt.users) to easily differentiate between (user) and (selfSt.user) -->
+                    <!-- List of people -->
                     <q-item class="people-list-item"
                             v-for="person in peopleSt.users.filter((x) => searchFilter(x, search))">
                         <span class="list-id">{{ person.id }}</span><q-separator vertical class="separator"/>
-                        <span>{{ person.last_name }}</span>         <q-separator vertical class="separator"/>
-                        <span>{{ person.first_name }}</span>        <q-separator vertical class="separator"/>
+                        <!--<span>{{ person.last_name }}</span>         <q-separator vertical class="separator"/>-->
+                        <!--<span>{{ person.first_name }}</span>        <q-separator vertical class="separator"/>-->
 
                         <q-select v-model="person.role"
                                   option-label="name"
-                                  :options="peopleSt.roles"
+                                 :options="peopleSt.roles"
                                   v-if="selfSt.user.role.managePeople == true &&
                                         selfSt.user.first_name != person.first_name"/>
                         <span v-else>{{ person.role.name }}</span>  <q-separator vertical class="separator"/>
@@ -109,8 +110,14 @@
                 search: ref(""),
 
                 searchFilter(item, param) {
-                    // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
-                    return Object.values(item).filter((x) => x !== undefined).reduce((x, y) => x | y.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(param.toLowerCase()), false);
+                    // Searches through all properties of the item, lowercasing and removing accents
+                    return Object.values(item)
+                                 .filter((x) => x !== undefined)
+                                 .reduce((x, y) => x | y.toString()
+                                                        .normalize("NFD")
+                                                        .replace(/[\u0300-\u036f]/g, "")
+                                                        .toLowerCase()
+                                                        .includes(param.toLowerCase()), false);
                 },
             }
         }
@@ -157,7 +164,8 @@
     }
 
     .people-manage-buttons {
-        height: 70%; width: 100%;
+        height: 80%; width: 100%;
+        font-size: 12px;
     }
 
     .remove-column {

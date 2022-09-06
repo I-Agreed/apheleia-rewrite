@@ -12,11 +12,11 @@
                     </div>
 
                     <!-- Buttons -->
-                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab).edit">
+                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab, inventorySt).edit">
                         <q-btn color="primary" label="Print Items" class="item-function-buttons"
                               @click="create_pdf(inventorySt.schemes)"/>
                     </div>
-                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab).edit">
+                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab, inventorySt).edit">
                         <q-btn color="primary" label="Manage Items" class="item-function-buttons"
                               @click="manage = true"/>
                     </div>
@@ -48,10 +48,10 @@
                                     <q-td :props="props">
                                         <q-btn color="primary" label="Lend Item"
                                               @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"
-                                               v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).loan" />
+                                               v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab, inventorySt).loan" />
                                         <q-btn color="black" label="Edit Loan"
                                               @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"
-                                               v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).handBack"/>
+                                               v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab, inventorySt).handBack"/>
                                     </q-td>
                                 </template>
                             </q-table>
@@ -88,7 +88,7 @@
     const selfSt = useSelf()
     
     const archetypeColumns = [
-        { name: 'property', align: "center", label: "Property", field: "property", sortable: true },
+        { name: 'property',     align: "center", label: "Property Name", field: "property",     sortable: true },
         { name: 'propertyType', align: "center", label: "Property Type", field: "propertyType", sortable: true },
         { name: 'defaultValue', align: "center", label: "Default Value", field: "defaultValue", sortable: true },
         { name: 'delete', field: "delete", headerStyle: 'width: 3%'}
@@ -104,7 +104,6 @@
                 selfSt,
 
                 tab: ref(inventorySt.schemes[0].name),
-                tab2: ref("archetype1"),
 
                 lend: ref(false),
                 editLend: ref(false),
@@ -116,7 +115,7 @@
                 archColumns: archetypeColumns,
 
                 searchFilter(item, param) {
-                    // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
+                    // Converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
                     return Object.values(item)
                                  .reduce((x, y) => x || String(y).normalize("NFD")
                                                                  .replace(/[\u0300-\u036f]/g, "")
@@ -146,5 +145,6 @@
 
     .item-function-buttons {
         height: 70%; width: 80%; margin-left: 20%;
+        font-size: 12px;
     }
 </style>

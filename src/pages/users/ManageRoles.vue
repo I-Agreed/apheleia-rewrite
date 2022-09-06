@@ -4,10 +4,11 @@
             <!-- Splitter which splits horizontally between the tabs and the panels -->
             <q-splitter v-model="splitterModel" style="height: 100%">
 
-                <!-- Tabs -->
+                <!-- Left side: Tabs -->
                 <template v-slot:before>
                     <q-tabs v-model="tab" vertical class="text-primary">
                         <q-tab v-for="role in originalRoles" :name="role.identifier" :label="role.name" />
+                        <!-- Not working ATM -->
                         <!-- <q-btn label="New Role" class="absolute-bottom" style="width: 100%;"
                               @click="peopleSt.newRole();
                                       currentRoles = []
@@ -20,8 +21,9 @@
                     </q-tabs>
                 </template>
 
-                <!-- Panels -->
+                <!-- Right side: Panels -->
                 <template v-slot:after>
+                    <!-- Heading -->
                     <div class="wide-flexbox" style="padding: 2%;">
                         <h3>Manage Roles</h3>
                         <span>
@@ -30,12 +32,16 @@
                         </span>
                     </div>
 
+                    <!-- Panel data -->
                     <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
                         <q-tab-panel v-for="role in currentRoles" :name="role.identifier" style="margin-left: 2vw; width: 94%;">
                             <div>
                                 <q-card style="padding: 5px;">
+                                    <!-- Input to change role name -->
                                     <q-input v-model="role.name" style="font-size: xx-large; width: 20%; margin: 40px;"
                                             :rules="[val => (val.length != 0) || 'Please enter a role name!']"/>
+                                    
+                                    <!-- List of archetype permissions -->
                                     <q-list style="margin: 20px;">
                                         <q-item class="archetype-rows">
                                             <span class="archetype-permission"></span>
@@ -47,7 +53,7 @@
                                         <!-- Rows -->
                                         <!-- Iterates through role.archetype instead of inventorySt.schemes because all schemes and their permissions are added to the role in the People Store -->
                                         <q-item v-for="scheme in role.archetypePermissions" class="archetype-rows">
-                                            <span class="roles-popup-text archetype-permission">{{ scheme.arch }}</span>
+                                            <span class="roles-popup-text archetype-permission">{{ inventorySt.getArchetypeById(scheme.arch).name }}</span>
                                             <span class="archetype-permission"><q-checkbox v-model="scheme.loan"/></span>
                                             <span class="archetype-permission"><q-checkbox v-model="scheme.handBack"/></span>
                                             <span class="archetype-permission"><q-checkbox v-model="scheme.edit"/></span>
@@ -57,12 +63,14 @@
                             </div>
                         </q-tab-panel>
                     </q-tab-panels>
+                    
+                    <!-- Footer -->
                     <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 95%;">
                         <span></span>
                         <div class="wide-flexbox" style="width: 20%;">
                             <q-btn color="red" label="Revert" class="manage-users-button"
                                 @click="currentRoles = [];
-                                        originalRoles.forEach(role => {currentRoles.push(role.copy())});"/>
+                                        originalRoles.forEach(role => {currentRoles.push(role.copy())});" />
                             <q-btn color="primary" label="Save" class="manage-users-button"
                                   @click="invalid = false;
                                           currentRoles.forEach(role => { invalid = (role.name.length == 0) ? true : invalid })
@@ -81,8 +89,7 @@
                                               originalRoles.push(role.copy())
                                               currentRoles.push(role.copy())
                                           })
-                                          tab = currentRoles[0].name"
-                            />
+                                          tab = currentRoles[0].name"/>
                         </div>
                     </div>
                 </template>

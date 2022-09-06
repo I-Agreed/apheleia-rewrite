@@ -37,16 +37,16 @@ export const useSelf = defineStore('selfStore', {
         },
         currentLoansColumns: () => {
             return [
-                { name: 'name', align: "center", label: "Item",    field: "name",   sortable: true },
+                { name: 'name', align: "center", label: "Item", field: "name", sortable: true },
                 { name: 'lent', align: "center", label: "Lent On", field: "borrow", sortable: true },
-                { name: 'due',  align: "center", label: "Due By",  field: "due",    sortable: true }
+                { name: 'due', align: "center", label: "Due By", field: "due", sortable: true }
             ]
         },
         historyLoansColumns: () => {
             return [
-                { name: 'name',   align: "center", label: "Item",     field: "name",   sortable: true },
+                { name: 'name', align: "center", label: "Item", field: "name", sortable: true },
                 { name: 'borrow', align: "center", label: "Borrowed", field: "borrow", sortable: true },
-                { name: 'due',    align: "center", label: "Due",      field: "due",    sortable: true },
+                { name: 'due', align: "center", label: "Due", field: "due", sortable: true },
                 { name: 'return', align: "center", label: "Returned", field: "return", sortable: true }
             ]
         }
@@ -56,18 +56,22 @@ export const useSelf = defineStore('selfStore', {
         currentLoansRows() {
             this.currentLoans = []
             inventorySt.history.loans.forEach(loan => {
-                if(loan.borrower === this.user.first_name + " " + this.user.last_name && loan.return === "") {
+                if (loan.borrower === this.user.first_name + " " + this.user.last_name && loan.return === "") {
                     this.currentLoans.push(loan)
                 }
             })
 
+<<<<<<< HEAD
             // if the user has any perms, return all outgoing loans
             if(this.hasAnyPerm()) {
+=======
+            if (this.hasAnyPerm()) {
+>>>>>>> 771e4f3d407b429780f9088388a1ceb7601bbe48
                 this.role.archetypePermissions.forEach(perms => {
                     if (perms.loan || perms.handBack) {
                         inventorySt.history.loans.forEach(loan => {
-                            if(!inventorySt.getItemById(loan.itemId)) return;
-                            if(inventorySt.getItemById(loan.itemId).arch === perms.arch && loan.return === "") {
+                            if (!inventorySt.getItemById(loan.itemId)) return;
+                            if (inventorySt.getItemById(loan.itemId).arch === perms.arch && loan.return === "") {
                                 this.currentLoans.push(loan)
                             }
                         })
@@ -82,18 +86,22 @@ export const useSelf = defineStore('selfStore', {
         historyLoansRows() {
             this.history.loans = []
             inventorySt.history.loans.forEach(loan => {
-                if(loan.borrower === this.user.first_name + " " + this.user.last_name && loan.return != "") {
+                if (loan.borrower === this.user.first_name + " " + this.user.last_name && loan.return != "") {
                     this.history.loans.push(loan)
                 }
             })
 
+<<<<<<< HEAD
             // is user has any perms, return all loans which are returned
             if(this.hasAnyPerm()) {
+=======
+            if (this.hasAnyPerm()) {
+>>>>>>> 771e4f3d407b429780f9088388a1ceb7601bbe48
                 this.role.archetypePermissions.forEach(perms => {
                     if (perms.loan || perms.handBack) {
                         inventorySt.history.loans.forEach(loan => {
-                            if(!inventorySt.getItemById(loan.itemId)) return;
-                            if(inventorySt.getItemById(loan.itemId).arch === perms.arch && loan.return != "") {
+                            if (!inventorySt.getItemById(loan.itemId)) return;
+                            if (inventorySt.getItemById(loan.itemId).arch === perms.arch && loan.return != "") {
                                 this.currentLoans.push(loan)
                             }
                         })

@@ -4,6 +4,7 @@
         <div style="height: 80%; width: 100%; border: 2px solid var(--aph-grey); border-radius: 10px;">          <!-- Rounded border -->
             <!-- Splitter which splits vertically between the tabs and content -->
             <q-splitter v-model="splitterModel" style="height: 100%">
+
                 <!-- The tabs on the left -->
                 <template v-slot:before>
                     <q-tabs v-model="tab" vertical class="text-primary">
@@ -15,7 +16,8 @@
                         <q-tab name="notifications" label="Notifications" />
                     </q-tabs>
                 </template>
-                <!-- The panels on the right, connected to the tabs by the 'name' variable -->
+
+                <!-- The panels on the right -->
                 <template v-slot:after>
                     <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
                         <q-tab-panel name="overview">
@@ -41,14 +43,14 @@
                                 <p>In the <u>Manage Items</u> menu you can create new items and item types for the inventory. Similarly to the ones on the main items page the different types of items have been split into tabs. By clicking the cells in the table the information for the items can be modified. The type of information is specified by the item type. Additionally, you are able to create new items by pressing the <i>New Item</i> button in the bottom left and delete items by pressing the <i>Delete Item</i> button on the right. All changes are immediately saved, so a prompt will appear just in case you accidentally press it.</p>
                                 <div style="display: flex; justify-content: space-around;">
                                     <img src="../../img/lenditem.png" alt="" style="width: 30%; display: block;" />
-                                    <img src="../../img/editlend.png" alt="ahhh" style="width: 30%; display: block;" />
+                                    <img src="../../img/editlend.png" alt="" style="width: 30%; display: block;" />
                                 </div>
-                                <p><b>New / Edit Item Type</b></p>
-                                <p>Pressing on these buttons will open up the <u>Edit Item Type</u> menu with different options. Rather than creating items in the inventory, in this menu you are defining the information for the item. These are known as properties. A property can be one of a number, text, a date, a checkbox or a selection/option. As an example, a 'selection/option' can represent the item's status. i.e (Perfect, Light Damage, Needs Service, Broken)</p>
+                                <p><b>Edit Item Type</b></p>
+                                <p>Pressing on the <i>Edit Item Type</i> button will open up the <u>Edit Item Type</u> menu for one of the five item types you have selected. Rather than creating items in the inventory, in this menu you are defining the information for the item. These are known as properties. A property can be one of a number, text, a date, a checkbox or a selection/option. As an example, a 'selection/option' can represent the item's status. i.e (Perfect, Light Damage, Needs Service, Broken)</p>
                                 <p>New properties can be created by clicking the <i>New Property</i> button in the bottom left. This will appear as a new row in the table. You can name the property by clicking in the cell beneath 'Property Name' and select a type for the property below 'Property Type'. Optionally, you can give it a default value. However, for the 'selection/option' property type, the values specified beneath the 'Default Value' heading will be the values available for you to choose from when you create items. With the example above, "Perfect", "Light Damage", "Needs Service" and "Broken" should be added as 4 different selection options. More options can be added with the + button and options can be removed with the bin button.</p>
                                 <p>Item properties can be removed with the bin button on the far right, but be aware that all changes are immediately saved. Similarly to <i>Delete Item</i>, a prompt will appear for any delete operation.</p>
                                 <img src="../../img/edititemtype.png" alt="" style="width: 100%; display: block;" />
-                                <p><u>Manage Items:</u> Item types can also be deleted by pressing the buttons on the bottom left of the <u>Manage Items</u> menu, however this will mean deleting all items associated with that type. i.e In certain scenarios a large collection of the inventory could be deleted and lost. Take extreme care if you consider deleting an item type.</p>
+                                <p><u>Manage Items:</u> Item types can also be deleted by pressing the buttons on the bottom left of the <u>Manage Items</u> menu, however this will mean deleting all items associated with that type. i.e In certain scenarios a large section of the inventory could be deleted and lost. Take extreme care if you consider deleting an item type.</p>
                             </div>
                         </q-tab-panel>
                         <q-tab-panel name="people">

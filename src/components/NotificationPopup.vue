@@ -1,7 +1,7 @@
 <template>
     <q-dialog full-width>
         <q-card style="height: 40%; margin: 6% 30%">
-            <!-- Popup card body -->
+            <!-- Card body -->
             <div class="q-pa-md" style="padding: 0px 40px;">
                 <!-- Popup title -->
                 <div class="wide-flexbox">
@@ -29,13 +29,13 @@
     export default defineComponent({
         name: 'Notification Popup',
         components: { CloseButton },
+        props: {
+            notification: Notification
+        },
         setup () {
             return {
                 selfSt,
             }
-        },
-        props: {
-            notification: Notification
         }
     })
 </script>

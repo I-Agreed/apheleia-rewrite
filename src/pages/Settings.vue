@@ -10,14 +10,13 @@
                 <q-select outlined v-model="currentSettings.remindDaysBefore"
                          :options="['1', '2', '3', '7', '14']"/>
             </div>
+            
             <div style="margin-top: 1vh;">
                 <p style="margin-bottom: 0.2vh;">Send Notifications to:</p>
-                <q-input filled v-model="currentSettings.email" label="email" style="width: 30vw;">
-                    <template v-slot:before>
-                        <q-icon name="mail" />
-                    </template>
+                <q-input filled label="email" style="width: 30vw;" v-model="currentSettings.email"
+                         :rules="[val => settingsSt.validEmail(val) || 'Invalid Email!']">
+                    <template v-slot:before> <q-icon name="mail"/> </template>
                 </q-input>
-                <p v-if="settingsSt.validEmail(currentSettings.email) == false" red>Invalid Email!</p>
             </div>
 
             <!-- Buttons: Save and Revert -->
@@ -46,8 +45,6 @@
     import { useSelf } from 'src/stores/useSelf'
     import { useSettings } from 'src/stores/useSettings'
     import { usePeople } from 'src/stores/usePeople'
-
-    import { Settings } from 'src/scripts/objects'
 
     const selfSt     = useSelf()
     const settingsSt = useSettings()

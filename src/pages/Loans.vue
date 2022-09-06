@@ -2,16 +2,21 @@
     <!-- Loans title -->
     <h3 class="absolute-left" style="padding-left: 10%;">loans.</h3>
     <q-page class="absolute-center flex flex-center" id="loans-container">
-        <!-- columns which split the seach bar and table -->
+        <!-- Columns which split the seach bar and table -->
         <div class="column" style="width: 100%; height: 80%;">
             <!-- Search bar -->
             <div class="col col-1" style="width: 100%;">
                 <q-input outlined label="Search" style="height: 70%; width: 53%;" v-model="search"/>
             </div>
             
-            <!-- table -->
+            <!-- Loans table -->
             <div class="col col-11" style="width: 100%;">
-                <q-table :rows="selfSt.allLoanRows().filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"/>
+                <q-table row-key="name"
+                         style="height: 100%;"
+                         separator="cell"
+                        :rows="selfSt.allLoanRows().filter((x) => searchFilter(x, search))"
+                        :columns="columns"
+                        :rows-per-page-options="[0]"/>
             </div>
         </div>
     </q-page>
@@ -24,7 +29,7 @@
     import { useInventory } from '../stores/useInventory.js'
 
     const selfSt = useSelf()
-    const inventory = useInventory()
+    const inventorySt = useInventory()
 
     const columns = [
         { name: 'id',       headerStyle: 'width: 10%', align: "center", label: "ID",            field: "id",       sortable: true },
@@ -39,14 +44,16 @@
         name: 'Loans',
         setup () {
             return {
-                inventorySt: inventory,
+                selfSt,
+                inventorySt,
+
+                columns,
+
                 search: ref(""),
+
                 searchFilter (loan, params) {
                     return Object.values(loan).reduce((x, y) => x || String(y).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(params.toLowerCase()), false);
-                },
-
-                selfSt,
-                columns
+                }
             }
         }
     })
