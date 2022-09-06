@@ -8,7 +8,7 @@
                 <template v-slot:before>
                     <q-tabs v-model="tab" vertical class="text-primary">
                         <q-tab v-for="role in originalRoles" :name="role.identifier" :label="role.name" />
-                        <q-btn label="New Role" class="absolute-bottom" style="width: 100%;"
+                        <!-- <q-btn label="New Role" class="absolute-bottom" style="width: 100%;"
                               @click="peopleSt.newRole();
                                       currentRoles = []
                                       originalRoles = []
@@ -16,7 +16,7 @@
                                           originalRoles.push(role.copy())
                                           currentRoles.push(role.copy())
                                       })
-                              "/>
+                              "/> -->
                     </q-tabs>
                 </template>
 
@@ -25,8 +25,6 @@
                     <div class="wide-flexbox" style="padding: 2%;">
                         <h3>Manage Roles</h3>
                         <span>
-                            <!-- TODO: Help button -->
-                            <!-- <HelpButton /> -->
                             <CloseButton @click="currentRoles = [];
                                                  originalRoles.forEach(role => {currentRoles.push(role.copy())});"/>
                         </span>
@@ -35,60 +33,27 @@
                     <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
                         <q-tab-panel v-for="role in currentRoles" :name="role.identifier" style="margin-left: 2vw; width: 94%;">
                             <div>
-                                <q-input v-model="role.name" style="font-size: xx-large; width: 20%;"
-                                        :rules="[val => (val.length != 0) || 'Please enter a role name!']"/>
-
-                                <q-list>
-                                    <q-item class="archetype-rows">
-                                        <span class="archetype-permission"></span>
-                                        <span class="roles-popup-titles">Can Loan</span>
-                                        <span class="roles-popup-titles">Can Return</span>
-                                        <span class="roles-popup-titles">Can Modify</span>
-                                    </q-item>
-                                    <q-separator />
-                                    <!-- Rows -->
-                                    <!-- Iterates through role.archetype instead of inventorySt.schemes because all schemes and their permissions are added to the role in the People Store -->
-                                    <q-item v-for="scheme in role.archetypePermissions" class="archetype-rows">
-                                        <span class="roles-popup-text archetype-permission">{{ scheme.arch }}</span>
-                                        <span class="archetype-permission"><q-checkbox v-model="scheme.loan"/></span>
-                                        <span class="archetype-permission"><q-checkbox v-model="scheme.handBack"/></span>
-                                        <span class="archetype-permission"><q-checkbox v-model="scheme.edit"/></span>
-                                    </q-item>
-                                </q-list>
-
-                                <!-- 3 Columns -->
-                                <!-- <div class="column" style="height: 70vh; display: flex; flex-flow: row nowrap; justify-content: space-between; width: 100%;">
-                                    
-                                    <div class="row col col-4">
-                                        <div class="subheading col-2">
-                                            <p class="roles-popup-titles">Can Loan</p>
-                                        </div>
-
-                                        <div class="col-10 checkbox-container">
-                                            <q-checkbox left-label v-model="canLoan[scheme.name]" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="row col col-4">
-                                        <div class="subheading col-2">
-                                            <p class="roles-popup-titles">Can Return</p>
-                                        </div>
-
-                                        <div class="col-10 checkbox-container">
-                                            <q-checkbox left-label v-model="canReturn[scheme.name]" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="row col col-4">
-                                        <div class="subheading col-2">
-                                            <p class="roles-popup-titles">Can Modify</p>
-                                        </div>
-
-                                        <div class="col-10 checkbox-container">
-                                            <q-checkbox left-label v-model="canModify[scheme.name]" v-for="scheme in inventorySt.schemes" :label="scheme.name" class="roles-popup-text"/>
-                                        </div>
-                                    </div>
-                                </div> -->
+                                <q-card style="padding: 5px;">
+                                    <q-input v-model="role.name" style="font-size: xx-large; width: 20%; margin: 40px;"
+                                            :rules="[val => (val.length != 0) || 'Please enter a role name!']"/>
+                                    <q-list style="margin: 20px;">
+                                        <q-item class="archetype-rows">
+                                            <span class="archetype-permission"></span>
+                                            <span class="roles-popup-titles">Can Loan</span>
+                                            <span class="roles-popup-titles">Can Return</span>
+                                            <span class="roles-popup-titles">Can Modify</span>
+                                        </q-item>
+                                        <q-separator />
+                                        <!-- Rows -->
+                                        <!-- Iterates through role.archetype instead of inventorySt.schemes because all schemes and their permissions are added to the role in the People Store -->
+                                        <q-item v-for="scheme in role.archetypePermissions" class="archetype-rows">
+                                            <span class="roles-popup-text archetype-permission">{{ scheme.arch }}</span>
+                                            <span class="archetype-permission"><q-checkbox v-model="scheme.loan"/></span>
+                                            <span class="archetype-permission"><q-checkbox v-model="scheme.handBack"/></span>
+                                            <span class="archetype-permission"><q-checkbox v-model="scheme.edit"/></span>
+                                        </q-item>
+                                    </q-list>
+                                </q-card>
                             </div>
                         </q-tab-panel>
                     </q-tab-panels>
@@ -98,9 +63,9 @@
                             <q-btn color="red" label="Revert" class="manage-users-button"
                                 @click="currentRoles = [];
                                         originalRoles.forEach(role => {currentRoles.push(role.copy())});"/>
-                            <q-btn color="primary" label="Save and Exit" class="manage-users-button" v-close-popup
+                            <q-btn color="primary" label="Save" class="manage-users-button"
                                   @click="invalid = false;
-                                          currentRoles.forEach(role => { invalid = (role.name.length == 0) ? true : false })
+                                          currentRoles.forEach(role => { invalid = (role.name.length == 0) ? true : invalid })
                                           if (invalid == false) {
                                               peopleSt.setRoles(currentRoles);
                                               currentRoles.forEach(role => {
@@ -115,7 +80,8 @@
                                           peopleSt.roles.forEach(role => {
                                               originalRoles.push(role.copy())
                                               currentRoles.push(role.copy())
-                                          })"
+                                          })
+                                          tab = currentRoles[0].name"
                             />
                         </div>
                     </div>
@@ -132,7 +98,6 @@
     import { useInventory } from 'src/stores/useInventory'
 
     import CloseButton from '../../components/CloseButton.vue'
-    import { Role } from 'src/scripts/objects'
 
     const peopleSt = usePeople()
     const inventorySt = useInventory()
@@ -182,7 +147,11 @@
     }
 
     .wide-flexbox {
-        display: flex; flex-flow: row nowrap; align-content: center; justify-content: space-between; width: 100%;
+        display: flex;
+        flex-flow: row nowrap;
+        align-content: center;
+        justify-content: space-between;
+        width: 100%;
         padding: 0;
         margin: 0;
     }
@@ -223,7 +192,9 @@
     }
 
     .manage-users-button {
-        height: 70%; width: 100%; margin-top: 1vh;
+        height: 70%;
+        width: 100%;
+        margin-top: 1vh;
     }
 
     h3 {

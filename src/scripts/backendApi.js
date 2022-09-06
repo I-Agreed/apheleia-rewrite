@@ -201,9 +201,56 @@ export async function get_users() {
             'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
+    let data = response.json();
     console.log(response);
+    let users = data.map((x) => new User(x.id, "", "", undefined, undefined)) // TODO: find way to get user roles and history
     return response.json();
+}
+
+// Add user
+export async function add_user(user) {
+    let item = {
+        id: user.id
+    }
+    let response = false;
+    await fetch(uri + "/users", {
+        method: "POST",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        },
+        json: item
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    console.log(response);
+    return true;
+}
+
+// Give user a role
+export async function add_user_role(user, role) {
+    let response = false;
+    await fetch(uri + `/users/${user.id}/roles/${role.id}`, {
+        method: "POST",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        }
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    console.log(response);
+    return true;
+}
+
+// Remove role from user
+export async function delete_user_role(user, role) {
+    let response = false;
+    await fetch(uri + `/users/${user.id}/roles/${role.id}`, {
+        method: "DELETE",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        }
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    console.log(response);
+    return true;
 }
 
 // Get list of roles

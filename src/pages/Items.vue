@@ -33,7 +33,7 @@
                                @click="inventorySt.tabbedSchemeName = scheme.name"
                                 v-for="scheme in inventorySt.schemes"/>
                     </q-tabs>
-                    <q-separator />
+                    <q-separator/>
                     <q-tab-panels v-model="tab" animated style="height: 95%;">
                         <!-- Panels containing tables -->
                         <q-tab-panel :name="scheme.name"
@@ -49,7 +49,7 @@
                                         <q-btn color="primary" label="Lend Item"
                                               @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"
                                                v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).loan" />
-                                        <q-btn color="black" label="Edit Lend"
+                                        <q-btn color="black" label="Edit Loan"
                                               @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"
                                                v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).handBack"/>
                                     </q-td>

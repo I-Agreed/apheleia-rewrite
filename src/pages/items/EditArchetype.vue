@@ -3,7 +3,7 @@
         <q-card style="height: 100%;">
             <div class="q-pa-md">
                 <div class="wide-flexbox" style="padding-bottom: 1em;">
-                    <h3 style="margin-top: 1vh; margin-bottom: 1vh;">Edit Archetype.</h3>
+                    <h3 style="margin-top: 1vh; margin-bottom: 1vh;">Edit Item Type</h3>
                     <span></span>
                     <CloseButton/>
                 </div>
@@ -124,7 +124,7 @@
 
     
     const archetypeColumns = [
-        { name: 'property', align: "center", label: "Property", field: "property", sortable: true },
+        { name: 'property',     align: "center", label: "Property Name", field: "property", sortable: true },
         { name: 'propertyType', align: "center", label: "Property Type", field: "propertyType", sortable: true },
         { name: 'defaultValue', align: "center", label: "Default Value", field: "defaultValue", sortable: true },
         { name: 'delete', field: "delete", headerStyle: 'width: 3%'}

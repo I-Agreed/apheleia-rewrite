@@ -13,13 +13,8 @@ export const useSelf = defineStore('selfStore', {
         return {
             user: peopleSt.users[0],
             role: peopleSt.roles[0],
-            currentLoans: [
-                
-            ],
-            history: new UserHistory([
-
-            ], 
-            [
+            currentLoans: [],
+            history: new UserHistory([], [
                 new Notification(0, "Item 1 is due today!", "Item 1 is due today, you should return it to your teacher."),
                 new Notification(1, "Due date change: Item 2", "The due date for Item 2 has been changed to an earlier date."),
                 new Notification(2, "Did you know?", "Did you know? The developers have misspelt Apheleia as 'Aphelia' about 99% of the time! (Including just now!)")
@@ -106,11 +101,8 @@ export const useSelf = defineStore('selfStore', {
         allLoanRows() {
             return [...new Set(this.currentLoansRows().concat(this.historyLoansRows()))]
         },
-        unreadNotifications() {
-            return this.history.notifications.filter(notification => notification.read != true)
-        },
         readNotification(id) {
-            this.history.notifications.forEach(notification => {
+            this.user.history.notifications.forEach(notification => {
                 if (notification.id == id) {
                     notification.read = true
                 }
@@ -123,6 +115,10 @@ export const useSelf = defineStore('selfStore', {
                     out = true
                 }
             })
+
+            if (this.user.role.managePeople == true) {
+                out = true
+            }
 
             return out;
         },

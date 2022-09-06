@@ -1,11 +1,3 @@
-/*
-My thought process with the classes is that they would be easier to manipulate, such as creation, deletion, and modification.
-They could either be created by the user on their end, or be loaded in from the database.
-TODO: At some point after logging in to the web page, the program should request the lists of every archetype, item, loan, role, user, and subject area that the user is able to interact with.
-Each class should have a method that constructs an instance from the raw data recieved from the api, and probably also a function to do the inverse for modifications.
-Other things, such as loans, roles, and subjects should also have classes but i dont have time to create them.
-*/
-
 export class Archetype {
     constructor(name, subject, fieldTypes, fieldNames, fieldDefault, items = [], dbId = "", perms = { }) {
         this.name = name
@@ -86,13 +78,24 @@ export class Role {
     getArchetypePerms(arch) {
         let outPerms;
         // Loop through the role's archetype_permissions and return the one corresponding to a certain Archetype (by name)
-        this.archetypePermissions.forEach(archetypePermissions => {
-            if (archetypePermissions.arch === arch) {
-                outPerms = archetypePermissions
+        this.archetypePermissions.forEach(archetypePermission => {
+            if (archetypePermission.arch === arch) {
+                outPerms = archetypePermission
             }
         });
 
         return outPerms
+    }
+
+    canEdit() {
+        let foundAnyEditable = false
+        this.archetypePermissions.forEach(archetypePermission => {
+            if (archetypePermission.edit == true) {
+                foundAnyEditable = true
+            }
+        })
+
+        return foundAnyEditable
     }
 
     copy() {
@@ -163,7 +166,7 @@ export class GlobalHistory {
 }
 
 export class User {
-    constructor(id, first_name, last_name, role, history) {
+    constructor(id, first_name, last_name, role, history = new UserHistory()) {
         this.id = id
         this.first_name = first_name
         this.last_name = last_name
@@ -176,6 +179,14 @@ export class User {
 
     copy() {
         return new User(this.id, this.first_name, this.last_name, this.role, this.history)
+    }
+
+    unreadNotifications() {
+        return this.history.notifications.filter(notification => notification.read != true)
+    }
+
+    notify(notification) {
+        this.history.notifications.push(notification)
     }
 }
 
