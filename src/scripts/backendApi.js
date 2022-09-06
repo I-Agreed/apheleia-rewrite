@@ -1,30 +1,46 @@
-import { Archetype, Item } from "src/scripts/objects"
+import { Archetype, ArchetypePermissions, Item } from "src/scripts/objects"
 
 const uri = "http://localhost:8000"
+
+export async function init_stores(invStore, peopleStore, selfStore) {
+    let arches = get_archetypes();
+    invStore.schemes = arches;
+
+    let items = get_items(invStore);
+    items.forEach((x) => x.addToArchetype(invStore));
+
+    let roles = get_roles();
+    peopleStore.roles = roles;
+
+    let users = get_users();
+    peopleStore.users = users;
+    users.forEach((x) => x.role = peopleStore.getRoleById(get_user_roles(x.id)));
+}
 
 // all functions here should return false upon failure
 // 'get' functions return data upon success and others should return true
 
 // Get list of items
-export async function get_items() {
+export async function get_items(invStore) {
     let response = false;
     await fetch(uri + "/items", {
         method: "GET",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-
-    return response.json();
+    let data = response.json();
+    console.log(response);
+    let items = data.map((x) => new Item(invStore.getArchetypeById(x.archetype), x.archetype_data, x.id));
+    return items;
 }
 
 // Add new item 
 export async function add_item(newItem) {
-    let response = false;
     let item = {
         note: "",
-        archetype: newItem.dbId,
+        archetype: newItem.archetype.dbId,
         archetype_data: newItem.archetypeData
     }
     await fetch(uri + "/items", {
@@ -33,7 +49,7 @@ export async function add_item(newItem) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(item)
+        json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     let data = response.json();
     console.log(response);
@@ -42,7 +58,6 @@ export async function add_item(newItem) {
 }
 
 export async function modify_item(modItem) {
-    let response = false;
     let item = {
         note: "",
         archetype: newItem.archetype.dbId,
@@ -54,7 +69,7 @@ export async function modify_item(modItem) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(item)
+        json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     console.log(response);
     return true;
@@ -81,11 +96,13 @@ export async function get_archetypes() {
         method: "GET",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-
-    return response.json();
+    let data = response.json();
+    console.log(response);
+    let arches = data.map((x) => new Archetype(x.name, x.subject_area, x.schema.fieldTypes, x.schema.fieldNames, x.schema.fieldDefault, dbId = x.id));
+    return arches;
 }
 
 // Create Archetype
@@ -136,7 +153,7 @@ export async function modify_archetype(archetype) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(item)
+        json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     let data = response.json();
     archetype.dbId = data.id;
@@ -181,7 +198,6 @@ export async function add_subject(name, admin) {
 
 // Delete subject area
 export async function delete_subject(id) {
-    let response = false;
     await fetch(uri + `/subject_areas/${id}`, {
         method: "DELETE",
         headers: {
@@ -207,7 +223,22 @@ export async function get_users() {
     let data = response.json();
     console.log(response);
     let users = data.map((x) => new User(x.id, "", "", undefined, undefined)) // TODO: find way to get user roles and history
-    return response.json();
+    return users;
+}
+
+// Get roles of user
+export async function get_user_roles(user) {
+    let response = false;
+    await fetch(uri + `/users/${ user.id }`, {
+        method: "GET",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Content-Type': 'application/json'
+        }
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    let data = response.json();
+    console.log(response);
+    return data.role;
 }
 
 // Add user
@@ -222,7 +253,7 @@ export async function add_user(user) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Accept': 'application/json'
         },
-        body: JSON.stringify(item)
+        json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     console.log(response);
     return true;
@@ -231,7 +262,7 @@ export async function add_user(user) {
 // Give user a role
 export async function add_user_role(user, role) {
     let response = false;
-    await fetch(uri + `/users/${user.id}/roles/${role.id}`, {
+    await fetch(uri + `/users/${ user.id }/roles/${ role.id }`, {
         method: "POST",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
@@ -245,7 +276,7 @@ export async function add_user_role(user, role) {
 // Remove role from user
 export async function delete_user_role(user, role) {
     let response = false;
-    await fetch(uri + `/users/${user.id}/roles/${role.id}`, {
+    await fetch(uri + `/users/${ user.id }/roles/${ role.id }`, {
         method: "DELETE",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
@@ -255,18 +286,37 @@ export async function delete_user_role(user, role) {
     console.log(response);
     return true;
 }
-
-// Get list of roles
-export async function get_roles() {
+// Get perms of role
+export async function get_role_perms(id) {
     let response = false;
-    await fetch(uri + "/subject_areas", {
+    await fetch(uri + `/roles/${id}`, {
         method: "GET",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
-    console.log(response);
+    let data = response.json();
+    let perms = data.map((x) => new ArchetypePermissions(x.archetype, x.loan, x.recieve, x.meta));
+    return perms;
+}
+
+
+// Get list of roles
+export async function get_roles() {
+    let response = false;
+    await fetch(uri + "/roles", {
+        method: "GET",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Content-Type': 'application/json'
+        }
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    let data = response.json();
+    let roles = [];
+    for (let i = 0; i < data.length; i++) {
+        let p = get_role_perms(data[i].id);
+        roles.push(new Role(data[i].name, p, id = data[i].id));
+    }
     return response.json();
 }

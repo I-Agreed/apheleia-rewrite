@@ -345,6 +345,10 @@ export const useInventory = defineStore('inventoryStore', {
             return this.schemes.filter((x) => x.dbId === archId)[0];
         },
 
+        getSubjectById(subId) {
+            return this.schemes.filter((x) => x.dbId === archId)[0];
+        },
+
         editLendDates(itemId, borrow, due) {
             for (let i = 0; i < this.history.loans.length; i++) {
                 if (this.history.loans[i].itemId === itemId) {
