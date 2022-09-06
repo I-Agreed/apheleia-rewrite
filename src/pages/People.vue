@@ -9,53 +9,51 @@
                 <!-- Left: Search bar -->
                 <span style="display: flex; justify-content: flex-start; width: 50%;">
                     <q-input outlined v-model="search" label="Search" style="display: inline; height: 70%; width: 80%;"/>
-                    <span style="margin: auto auto; color: grey;">*Sorted by last name</span>
+                    <!-- <span style="margin: 2px auto auto 3px; color: grey; width: 60%;">*Sorted by last name</span> -->
                 </span>
 
                 <!-- Right: Buttons -->
-                <span style="width: 30%; display: flex; flex-flow: row nowrap; justify-content: flex-end; align-content: baseline;">
-                    <div class="col-2" style="width: 45%; margin-right: auto;"
-                         v-if="selfSt.user.role.managePeople == true">
-                        <q-btn color="primary" label="Manage Roles" class="people-manage-buttons"
-                              @click="managePop = true"/>
+                <span class="wide-flexbox" style="width: 30%;">
+                    <div class="col-2 button-wrapper" style="margin-right: auto;" v-if="selfSt.user.role.managePeople == true">
+                        <q-btn color="primary" label="Manage Roles" class="people-manage-buttons" @click="managePop = true"/>
                     </div>
-                    <div class="col-2" style="width: 45%;"
-                         v-if="selfSt.user.role.managePeople == true">
-                        <q-btn color="primary" label="Invite Users" class="people-manage-buttons"
-                              @click="invitePop = true"/>
+                    <div class="col-2 button-wrapper" v-if="selfSt.user.role.managePeople == true">
+                        <q-btn color="primary" label="Invite Users" class="people-manage-buttons" @click="invitePop = true"/>
                     </div>
                 </span>
             </div>
 
-            <!-- List -->
+            <!-- Body and list -->
             <div class="col col-11" style="width: 100%;">
-
                 <q-list class="list-container">
+
+                    <!-- List Headings -->
                     <q-item class="people-list-item">
                         <span class="list-id list-title">ID</span><q-separator vertical class="separator"/>
                         <span>Last Name</span>                    <q-separator vertical class="separator"/>
                         <span>First Name</span>                   <q-separator vertical class="separator"/>
-                        <span>Role</span>
-                        <q-separator vertical class="separator"/>
+
+                        <span>Role</span>                         <q-separator vertical class="separator"/>
 
                         <span class="remove-column" v-if="selfSt.user.role.managePeople == true"></span>
                         <span class="remove-column" v-else></span>
                     </q-item>
+
                     <q-separator />
                     
-                    <!-- Note: Used 'person in peopleSt.users' over 'user in peopleSt.users' to differentiate between 'user' and 'selfSt.user' -->
+                    <!-- Variable name (person in peopleSt.users) is used over (user in peopleSt.users) to easily differentiate between (user) and (selfSt.user) -->
                     <q-item class="people-list-item"
                             v-for="person in peopleSt.users.filter((x) => searchFilter(x, search))">
                         <span class="list-id">{{ person.id }}</span><q-separator vertical class="separator"/>
                         <span>{{ person.last_name }}</span>         <q-separator vertical class="separator"/>
                         <span>{{ person.first_name }}</span>        <q-separator vertical class="separator"/>
-                        <!-- Only show the change role select if the current user can managePeople,
-                             they aren't changing their own role -->
-                        <q-select v-model="person.role" :options="peopleSt.roles" option-label="name"
+
+                        <q-select v-model="person.role"
+                                  option-label="name"
+                                  :options="peopleSt.roles"
                                   v-if="selfSt.user.role.managePeople == true &&
                                         selfSt.user.first_name != person.first_name"/>
-                        <span v-else>{{ person.role.name }}</span>
-                        <q-separator vertical class="separator"/>
+                        <span v-else>{{ person.role.name }}</span>  <q-separator vertical class="separator"/>
 
                         <q-btn color="red" label="Remove user" class="remove-column"
                               @click="removeUserPop = true;
@@ -164,5 +162,9 @@
 
     .remove-column {
         width: 10%;
+    }
+
+    .button-wrapper {
+        width: 45%;
     }
 </style>

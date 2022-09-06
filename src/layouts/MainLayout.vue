@@ -54,54 +54,18 @@ import NavbarLink from 'src/components/NavbarLink.vue'
 
 // Information about the links
 const topLinksList = [
-  {
-    title: 'Dashboard',
-    icon: 'home',
-    link: '/dash'
-  },
-  {
-    title: 'Items',
-    icon: 'category',
-    link: '/dash/items'
-  },
-  {
-    title: 'People',
-    icon: 'people',
-    link: '/dash/people'
-  },
-  {
-    title: 'Loans',
-    icon: 'inventory',
-    link: '/dash/loans'
-  },
-  {
-    title: 'Notifications',
-    icon: 'notifications',
-    link: '/dash/notifications'
-  },
+  { title: 'Dashboard',     icon: 'home',          link: '/dash' },
+  { title: 'Items',         icon: 'category',      link: '/dash/items' },
+  { title: 'People',        icon: 'people',        link: '/dash/people' },
+  { title: 'Loans',         icon: 'inventory',     link: '/dash/loans' },
+  { title: 'Notifications', icon: 'notifications', link: '/dash/notifications' }
 ]
 
 const bottomLinksList = [
-  {
-    title: 'About',
-    icon: 'info',
-    link: '/dash/about'
-  },
-  {
-    title: 'Help',
-    icon: 'help',
-    link: '/dash/help'
-  },
-  {
-    title: 'Settings',
-    icon: 'settings',
-    link: '/dash/settings'
-  },
-  {
-    title: 'Log Out',
-    icon: 'logout',
-    link: '/logout'
-  }
+  { title: 'About',    icon: 'info',     link: '/dash/about' },
+  { title: 'Help',     icon: 'help',     link: '/dash/help' },
+  { title: 'Settings', icon: 'settings', link: '/dash/settings' },
+  { title: 'Log Out',  icon: 'logout',   link: '/logout' }
 ]
 
 export default defineComponent({

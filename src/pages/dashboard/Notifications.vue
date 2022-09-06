@@ -1,16 +1,21 @@
 <template>
     <div class="q-pa-md" style="height: 100%;">
         <h5>Unread Notifications</h5>
+        <!-- Notifications List -->
         <q-list bordered separator class="rounded-borders shadow-1" style="height: 100%;">
-            <q-item clickable v-for="notification in selfSt.unreadNotifications()" @click="notify = true; selfSt.history.selectedNotification = notification">
+            <q-item clickable
+                   @click="notify = true;
+                           selectedNotification = notification"
+                    v-for="notification in selfSt.user.unreadNotifications()">
                 <q-icon name="notifications" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"/>
                 <span class="notification-title">{{ notification.title }}</span>
-                <q-icon @click="selfSt.readNotification(notification.id); notify = true" name="close" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"/> 
+                <!-- Tick button -->
+                <q-icon @click="selfSt.readNotification(notification.id); notify = true" name="check" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"/> 
             </q-item>
         </q-list>
     </div>
 
-    <NotificationPopup v-if="notify == true"/>
+    <NotificationPopup v-model="notify" :notification="selectedNotification"/>
 </template>
 
 <script>
@@ -26,7 +31,9 @@
         setup () {
             return {
                 selfSt,
-                notify: ref(false)
+
+                notify: ref(false),
+                selectedNotification: ref('')
             }
         }
     })

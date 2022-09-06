@@ -10,7 +10,7 @@
                             <q-tab v-if="selfSt.role.getArchetypePerms(scheme.name).edit" :name="scheme.name" :label="scheme.name" />
                         </div>
                         <!-- New Archetype Button -->
-                        <q-btn label="New Achetype" class="absolute-bottom" style="width: 100%;" @click="inventorySt.newArchetype()"/>
+                        <q-btn label="New Item Type" class="absolute-bottom" style="width: 100%;" @click="inventorySt.newArchetype()"/>
                     </q-tabs>
                 </template>
 
@@ -21,7 +21,7 @@
                         <q-tab-panel v-for="(scheme, archIndex) in inventorySt.schemes" :name="scheme.name">
                             <!-- Close Button -->
                             <div style="display: flex; align-content: space-between; justify-content: space-between;">
-                                <h3 style="margin-top: 1vh; margin-bottom: 1vh;">Manage Items.</h3>
+                                <h3 style="margin-top: 1vh; margin-bottom: 1vh;">Manage Items</h3>
                                 <span></span>
                                 <CloseButton/>
                             </div>
@@ -79,8 +79,8 @@
                                 <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
                                     <div class="wide-flexbox" style="width: 20%;">
                                         <q-btn color="primary" label="New Item" class="manage-items-button" @click="inventorySt.createDefaultItem(archIndex)"/>
-                                        <q-btn color="primary" label="Edit Archetype" class="manage-items-button" @click="editArc = true; itemsSt.focused_archetype = scheme.name"/>
-                                        <q-btn color="red" label="Delete Archetype" class="manage-items-button" @click="deleteSelected = [archIndex]; confirmArch = true"/>
+                                        <q-btn color="primary" label="Edit Item Type" class="manage-items-button" @click="editArc = true; itemsSt.focused_archetype = scheme.name"/>
+                                        <q-btn color="red" label="Delete Item Type" class="manage-items-button" @click="deleteSelected = [archIndex]; confirmArch = true"/>
                                     </div>
                                     <div class="wide-flexbox" style="width: 3%;">
                                         <q-btn color="primary" label="Exit" class="manage-items-button" v-close-popup/>
@@ -113,7 +113,7 @@
             <q-card>
                 <q-card-section class="row items-center">
                     <q-avatar icon="delete" color="red" text-color="white" />
-                    <span class="q-ml-sm">Are you sure you want to delete this archetype? This cannot be undone.</span>
+                    <span class="q-ml-sm">Are you sure you want to delete this item type? This cannot be undone.</span>
                 </q-card-section>
 
                 <q-card-actions align="right">
@@ -192,5 +192,9 @@
 
     .wide-flexbox {
         display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between; width: 100%;
+    }
+
+    .q-ml-sm {
+        font-size: 24px;
     }
 </style>

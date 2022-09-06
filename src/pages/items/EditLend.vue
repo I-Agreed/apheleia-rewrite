@@ -1,5 +1,7 @@
 <template>
-    <q-dialog @show="time = inventorySt.getLoanByItemId(itemsLocalSt.focused_item).due; model = inventorySt.getLoanByItemId(itemsLocalSt.focused_item).borrow">
+    <q-dialog @show="time = inventorySt.getLoanByItemId(itemsLocalSt.focused_item).due;
+                     model = inventorySt.getLoanByItemId(itemsLocalSt.focused_item).borrow;
+                     owner = inventorySt.getLoanByItemId(itemsLocalSt.focused_item).loanedTo">
         <q-card style="width: 100%;">
             <q-card-section class="wide-flexbox">
                 <h3 style="margin-top: 10px; margin-bottom: 20px;">Edit Lend</h3>
@@ -8,20 +10,19 @@
                 </q-card-actions>
             </q-card-section>
 
-            <q-card-section class="q-pt-none">
-            Lend from:
-            </q-card-section>
-
-            <q-card-section style="padding-top: 0px;">
-                <q-input v-model="model" filled type="date" />
-            </q-card-section>
+            <!-- Not working ATM -->
+            <!-- <q-card-section class="q-pt-none">
+                <q-field v-model="owner" label="Loaned to:"/>
+            </q-card-section> -->
 
             <q-card-section class="q-pt-none">
-            Lend until:
+                <span>Lend from:</span>
+                <q-input v-model="model" filled type="date" style="padding-top: 5px;"/>
             </q-card-section>
 
-            <q-card-section style="padding-top: 0px;">
-                <q-input v-model="time" filled type="date" />
+            <q-card-section class="q-pt-none">
+                <span>Lend until:</span>
+                <q-input v-model="time" filled type="date" style="padding-top: 5px;"/>
             </q-card-section>
 
             <q-card-actions align="right">
@@ -49,20 +50,22 @@
 
     const lendOptions = people.users.map(user => `${user.first_name} ${user.last_name}`)
 
-export default defineComponent({
+    export default defineComponent({
         name: 'Editlend',
         components: { CloseButton },
         setup () {
-            const model = ref("")
             const options = ref(lendOptions)
 
             return {
-                model,
-                options,
                 peopleSt: people,
                 inventorySt: inv,
-                time: ref(""),
                 itemsLocalSt,
+
+                model: ref(""),
+                time: ref(""),
+                owner: ref(''),
+
+                options,
                 
                 setModel (val) {
                     model.value = val
