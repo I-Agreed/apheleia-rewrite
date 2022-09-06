@@ -376,15 +376,17 @@ export const useInventory = defineStore('inventoryStore', {
 
         updateArchetypes() {
             const data = {
+                name: "Foil",
+                subject: "4a736583-6660-4c0d-a6cf-85f9cc852403",
                 fieldTypes: [0, 1, 1],
                 fieldNames: ["Name", "ID", "Tag"],
                 fieldDefault: ["Blade", 0, 0]
             }
 
             //add_subject("Test", 437333289)
-            add_archetype("Foil", "Fencing", JSON.stringify(data))
-            get_subjects().then(data => console.log("sub", data))
-            get_archetypes().then(data => console.log(data))
+            //add_archetype(data)
+            //get_subjects().then(data => console.log("sub", data))
+            //get_archetypes().then(data => console.log(data))
         }
     }
 })

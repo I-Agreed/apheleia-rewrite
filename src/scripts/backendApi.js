@@ -91,7 +91,7 @@ export async function add_archetype(archetype) {
     let item = {
         name: archetype.name,
         subject_area: archetype.subject,
-        schema: { fieldNames: archetype.fieldNames, fieldTypes: archetype.fieldTypes, fieldDefault: archetype.fieldDefault }
+        schema: JSON.stringify({ fieldNames: archetype.fieldNames, fieldTypes: archetype.fieldTypes, fieldDefault: archetype.fieldDefault }).replaceAll("\"", "'")
     }
     await fetch(uri + "/archetypes", {
         method: "POST",
@@ -99,7 +99,7 @@ export async function add_archetype(archetype) {
             'Authorization': "Bearer " + localStorage["accessToken"],
             'Content-Type': 'application/json'
         },
-        json: item
+        body: JSON.stringify(item)
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     let data = response.json();
     archetype.dbId = data.id;
