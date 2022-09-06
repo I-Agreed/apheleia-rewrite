@@ -33,7 +33,7 @@ let users = [
     new User(444444444, "Rebecca", "Dam", roles[0]),
     new User(444444444, "Johnathan", "Min", roles[1]),
     new User(444444444, "Brendan", "Alcorn", roles[1]),
-    new User(444444444, "Kai", "Cao", roles[1]),
+    new User(437333289, "Kevin", "Cao", roles[1]),
     new User(444444444, "Klim", "Tsoutsman", roles[1]),
     new User(444444444, "John", "Smith", roles[1])
 ]
