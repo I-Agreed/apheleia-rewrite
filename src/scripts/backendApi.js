@@ -344,7 +344,7 @@ export async function get_roles(peopleStore) {
     let roles = [];
     for (let i = 0; i < data.length; i++) {
         let p = await get_role_perms(data[i].id);
-        roles.push(new Role(data[i].name, p, false, data[i].id));
+        roles.push(new Role(data[i].name, p, true, data[i].id));
     }
     return roles;
 }

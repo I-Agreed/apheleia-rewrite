@@ -30,8 +30,8 @@
                     <!-- List Headings -->
                     <q-item class="people-list-item">
                         <span class="list-id list-title">ID</span><q-separator vertical class="separator"/>
-                        <span>Last Name</span>                    <q-separator vertical class="separator"/>
-                        <span>First Name</span>                   <q-separator vertical class="separator"/>
+                        <!--<span>Last Name</span>                    <q-separator vertical class="separator"/>-->
+                        <!--<span>First Name</span>                   <q-separator vertical class="separator"/>-->
 
                         <span>Role</span>                         <q-separator vertical class="separator"/>
 
@@ -46,8 +46,8 @@
                     <q-item class="people-list-item"
                             v-for="person in peopleSt.users.filter((x) => searchFilter(x, search))">
                         <span class="list-id">{{ person.id }}</span><q-separator vertical class="separator"/>
-                        <span>{{ person.last_name }}</span>         <q-separator vertical class="separator"/>
-                        <span>{{ person.first_name }}</span>        <q-separator vertical class="separator"/>
+                        <!--<span>{{ person.last_name }}</span>         <q-separator vertical class="separator"/>-->
+                        <!--<span>{{ person.first_name }}</span>        <q-separator vertical class="separator"/>-->
 
                         <q-select v-model="person.role"
                                   option-label="name"
@@ -164,7 +164,8 @@
     }
 
     .people-manage-buttons {
-        height: 70%; width: 100%;
+        height: 80%; width: 100%;
+        font-size: 12px;
     }
 
     .remove-column {
