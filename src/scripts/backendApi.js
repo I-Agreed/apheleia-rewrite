@@ -126,7 +126,7 @@ export async function delete_archetype(id) {
 }
 
 // Modify Archetype
-export async function add_archetype(archetype) {
+export async function modify_archetype(archetype) {
     let item = {
         name: archetype.name,
         subject_area: archetype.subject,
