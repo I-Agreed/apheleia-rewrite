@@ -3,6 +3,7 @@
         <h5>Unread Notifications</h5>
         <!-- Notifications List -->
         <q-list bordered separator class="rounded-borders shadow-1" style="height: 100%;">
+            <!-- Notification item -->
             <q-item clickable
                    @click="notify = true;
                            selectedNotification = notification"

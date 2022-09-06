@@ -86,27 +86,6 @@
     const inventorySt = useInventory()
     const itemsLocalSt = itemsLocal()
     const selfSt = useSelf()
-
-    
-    // let columns = {}
-    /*
-    columns = {
-        schemename: [
-            {}, // field name
-            {},
-            {}
-        ]
-    }
-    */
-    // inventory.schemes.forEach(scheme => {
-    //     let key = scheme.name
-    //     columns.key = []
-    //     scheme.fieldNames.forEach(fieldName => {
-    //         columns.key.push({ name: fieldName, align: "center", label: fieldName, field: fieldName, sortable: true })
-    //     })
-    // })
-
-    // console.log(columns)
     
     const archetypeColumns = [
         { name: 'property', align: "center", label: "Property", field: "property", sortable: true },

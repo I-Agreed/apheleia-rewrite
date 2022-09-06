@@ -2,12 +2,16 @@
     <q-dialog>
         <q-card style="width: 100%;">
             <q-card-section class="wide-flexbox">
+                <!-- Title -->
                 <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
+
+                <!-- Close Button -->
                 <q-card-actions style="padding-bottom: 5%;" align="right">
                     <CloseButton/>
                 </q-card-actions>
             </q-card-section>
 
+            <!-- Lend to section -->
             <q-card-section class="q-pt-none">
             Lend to:
             </q-card-section>
@@ -16,6 +20,7 @@
                 <q-select outlined v-model="model" :options="options" />
             </q-card-section>
 
+            <!-- Lend until section -->
             <q-card-section class="q-pt-none">
             Lend until:
             </q-card-section>
@@ -24,6 +29,7 @@
                 <q-input v-model="time" filled type="date" />
             </q-card-section>
 
+            <!-- Buttons -->
             <q-card-actions align="right">
                 <q-btn flat label="Cancel" color="primary" v-close-popup />
                 <q-btn flat label="Lend" color="primary" v-close-popup @click="inventorySt.createLoan(itemsLocalSt.focused_item, model, time)" />

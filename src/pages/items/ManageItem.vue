@@ -28,7 +28,7 @@
 
                             <!-- Table -->
                             <div class="q-pa-md">
-                                <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" style="height: 79vh; margin-bottom: 1.5vh;" separator="cell" :rows-per-page-options="[0]">
+                                <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" style="height: 73vh; margin-bottom: 1.5vh;" separator="cell" :rows-per-page-options="[0]">
                                     <!-- Allows for custom html in each table slot -->
                                     <template v-slot:body="props">
                                         <q-tr :props="props">
@@ -77,13 +77,13 @@
                                 </q-table>
 
                                 <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
-                                    <div class="wide-flexbox" style="width: 20%;">
+                                    <div class="wide-flexbox" style="width: 30%;">
                                         <q-btn color="primary" label="New Item" class="manage-items-button" @click="inventorySt.createDefaultItem(archIndex)"/>
-                                        <q-btn color="primary" label="Edit Item Type" class="manage-items-button" @click="editArc = true; itemsSt.focused_archetype = scheme.name"/>
-                                        <q-btn color="red" label="Delete Item Type" class="manage-items-button" @click="deleteSelected = [archIndex]; confirmArch = true"/>
+                                        <q-btn color="primary" label="Edit Item Type" class="manage-items-button" @click="editArc = true; itemsSt.focused_archetype = scheme.name" style="margin-left: 10px;"/>
+                                        <q-btn color="red" label="Delete Item Type" class="manage-items-button" @click="deleteSelected = [archIndex]; confirmArch = true"  style="margin-left: 10px;"/>
                                     </div>
-                                    <div class="wide-flexbox" style="width: 3%;">
-                                        <q-btn color="primary" label="Exit" class="manage-items-button" v-close-popup/>
+                                    <div class="wide-flexbox" style="width: 5%;">
+                                        <q-btn color="primary" label="Exit" class="manage-items-button" v-close-popup style="width: 100%;"/>
                                     </div>
                                 </div>
                             </div>

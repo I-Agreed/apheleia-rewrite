@@ -22,11 +22,16 @@ export const itemsLocal = defineStore('itemsLocal', {
         tabbed_scheme() {return this.tabbedScheme}
     },
     actions: {
+        // Toggle manage menu
         toggle_manage() {this.showManageMenu = !this.showManageMenu},
         // show_manage() {this.showManageMenu = true},
+        // Hide manage menu
         hide_manage() {this.showManageMenu = false},
+        // Toggle Filters
         toggle_filters() {this.showFilters = !this.showFilters},
+        // Set tabbed archetype
         set_tabbed(scheme) { this.tabbedScheme = scheme; this.tabbedSchemeName = scheme.name },
+        // Set focused archetype
         set_focused_archetype(arch) { this.focused_archetype= arch }
         // show_filters() {this.showFilters = true},
         // hide_filters() {this.showFilters = false}

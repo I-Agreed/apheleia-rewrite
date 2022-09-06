@@ -7,7 +7,7 @@
                     <span></span>
                     <CloseButton/>
                 </div>
-                <q-table :rows="inventorySt.archetypeRows(itemsSt.focused_archetype)" :columns="archColumns" row-key="property" style="height: 83vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
+                <q-table :rows="inventorySt.archetypeRows(itemsSt.focused_archetype)" :columns="archColumns" row-key="property" style="height: 76vh;" separator="cell" :rows-per-page-options="[0]" hide-bottom>
                     <template v-slot:body="props">
                         <q-tr :props="props">
                             <!-- Modifying the rows of the property column to make them editable -->
@@ -129,8 +129,6 @@
         { name: 'defaultValue', align: "center", label: "Default Value", field: "defaultValue", sortable: true },
         { name: 'delete', field: "delete", headerStyle: 'width: 3%'}
     ]
-
-    
 
     export default defineComponent({
         name: 'Items',

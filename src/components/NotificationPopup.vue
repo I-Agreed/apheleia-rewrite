@@ -3,10 +3,12 @@
         <q-card style="height: 40%; margin: 6% 30%">
             <!-- Popup card body -->
             <div class="q-pa-md" style="padding: 0px 40px;">
+                <!-- Popup title -->
                 <div class="wide-flexbox">
                     <h5>{{ notification.title }}</h5>
                     <CloseButton />
                 </div>
+                <!-- Popup body -->
                 <div>
                     <p>{{ notification.body }}</p>
                 </div>

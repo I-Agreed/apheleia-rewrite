@@ -52,6 +52,7 @@ export const useSelf = defineStore('selfStore', {
         }
     },
     actions: {
+        // return current loans which are viewable bu the user
         currentLoansRows() {
             this.currentLoans = []
             inventorySt.history.loans.forEach(loan => {
@@ -60,6 +61,7 @@ export const useSelf = defineStore('selfStore', {
                 }
             })
 
+            // if the user has any perms, return all outgoing loans
             if(this.hasAnyPerm()) {
                 this.role.archetypePermissions.forEach(perms => {
                     if (perms.loan || perms.handBack) {
@@ -75,6 +77,8 @@ export const useSelf = defineStore('selfStore', {
 
             return [...new Set(this.currentLoans)]
         },
+
+        // retunn returned loans viewable by user
         historyLoansRows() {
             this.history.loans = []
             inventorySt.history.loans.forEach(loan => {
@@ -83,6 +87,7 @@ export const useSelf = defineStore('selfStore', {
                 }
             })
 
+            // is user has any perms, return all loans which are returned
             if(this.hasAnyPerm()) {
                 this.role.archetypePermissions.forEach(perms => {
                     if (perms.loan || perms.handBack) {
@@ -98,9 +103,13 @@ export const useSelf = defineStore('selfStore', {
 
             return [...new Set(this.history.loans)]
         },
+
+        // merge current and history loans
         allLoanRows() {
             return [...new Set(this.currentLoansRows().concat(this.historyLoansRows()))]
         },
+
+        // set notif as read
         readNotification(id) {
             this.user.history.notifications.forEach(notification => {
                 if (notification.id == id) {
@@ -108,6 +117,8 @@ export const useSelf = defineStore('selfStore', {
                 }
             })
         },
+
+        // check if user has any permissions
         hasAnyPerm() {
             let out = false;
             this.user.role.archetypePermissions.forEach(perms => {
@@ -122,6 +133,8 @@ export const useSelf = defineStore('selfStore', {
 
             return out;
         },
+
+        // update own role
         updateSelfRole() {
             peopleSt.roles.forEach(role => {
                 if (this.user.role.name == role.name) {
