@@ -102,6 +102,20 @@ export const usePeople = defineStore('peopleStore', {
         },
         getUserById(id) {
             return this.users.filter((x) => x.id == id)[0];
+        },
+        notifyLoanChange(newLoan) {
+            this.users.forEach(user => {
+                user.history.loans.forEach(loan => {
+                    if (loan.loanId == newLoan.loanId) {
+                        user.notify(new Notification(
+                            1,
+                            "Loan due date change",
+                            "The due date for one of your loans has changef from " + loan.dateDue + " to " newLoan.dateDue + ".")
+                        )
+                    }
+
+                })
+            })
         }
     }
 })

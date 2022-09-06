@@ -11,7 +11,7 @@
                         </div>
 
                         <!-- New Archetype Button -->
-                        <q-btn label="New Item Type" class="absolute-bottom" style="width: 100%;" @click="inventorySt.newArchetype()"/>
+                        <!-- <q-btn label="New Item Type" class="absolute-bottom" style="width: 100%;" @click="inventorySt.newArchetype()"/> -->
                     </q-tabs>
                 </template>
 

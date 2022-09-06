@@ -30,7 +30,10 @@
             <q-card-actions align="right">
                 <q-btn flat label="Return Now" color="primary" v-close-popup @click="inventorySt.returnItem(itemsLocalSt.focused_item)"/>
                 <q-btn flat label="Cancel" color="primary" v-close-popup />
-                <q-btn flat label="Save" color="primary" v-close-popup @click="inventorySt.editLendDates(itemsLocalSt.focused_item, model, time)" />
+                <q-btn flat label="Save" color="primary" v-close-popup
+                      @click="inventorySt.editLendDates(itemsLocalSt.focused_item, model, time)
+                              //peopleSt.notifyLoanChange()
+                              " />
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -45,7 +48,7 @@
     import { itemsLocal } from '../../stores/itemsLocal'
     import CloseButton from 'src/components/CloseButton.vue'
 
-    const people = usePeople()
+    const peopleSt = usePeople()
     const inventorySt = useInventory()
     const itemsLocalSt = itemsLocal()
 
@@ -58,7 +61,7 @@
             const options = ref(lendOptions)
 
             return {
-                peopleSt: people,
+                peopleSt,
                 inventorySt,
                 itemsLocalSt,
 
