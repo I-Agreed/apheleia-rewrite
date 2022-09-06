@@ -38,7 +38,8 @@
                         <span>Role</span>
                         <q-separator vertical class="separator"/>
 
-                        <span v-if="selfSt.user.role.managePeople == true"></span>
+                        <span class="remove-column" v-if="selfSt.user.role.managePeople == true"></span>
+                        <span class="remove-column" v-else></span>
                     </q-item>
                     <q-separator />
                     
@@ -56,12 +57,12 @@
                         <span v-else>{{ person.role.name }}</span>
                         <q-separator vertical class="separator"/>
 
-                        <q-btn color="red" label="Remove user"
+                        <q-btn color="red" label="Remove user" class="remove-column"
                               @click="removeUserPop = true;
                                       removeUserFirstName = person.first_name;
                                       removeUserLastName = person.last_name;"
                                v-if="selfSt.user.role.managePeople == true && selfSt.user.first_name != person.first_name"/>
-                        <span v-else></span>
+                        <span v-else class="remove-column"></span>
                     </q-item>
                 </q-list>
             </div>
@@ -141,7 +142,7 @@
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
-        align-items: center;
+        align-items: center; padding: 0;
     }
 
     .people-list-item > * {
@@ -159,5 +160,9 @@
 
     .people-manage-buttons {
         height: 70%; width: 100%;
+    }
+
+    .remove-column {
+        width: 10%;
     }
 </style>

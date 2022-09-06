@@ -81,7 +81,13 @@ export const useInventory = defineStore('inventoryStore', {
                 let outColumns = []
                     // Add the field names to the columns list
                 this.schemes[schemeId].fieldNames.forEach(fieldName => {
-                    outColumns.push({ name: this.stringToKey(fieldName), label: fieldName, field: this.stringToKey(fieldName), align: "center", sortable: true })
+                    outColumns.push({
+                        name: this.stringToKey(fieldName),
+                        label: fieldName,
+                        field: this.stringToKey(fieldName),
+                        align: "center",
+                        sortable: true
+                    })
                 })
 
                 // Add the last column for lending and return
@@ -135,7 +141,11 @@ export const useInventory = defineStore('inventoryStore', {
             let currentScheme = this.schemes[schemeId]
 
             for (let i = 0; i < currentScheme.fieldNames.length; i++) {
-                rows.push({ property: currentScheme.fieldNames[i], propertyType: getType(currentScheme.fieldTypes[i]), defaultValue: currentScheme.fieldDefault[i] })
+                rows.push({
+                    property: currentScheme.fieldNames[i],
+                    propertyType: getType(currentScheme.fieldTypes[i]),
+                    defaultValue: currentScheme.fieldDefault[i]
+                })
             }
 
             function getType(type) {
@@ -291,7 +301,15 @@ export const useInventory = defineStore('inventoryStore', {
         createLoan(itemId, user, due) {
             const d = new Date()
             
-            this.history.loans.push({id: "000000", name: this.getItemById(itemId).values[0], itemId: itemId, borrower: user, borrow: `${d.getFullYear()}-${("0" + (d.getMonth() + 1)).slice(-2)}-${("0" + d.getDate()).slice(-2)}`, due: due, return: ""})
+            this.history.loans.push({
+                id: "000000",
+                name: this.getItemById(itemId).values[0],
+                itemId: itemId,
+                borrower: user,
+                borrow: `${d.getFullYear()}-${("0" + (d.getMonth() + 1)).slice(-2)}-${("0" + d.getDate()).slice(-2)}`,
+                due: due,
+                return: ""
+            })
         },
 
         getItemById(itemId) {

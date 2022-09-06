@@ -7,7 +7,16 @@
                 <!-- Tabs -->
                 <template v-slot:before>
                     <q-tabs v-model="tab" vertical class="text-primary">
-                        <q-tab v-for="role in peopleSt.roles" :name="role.name" :label="role.name" />
+                        <q-tab v-for="role in originalRoles" :name="role.identifier" :label="role.name" />
+                        <q-btn label="New Role" class="absolute-bottom" style="width: 100%;"
+                              @click="peopleSt.newRole();
+                                      currentRoles = []
+                                      originalRoles = []
+                                      peopleSt.roles.forEach(role => {
+                                          originalRoles.push(role.copy())
+                                          currentRoles.push(role.copy())
+                                      })
+                              "/>
                     </q-tabs>
                 </template>
 
@@ -18,14 +27,16 @@
                         <span>
                             <!-- TODO: Help button -->
                             <!-- <HelpButton /> -->
-                            <CloseButton />
+                            <CloseButton @click="currentRoles = [];
+                                                 originalRoles.forEach(role => {currentRoles.push(role.copy())});"/>
                         </span>
                     </div>
 
                     <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
-                        <q-tab-panel v-for="role in currentRoles" :name="role.name" style="margin-left: 2vw; width: 94%;">
+                        <q-tab-panel v-for="role in currentRoles" :name="role.identifier" style="margin-left: 2vw; width: 94%;">
                             <div>
-                                <h3>{{ role.name }}</h3>
+                                <q-input v-model="role.name" style="font-size: xx-large; width: 20%;"
+                                        :rules="[val => (val.length != 0) || 'Please enter a role name!']"/>
 
                                 <q-list>
                                     <q-item class="archetype-rows">
@@ -86,11 +97,25 @@
                         <div class="wide-flexbox" style="width: 20%;">
                             <q-btn color="red" label="Revert" class="manage-users-button"
                                 @click="currentRoles = [];
-                                        originalRoles.forEach(role => {currentRoles.push(role.copy())})"/>
+                                        originalRoles.forEach(role => {currentRoles.push(role.copy())});"/>
                             <q-btn color="primary" label="Save and Exit" class="manage-users-button" v-close-popup
-                                @click="peopleSt.setRoles(currentRoles);
-                                        currentRoles.forEach(role => {originalRoles.push(role.copy())})
-                                        peopleSt.updateRoles()"
+                                  @click="invalid = false;
+                                          currentRoles.forEach(role => { invalid = (role.name.length == 0) ? true : false })
+                                          if (invalid == false) {
+                                              peopleSt.setRoles(currentRoles);
+                                              currentRoles.forEach(role => {
+                                                  role = role.copy() // Set role.identifier to role.name
+                                                  originalRoles.push(role.copy())
+                                              });
+                                              peopleSt.updateRoles();
+                                          }
+
+                                          currentRoles = []
+                                          originalRoles = []
+                                          peopleSt.roles.forEach(role => {
+                                              originalRoles.push(role.copy())
+                                              currentRoles.push(role.copy())
+                                          })"
                             />
                         </div>
                     </div>
@@ -107,6 +132,7 @@
     import { useInventory } from 'src/stores/useInventory'
 
     import CloseButton from '../../components/CloseButton.vue'
+    import { Role } from 'src/scripts/objects'
 
     const peopleSt = usePeople()
     const inventorySt = useInventory()
@@ -133,7 +159,9 @@
                 currentRoles: ref(currentRoles),
 
                 tab: ref(tab),
-                splitterModel: ref(10)
+                splitterModel: ref(10),
+
+                invalid: ref(false)
             }
         }
     })

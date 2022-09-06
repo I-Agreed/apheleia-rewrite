@@ -75,10 +75,11 @@ export class ArchetypePermissions {
 }
 
 export class Role {
-    constructor(name = "", archetypePermissions = new ArchetypePermissions(), managePeople = false) {
+    constructor(name = "", archetypePermissions = new Array(new ArchetypePermissions()), managePeople = false) {
         this.name = name
         this.archetypePermissions = archetypePermissions // An list of ArchetypePermissions for each archetype
         this.managePeople = managePeople
+        this.identifier = name
     }
 
     // Get the ArchetypePermissions for an archetype by name

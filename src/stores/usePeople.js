@@ -44,7 +44,7 @@ export const usePeople = defineStore('peopleStore', {
     },
     actions: {
         setRoles(roles) {
-            this.roles.length = 0
+            this.roles = []
             roles.forEach(role => {
                 this.roles.push(role.copy())
             })
@@ -54,17 +54,17 @@ export const usePeople = defineStore('peopleStore', {
                 // First sort by (a.role.name > b.role.name ), true = swap
                 // If false, then sort by (a.last_name > b.last_name), true = swap
                 // If also false, then sort by (a.first_name > b.first_name)
-                return a.role.name  > b.role.name  ||
-                       a.last_name  > b.last_name  ||
-                       a.first_name > b.first_name
+                return a.role.name.localeCompare(b.role.name)  ||
+                       a.last_name.localeCompare(b.last_name)  ||
+                       a.first_name.localeCompare(b.first_name)
             })
         },
         updateRoles() {
             // Update user.role for each user
             this.users.forEach(user => {
                 this.roles.forEach(role => {
-                    if (role.name == user.role.name) {
-                        user.role = role
+                    if (role.identifier == user.role.name) {
+                        user.role = role.copy()
                     }
                 })
             })
@@ -84,6 +84,15 @@ export const usePeople = defineStore('peopleStore', {
             else {
                 console.log("Error! usePeople.js usePeople actions removeUser(firstName, lastName) could not find the user by name")
             }
+        },
+        newRole() {
+            var archetypePerms = []
+            for (let i = 0; i < inventorySt.schemes.length; ++i) {
+                archetypePerms.push(new ArchetypePermissions(inventorySt.schemes[i].name, false, false, false))
+                console.log("HELLO WORLD")
+            }
+            
+            this.roles.push(new Role("New Role"), archetypePerms)
         }
     }
 })
