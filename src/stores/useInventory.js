@@ -345,6 +345,10 @@ export const useInventory = defineStore('inventoryStore', {
             return this.schemes.filter((x) => x.dbId === archId)[0];
         },
 
+        getArchetypeByName(archName) {
+            return this.schemes.filter((x) => x.name === archName)[0];
+        },
+
         getSubjectById(subId) {
             return this.schemes.filter((x) => x.dbId === archId)[0];
         },

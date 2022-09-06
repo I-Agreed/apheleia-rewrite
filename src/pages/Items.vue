@@ -12,11 +12,11 @@
                     </div>
 
                     <!-- Buttons -->
-                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab).edit">
+                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab, inventorySt).edit">
                         <q-btn color="primary" label="Print Items" class="item-function-buttons"
                               @click="create_pdf(inventorySt.schemes)"/>
                     </div>
-                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab).edit">
+                    <div class="col-2" v-if="selfSt.user.role.getArchetypePerms(tab, inventorySt).edit">
                         <q-btn color="primary" label="Manage Items" class="item-function-buttons"
                               @click="manage = true"/>
                     </div>
@@ -48,10 +48,10 @@
                                     <q-td :props="props">
                                         <q-btn color="primary" label="Lend Item"
                                               @click="lend = true; itemsLocalSt.focused_item = props.row.itemId"
-                                               v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).loan" />
+                                               v-if="!inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab, inventorySt).loan" />
                                         <q-btn color="black" label="Edit Loan"
                                               @click="editLend = true; itemsLocalSt.focused_item = props.row.itemId"
-                                               v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab).handBack"/>
+                                               v-if="inventorySt.history.checkIfLoaned(props.row.itemId) && selfSt.user.role.getArchetypePerms(tab, inventorySt).handBack"/>
                                     </q-td>
                                 </template>
                             </q-table>

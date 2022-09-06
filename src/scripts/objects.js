@@ -81,11 +81,12 @@ export class Role {
     }
 
     // Get the ArchetypePermissions for an archetype by name
-    getArchetypePerms(arch) {
+    getArchetypePerms(arch, invStore) {
         let outPerms;
+        let id = invStore.getArchetypeByName(arch).dbId;
         // Loop through the role's archetype_permissions and return the one corresponding to a certain Archetype (by name)
         this.archetypePermissions.forEach(archetypePermission => {
-            if (archetypePermission.arch === arch) {
+            if (archetypePermission.arch === id) {
                 outPerms = archetypePermission
             }
         });

@@ -7,7 +7,7 @@
                 <template v-slot:before>
                     <q-tabs v-model="tab2" vertical class="text-primary">
                         <div v-for="scheme in inventorySt.schemes">
-                            <q-tab :name="scheme.name" :label="scheme.name" v-if="selfSt.role.getArchetypePerms(scheme.name).edit"/>
+                            <q-tab :name="scheme.name" :label="scheme.name" v-if="selfSt.role.getArchetypePerms(scheme.name, inventorySt).edit"/>
                         </div>
 
                         <!-- New Archetype Button -->
