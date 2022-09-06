@@ -69,44 +69,20 @@ export const usePeople = defineStore('peopleStore', {
                 })
             })
         },
-        updateUser(firstName, lastName, roleName) {
-            // Find the role in the store with a matching role name
-            selectedRole = new Role("INVALID_ROLE")
-            this.roles.forEach(role => {
-                if (role.name == roleName) {
-                    selectedRole = role.copy()
-                }
-            })
-
-            if (selectedRole.name != "INVALID_ROLE") {
-                selectedUser = new User(-1, "INVALID_USER")
-                userIndex = -1
-
-                // Find index of matching user in the store by name
-                for (let i = 0; i < this.users.length; ++i) {
-                    if (user.first_name == firstName && user.last_name == lastName) {
-                        selectedUser = user.copy()
-                        userIndex = i
-                        break
-                    }
-                }
-
-                if (selectedUser.firstName != "INVALID_USER" && selectedUser.id != -1 && userIndex != -1) {
-                    this.users.splice(userIndex, 1) // Remove the user from the store
-
-                    // Give the user the new role and add them to the store
-                    selectedUser.role = selectedRole
-                    this.users.push(selectedUser)
-
-                    updateRoles()
-                    sortUsers()
-                }
-                else {
-                    console.log("Error! usePeople.js usePeople actions updateUser(firstName, lastName, roleName) could not find the user by name")
+        removeUser(firstName, lastName) {
+            let userIndex = -1
+            for (let i = 0; i < this.users.length; ++i) {
+                if (this.users[i].first_name == firstName && this.users[i].last_name == lastName) {
+                    userIndex = i
+                    break
                 }
             }
+
+            if (userIndex != -1) {
+                this.users.splice(userIndex, 1) // Remove the user
+            }
             else {
-                console.log("Error! usePeople.js usePeople actions updateUser(firstName, lastName, roleName) could not find the role by roleName")
+                console.log("Error! usePeople.js usePeople actions removeUser(firstName, lastName) could not find the user by name")
             }
         }
     }

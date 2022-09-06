@@ -17,7 +17,7 @@
                         <h3>Manage Roles</h3>
                         <span>
                             <!-- TODO: Help button -->
-                            <HelpButton />
+                            <!-- <HelpButton /> -->
                             <CloseButton />
                         </span>
                     </div>

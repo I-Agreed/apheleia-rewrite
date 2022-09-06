@@ -122,6 +122,13 @@ export const useSelf = defineStore('selfStore', {
 
             return out;
         },
+        updateSelfRole() {
+            peopleSt.roles.forEach(role => {
+                if (this.user.role.name == role.name) {
+                    this.user.role = role
+                }
+            })
+        },
 
         // For presentation
         becomeUser(name) {

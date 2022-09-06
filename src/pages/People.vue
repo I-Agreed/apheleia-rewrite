@@ -17,12 +17,12 @@
                     <div class="col-2" style="width: 45%; margin-right: auto;"
                          v-if="selfSt.user.role.managePeople == true">
                         <q-btn color="primary" label="Manage Roles" class="people-manage-buttons"
-                              @click="manage = true"/>
+                              @click="managePop = true"/>
                     </div>
                     <div class="col-2" style="width: 45%;"
                          v-if="selfSt.user.role.managePeople == true">
                         <q-btn color="primary" label="Invite Users" class="people-manage-buttons"
-                              @click="invite = true"/>
+                              @click="invitePop = true"/>
                     </div>
                 </span>
             </div>
@@ -36,43 +36,41 @@
                         <span>Last Name</span>                    <q-separator vertical class="separator"/>
                         <span>First Name</span>                   <q-separator vertical class="separator"/>
                         <span>Role</span>
+                        <q-separator vertical class="separator"/>
+
+                        <span v-if="selfSt.user.role.managePeople == true"></span>
                     </q-item>
                     <q-separator />
                     
+                    <!-- Note: Used 'person in peopleSt.users' over 'user in peopleSt.users' to differentiate between 'user' and 'selfSt.user' -->
                     <q-item class="people-list-item"
-                            v-for="user in users">
-                        <span class="list-id">{{ user.id }}</span><q-separator vertical class="separator"/>
-                        <span>{{ user.last_name }}</span>         <q-separator vertical class="separator"/>
-                        <span>{{ user.first_name }}</span>        <q-separator vertical class="separator"/>
-                        <!-- @input-value Pass in the user's first and last name and their updated role (by name) to the People store to get updated -->
-                        <q-select v-model="nameToRoles[user.first_name + user.last_name]" :options="roles"
-                                 @click="peopleSt.updateUser(user.first_name, user.last_name, nameToRoles[user.first_name + user.last_name]);
-                                         peopleSt.updateRoles()"
-                                  v-if="selfSt.user.role.managePeople == true"/>
-                        <span     v-else>{{ user.role.name }}</span>
+                            v-for="person in peopleSt.users">
+                        <span class="list-id">{{ person.id }}</span><q-separator vertical class="separator"/>
+                        <span>{{ person.last_name }}</span>         <q-separator vertical class="separator"/>
+                        <span>{{ person.first_name }}</span>        <q-separator vertical class="separator"/>
+                        <!-- Only show the change role select if the current user can managePeople,
+                             they aren't changing their own role -->
+                        <q-select v-model="person.role" :options="peopleSt.roles" option-label="name"
+                                  v-if="selfSt.user.role.managePeople == true &&
+                                        selfSt.user.first_name != person.first_name"/>
+                        <span v-else>{{ person.role.name }}</span>
+                        <q-separator vertical class="separator"/>
+
+                        <q-btn color="red" label="Remove user"
+                              @click="removeUserPop = true;
+                                      removeUserFirstName = person.first_name;
+                                      removeUserLastName = person.last_name;"
+                               v-if="selfSt.user.role.managePeople == true && selfSt.user.first_name != person.first_name"/>
+                        <span v-else></span>
                     </q-item>
                 </q-list>
-                <!-- <q-table :rows="peopleSt.users.filter((x) => searchFilter(x, search))" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
-                <!-- <q-table :rows="peopleSt.users" :columns="columns" row-key="name" style="height: 100%;" separator="cell" :rows-per-page-options="[0]"> -->
-                    <!-- Roles selection box -->
-                    <!-- <template v-slot:body-cell-role="props">
-                        <q-td :props="props">
-                            <div>
-                                <q-select filled v-model="roles" :options="roles"/>
-                            </div>
-                        </q-td> -->
-                        <!-- Delete user -->
-                        <!-- <q-td :props="props">
-                            <q-btn color="red" label="Remove user" @click="peopleSt.removeUser()"/>
-                        </q-td>
-                    </template>
-                </q-table> -->
             </div>
         </div>
 
         <!-- Popups -->
-        <InviteUsers url="https://apheleia-rewrite.pages.dev/1bh3tg" v-model="invite"/>
-        <ManageUsers v-model="manage" />
+        <InviteUsers url="https://apheleia-rewrite.pages.dev/1bh3tg" v-model="invitePop"/>
+        <ManageRoles v-model="managePop" />
+        <ConfirmRemoveUser v-model="removeUserPop" :firstName="removeUserFirstName" :lastName="removeUserLastName" />
     </q-page>
 </template>
   
@@ -84,50 +82,33 @@
 
     import CloseButton from '../components/CloseButton.vue'
     import InviteUsers from './users/InviteUsers.vue'
-    import ManageUsers from './users/ManageUsers.vue'
+    import ManageRoles from './users/ManageRoles.vue'
+    import ConfirmRemoveUser from './users/ConfirmRemoveUser.vue'
 
     const peopleSt = usePeople()
     const selfSt = useSelf()
 
     peopleSt.sortUsers()
 
-    // const columns = [
-    //     { name: 'id',         headerStyle: 'width: 12%', align: "center", label: "School ID",  field: "id",         sortable: true },
-    //     { name: 'first_name', headerStyle: 'width: 30%', align: "center", label: "First Name", field: "first_name", sortable: true },
-    //     { name: 'last_name',  headerStyle: 'width: 30%', align: "center", label: "Last Name",  field: "last_name",  sortable: true },
-    //     { name: 'role',       headerStyle: 'width: 20%', align: "center", label: "Role",       field: "roles",      sortable: true }
-    // ]
-
-    // const rows = []
-
-    let users = []
-    let roles = []
-    let nameToRoles = {} // Stores the user's name (e.g JohnSmith) as a key to their role's name (e.g Teacher)
-    
-    peopleSt.users.forEach(user => {users.push(user)})
-    peopleSt.roles.forEach(role => {roles.push(role.name)})
-    peopleSt.users.forEach(user => {nameToRoles[user.first_name + user.last_name] = user.role.name})
+    let removeUserFirstName = ''
 
     export default defineComponent({
         name: 'People',
-        components: { CloseButton, InviteUsers, ManageUsers },
+        components: { CloseButton, InviteUsers, ManageRoles, ConfirmRemoveUser },
         setup () {
             return {
                 selfSt,
                 peopleSt,
 
-                invite: ref(false),
-                manage: ref(false),
-                tab: ref('role1'),
-                splitterModel: ref(10),
-                // columns,
-                // rows,
+                invitePop: ref(false),
+                managePop: ref(false),
+                removeUserPop: ref(false),
+
+                removeUserFirstName: ref(''),
+                removeUserLastName: ref(''),
 
 
-                search: ref(""),
-                users: ref(users),
-                roles: ref(roles),
-                nameToRoles: ref (nameToRoles)
+                search: ref("")
 
                 // searchFilter(item, param) {
                 //     // searches through all properties of the item, lowercasing and removing accents as well, might put this on other searches
