@@ -9,7 +9,7 @@ const authConfig = {
 
 const clientConfig = {
     client_id: "apheleia",
-    redirect_uri: "https://apheleia-rewrite.pages.dev/callback",
+    redirect_uri: "http://localhost:8080/callback",
     scope: "all-ro" // "all read-only" (only scope)
 }
 
