@@ -30,9 +30,6 @@
 
                             <!-- Table -->
                             <div class="q-pa-md">
-<<<<<<< HEAD
-                                <q-table :rows="inventorySt.rows(scheme.name)" :columns="inventorySt.columns(scheme.name)" row-key="name" style="height: 73vh; margin-bottom: 1.5vh;" separator="cell" :rows-per-page-options="[0]">
-=======
                                 <q-table row-key="name"
                                          style="height: 79vh; margin-bottom: 1.5vh;"
                                          separator="cell"
@@ -40,7 +37,6 @@
                                         :columns="inventorySt.columns(scheme.name)"
                                         :rows-per-page-options="[0]">
 
->>>>>>> 771e4f3d407b429780f9088388a1ceb7601bbe48
                                     <!-- Allows for custom html in each table slot -->
                                     <template v-slot:body="props">
                                         <q-tr :props="props">
@@ -109,15 +105,6 @@
 
                                 <!-- Footer -->
                                 <div style="display: flex; flex-flow: row nowrap; align-content: baseline; justify-content: space-between;">
-<<<<<<< HEAD
-                                    <div class="wide-flexbox" style="width: 30%;">
-                                        <q-btn color="primary" label="New Item" class="manage-items-button" @click="inventorySt.createDefaultItem(archIndex)"/>
-                                        <q-btn color="primary" label="Edit Item Type" class="manage-items-button" @click="editArc = true; itemsSt.focused_archetype = scheme.name" style="margin-left: 10px;"/>
-                                        <q-btn color="red" label="Delete Item Type" class="manage-items-button" @click="deleteSelected = [archIndex]; confirmArch = true"  style="margin-left: 10px;"/>
-                                    </div>
-                                    <div class="wide-flexbox" style="width: 5%;">
-                                        <q-btn color="primary" label="Exit" class="manage-items-button" v-close-popup style="width: 100%;"/>
-=======
                                     <div class="wide-flexbox" style="width: 40%;">
                                         <q-btn color="primary" label="New Item"         class="manage-items-button" @click="inventorySt.createDefaultItem(archIndex)"/>
                                         <q-btn color="primary" label="Edit Item Type"   class="manage-items-button" @click="editArc = true; itemsSt.focused_archetype = scheme.name"/>
@@ -126,7 +113,6 @@
 
                                     <div class="wide-flexbox" style="width: 3%;">
                                         <q-btn color="primary" label="Exit" class="manage-items-button" v-close-popup/>
->>>>>>> 771e4f3d407b429780f9088388a1ceb7601bbe48
                                     </div>
                                 </div>
                             </div>

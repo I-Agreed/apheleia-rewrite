@@ -61,12 +61,8 @@ export const useSelf = defineStore('selfStore', {
                 }
             })
 
-<<<<<<< HEAD
             // if the user has any perms, return all outgoing loans
-            if(this.hasAnyPerm()) {
-=======
             if (this.hasAnyPerm()) {
->>>>>>> 771e4f3d407b429780f9088388a1ceb7601bbe48
                 this.role.archetypePermissions.forEach(perms => {
                     if (perms.loan || perms.handBack) {
                         inventorySt.history.loans.forEach(loan => {
@@ -91,12 +87,7 @@ export const useSelf = defineStore('selfStore', {
                 }
             })
 
-<<<<<<< HEAD
-            // is user has any perms, return all loans which are returned
-            if(this.hasAnyPerm()) {
-=======
             if (this.hasAnyPerm()) {
->>>>>>> 771e4f3d407b429780f9088388a1ceb7601bbe48
                 this.role.archetypePermissions.forEach(perms => {
                     if (perms.loan || perms.handBack) {
                         inventorySt.history.loans.forEach(loan => {

@@ -227,7 +227,7 @@ export const useInventory = defineStore('inventoryStore', {
                     this.schemes[archetypeIndex].fieldDefault[fieldIndex] = true
                     break;
             }
-            
+
             // Change the items field to the default
             for (let i = 0; i < this.schemes[archetypeIndex].items.length; i++) {
                 if (type != "selection") {
@@ -368,9 +368,6 @@ export const useInventory = defineStore('inventoryStore', {
             return this.schemes.filter((x) => x.dbId === archId)[0];
         },
 
-<<<<<<< HEAD
-        // edit loan dates for a loan
-=======
         getArchetypeByName(archName) {
             return this.schemes.filter((x) => x.name === archName)[0];
         },
@@ -379,7 +376,6 @@ export const useInventory = defineStore('inventoryStore', {
             return this.schemes.filter((x) => x.dbId === archId)[0];
         },
 
->>>>>>> 771e4f3d407b429780f9088388a1ceb7601bbe48
         editLendDates(itemId, borrow, due) {
             for (let i = 0; i < this.history.loans.length; i++) {
                 if (this.history.loans[i].itemId === itemId) {

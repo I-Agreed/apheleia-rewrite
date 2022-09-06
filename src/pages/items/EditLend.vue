@@ -51,7 +51,7 @@
     const inventorySt = useInventory()
     const itemsLocalSt = itemsLocal()
 
-    const lendOptions = people.users.map(user => `${user.first_name} ${user.last_name}`)
+    const lendOptions = peopleSt.users.map(user => `${user.first_name} ${user.last_name}`)
 
     export default defineComponent({
         name: 'Editlend',
