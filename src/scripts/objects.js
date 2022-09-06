@@ -90,14 +90,16 @@ export class Role {
                 outPerms = archetypePermission
             }
         });
-
+        if (outPerms === undefined) {
+            outPerms = new ArchetypePermissions(id, false, false, false);
+        }
         return outPerms
     }
 
     canEdit() {
         let foundAnyEditable = false
         this.archetypePermissions.forEach(archetypePermission => {
-            if (archetypePermission.edit == true) {
+            if (archetypePermission !== undefined && archetypePermission.edit == true) {
                 foundAnyEditable = true
             }
         })
