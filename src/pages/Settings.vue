@@ -33,7 +33,7 @@
                 <q-btn color="primary" label="Become User"
                       @click="selfSt.becomeUser(activeUser)"/>
                 <q-select outlined v-model="activeUser"
-                         :options="becomeOptions" />
+                         :options="peopleSt.users.map(user => user.first_name)" />
             </div>
         </div>
     </q-page>
@@ -52,8 +52,6 @@
     const selfSt     = useSelf()
     const settingsSt = useSettings()
     const peopleSt   = usePeople()
-
-    const becomeOptions = peopleSt.users.map(user => user.first_name)
     
     let originalSettings = settingsSt.notificationSettings.copy()
     let currentSettings  = settingsSt.notificationSettings.copy()
@@ -64,11 +62,11 @@
             return {
                 selfSt,
                 settingsSt,
+                peopleSt,
 
                 originalSettings: ref(originalSettings),
                 currentSettings: ref(currentSettings),
 
-                becomeOptions: ref(becomeOptions),
                 activeUser: ref('')
             }
         }

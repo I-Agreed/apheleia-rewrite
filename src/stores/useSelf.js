@@ -115,7 +115,7 @@ export const useSelf = defineStore('selfStore', {
         hasAnyPerm() {
             let out = false;
             this.user.role.archetypePermissions.forEach(perms => {
-                if (perms.loan || perms.handBack || perms.Edit) {
+                if (perms.loan || perms.handBack || perms.edit) {
                     out = true
                 }
             })

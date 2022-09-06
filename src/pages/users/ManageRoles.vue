@@ -132,6 +132,7 @@
     import { useInventory } from 'src/stores/useInventory'
 
     import CloseButton from '../../components/CloseButton.vue'
+    import { Role } from 'src/scripts/objects'
 
     const peopleSt = usePeople()
     const inventorySt = useInventory()

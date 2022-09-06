@@ -39,6 +39,7 @@
                         <q-separator vertical class="separator"/>
 
                         <span class="remove-column" v-if="selfSt.user.role.managePeople == true"></span>
+                        <span class="remove-column" v-else></span>
                     </q-item>
                     <q-separator />
                     
@@ -141,7 +142,7 @@
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
-        align-items: center;
+        align-items: center; padding: 0;
     }
 
     .people-list-item > * {
