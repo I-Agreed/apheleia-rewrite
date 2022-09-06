@@ -12,7 +12,11 @@
             </div>
             <div style="margin-top: 1vh;">
                 <p style="margin-bottom: 0.2vh;">Send Notifications to:</p>
-                <q-input filled v-model="currentSettings.email" label="email" style="width: 30vw;"/>
+                <q-input filled v-model="currentSettings.email" label="email" style="width: 30vw;">
+                    <template v-slot:before>
+                        <q-icon name="mail" />
+                    </template>
+                </q-input>
                 <p v-if="settingsSt.validEmail(currentSettings.email) == false" red>Invalid Email!</p>
             </div>
 

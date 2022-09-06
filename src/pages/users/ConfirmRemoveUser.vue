@@ -8,7 +8,7 @@
 
             <q-card-actions align="right">
                 <q-btn flat label="Cancel" color="primary" v-close-popup />
-                <q-btn flat label="Delete" color="red" v-close-popup @click="peopleSt.deleteArchetype(deleteSelected[0]); tab2 = inventorySt.schemes[0].name"/>
+                <q-btn flat label="Delete" color="red" v-close-popup @click="peopleSt.removeUser(firstName, lastName)"/>
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -21,7 +21,9 @@
 
     export default {
         setup() {
-            peopleSt
+            return {
+                peopleSt
+            }
         },
         props: {
             firstName: String,
