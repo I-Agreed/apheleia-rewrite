@@ -1,7 +1,12 @@
+import { useInventory } from "src/stores/useInventory";
+import { Item } from "src/scripts/objects"
+
 const uri = "http://localhost:8000"
 
 // all functions here should return false upon failure
 // 'get' functions return data upon success and others should return true
+
+const inventorySt = useInventory()
 
 // Get list of items
 export async function get_items() {
@@ -13,17 +18,18 @@ export async function get_items() {
             'Accept': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
+    let data = response.json();
     console.log(response);
-    return response.json();
+    let items = data.map((x) => new Item(inventorySt.getArchetypeById(x.archetype, x.archetype_data, x.id)));
+    return items;
 }
 
-// Add new item
-export async function add_item(note, archetype, archetypeData) {
+// Add new item 
+export async function add_item(item) {
     let item = {
-        note: note,
-        archetype: archetype,
-        archetype_data: archetypeData
+        note: "",
+        archetype: item.archetype.dbId,
+        archetype_data: item.archetypeData
     }
     await fetch(uri + "/items", {
         method: "POST",
@@ -33,8 +39,9 @@ export async function add_item(note, archetype, archetypeData) {
         },
         json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
+    let data = response.json();
     console.log(response);
+    item.dbId = data.id;
     return true;
 }
 

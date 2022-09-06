@@ -15,7 +15,7 @@ export const useInventory = defineStore('inventoryStore', {
             // Schemes, meaning archetypes
             schemes: [
                 new Archetype("Foil", "Fencing", [0, 2], ["Tag", "Blade Condition"], ["#000", [{ value: "Perfect" }, { value: "Minor Damage" }, { value: "Needs Immediate Repair" }]], [
-                    ["#F001", "Perfect"], 
+                    ["#F001", "Perfect"],
                     ["#F002", "Perfect"],
                     ["#F003", "Perfect"],
                     ["#F004", "Perfect"],
@@ -27,7 +27,9 @@ export const useInventory = defineStore('inventoryStore', {
                     ["#F010", "Perfect"]
                 ]),
 
-                new Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }], [{ value: "Functional" }, { value: "Inconsistent" }, { value: "Broken" }]], [
+                new Archetype("Sabre", "Fencing", [0, 1, 2, 2], ["Name", "Tag", "Blade Condition", "Wire Condition"], ["Item", "000", [{ value: "Perfect" }, { value: "Needs Immediate Repair" }],
+                    [{ value: "Functional" }, { value: "Inconsistent" }, { value: "Broken" }]
+                ], [
                     ["name1", "#S001", "Perfect", "Functional"],
                     ["name2", "#S002", "Perfect", "Inconsistent"],
                     ["name3", "#S003", "Perfect", "Inconsistent"],
@@ -51,7 +53,7 @@ export const useInventory = defineStore('inventoryStore', {
                     ["RED-H74", true, "2022-02-02"]
                 ])
             ],
-            history: new GlobalHistory([{id: "000000", name: "#F001", itemId: "Foil1", borrower: "John Smith", borrow: "2022-02-02", due: "2022-03-02", return: ""}]),
+            history: new GlobalHistory([{ id: "000000", name: "#F001", itemId: "Foil1", borrower: "John Smith", borrow: "2022-02-02", due: "2022-03-02", return: "" }]),
             focusedSelection: ""
         }
     },
@@ -106,13 +108,13 @@ export const useInventory = defineStore('inventoryStore', {
             if (schemeId != -1) {
                 let outRows = []
                 let currentScheme = this.schemes[schemeId]
-                // Add the item data to the rows
-                // Loop through all the items
+                    // Add the item data to the rows
+                    // Loop through all the items
                 for (let i = 0; i < currentScheme.items.length; ++i) {
                     // Create an item
                     let item = currentScheme.items[i]
                     let outItem = {};
-                    
+
                     // Populate the item with { fieldName1: value1, fieldName2: value2... }
                     for (let i = 0; i < currentScheme.fieldNames.length; i++) {
                         let key = this.stringToKey(currentScheme.fieldNames[i])
@@ -197,18 +199,18 @@ export const useInventory = defineStore('inventoryStore', {
 
         setArchetypePropertyType(archetypeIndex, fieldIndex, type) {
             const typeTable = { "text": 0, "number": 1, "selection": 2, "date": 3, "checkbox": 4 }
-            
+
             switch (type) {
-                case "text": 
+                case "text":
                     this.schemes[archetypeIndex].fieldDefault[fieldIndex] = "Text"
                     break;
-                
+
                 case "number":
                     this.schemes[archetypeIndex].fieldDefault[fieldIndex] = 0
                     break;
 
                 case "selection":
-                    this.schemes[archetypeIndex].fieldDefault[fieldIndex] = [{value: "Option 1"}, {value: "Option 2"}]
+                    this.schemes[archetypeIndex].fieldDefault[fieldIndex] = [{ value: "Option 1" }, { value: "Option 2" }]
                     break;
 
                 case "date":
@@ -235,7 +237,7 @@ export const useInventory = defineStore('inventoryStore', {
             this.schemes[archetypeIndex].fieldDefault[fieldIndex] = value;
         },
 
-        modifyArchetypeDefaultFieldSelection(archetypeIndex, fieldIndex, selectionIndex, value) {      
+        modifyArchetypeDefaultFieldSelection(archetypeIndex, fieldIndex, selectionIndex, value) {
             for (let i = 0; i < this.schemes[archetypeIndex].items.length; i++) {
                 if (this.schemes[archetypeIndex].items[i].values[fieldIndex] === this.focusedSelection) {
                     this.schemes[archetypeIndex].items[i].values[fieldIndex] = value
@@ -287,9 +289,11 @@ export const useInventory = defineStore('inventoryStore', {
         },
 
         newArchetype() {
-            this.schemes.push(new Archetype(`Archetype ${this.schemes.length + 1}`, "Fencing", [0, 1], ["Property 1", "Property 2"], ["Default Value", 0], [["Default Value", 0]]))
+            this.schemes.push(new Archetype(`Archetype ${this.schemes.length + 1}`, "Fencing", [0, 1], ["Property 1", "Property 2"], ["Default Value", 0], [
+                ["Default Value", 0]
+            ]))
         },
-        
+
         create_item(archetypeId, fields) {
             this.schemes.forEach(scheme => {
                 if (archetypeId == scheme.id) {
@@ -300,7 +304,7 @@ export const useInventory = defineStore('inventoryStore', {
 
         createLoan(itemId, user, due) {
             const d = new Date()
-            
+
             this.history.loans.push({
                 id: "000000",
                 name: this.getItemById(itemId).values[0],
@@ -336,9 +340,13 @@ export const useInventory = defineStore('inventoryStore', {
             return outLoan
         },
 
+        getArchetypeById(archId) {
+            return this.schemes.filter((x) => x.dbId === archId)[0];
+        },
+
         editLendDates(itemId, borrow, due) {
             for (let i = 0; i < this.history.loans.length; i++) {
-                if(this.history.loans[i].itemId === itemId) {
+                if (this.history.loans[i].itemId === itemId) {
                     this.history.loans[i].borrow = borrow
                     this.history.loans[i].due = due
                 }
@@ -349,7 +357,7 @@ export const useInventory = defineStore('inventoryStore', {
             const d = new Date()
 
             for (let i = 0; i < this.history.loans.length; i++) {
-                if(this.history.loans[i].itemId === itemId) {
+                if (this.history.loans[i].itemId === itemId) {
                     this.history.loans[i].return = `${d.getFullYear()}-${("0" + (d.getMonth() + 1)).slice(-2)}-${("0" + d.getDate()).slice(-2)}`
                 }
             }
