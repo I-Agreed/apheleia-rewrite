@@ -69,7 +69,7 @@ export const useSelf = defineStore('selfStore', {
                 this.role.archetypePermissions.forEach(perms => {
                     if (perms.loan || perms.handBack) {
                         inventorySt.history.loans.forEach(loan => {
-                            console.log(loan)
+                            if(!inventorySt.getItemById(loan.itemId)) return;
                             if(inventorySt.getItemById(loan.itemId).arch === perms.arch && loan.return === "") {
                                 this.currentLoans.push(loan)
                             }
@@ -92,6 +92,7 @@ export const useSelf = defineStore('selfStore', {
                 this.role.archetypePermissions.forEach(perms => {
                     if (perms.loan || perms.handBack) {
                         inventorySt.history.loans.forEach(loan => {
+                            if(!inventorySt.getItemById(loan.itemId)) return;
                             if(inventorySt.getItemById(loan.itemId).arch === perms.arch && loan.return != "") {
                                 this.currentLoans.push(loan)
                             }

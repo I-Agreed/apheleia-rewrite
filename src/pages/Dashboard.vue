@@ -18,9 +18,13 @@
   
 <script>
     import { defineComponent } from 'vue'
+    import { useInventory } from '../stores/useInventory.js'
     import LoansPanel from './dashboard/Loans.vue'
     import HistoryPanel from './dashboard/History.vue'
     import NotificationsPanel from './dashboard/Notifications.vue'
+
+    const inventorySt = useInventory()
+    inventorySt.updateArchetypes()
     
     const columns = [
         { name: 'name', align: "center", label: "Item", field: row => row.name, sortable: true },
