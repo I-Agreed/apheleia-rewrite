@@ -8,7 +8,7 @@
                 <q-item clickable
                        @click="notify = true;
                                selectedNotification = notification"
-                        v-for="notification in selfSt.history.notifications">
+                        v-for="notification in selfSt.user.history.notifications">
                     <q-icon name="notifications" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"/> 
                     <p style="margin: 0px; margin-top: 0.5vh;">{{ notification.title }}</p>
                 </q-item>
