@@ -99,6 +99,9 @@ export const usePeople = defineStore('peopleStore', {
         },
         getRoleById(id) {
             return this.roles.filter((x) => x.id == id)[0];
+        },
+        getUserById(id) {
+            return this.users.filter((x) => x.id == id)[0];
         }
     }
 })

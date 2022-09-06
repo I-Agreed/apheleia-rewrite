@@ -178,7 +178,7 @@
                 inventorySt,
                 itemsSt: itemsLocalSt,
 
-                tab: ref(inventory.schemes[0].name),
+                tab: ref(inventorySt.schemes[0].name),
                 
                 lend: ref(false),
                 manage: ref(false),

@@ -15,6 +15,12 @@ export async function init_stores(invStore, peopleStore, selfStore) {
     let users = get_users();
     peopleStore.users = users;
     users.forEach((x) => x.role = peopleStore.getRoleById(get_user_roles(x.id)));
+
+    let self = peopleStore[sessionStorage.userId];
+    console.log("Self:");
+    console.log(self);
+    selfStore.user = self;
+    selfStore.role = self.role;
 }
 
 // all functions here should return false upon failure

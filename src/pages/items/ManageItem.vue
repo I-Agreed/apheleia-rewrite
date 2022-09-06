@@ -187,7 +187,7 @@
                 itemsSt: itemsLocalPage,
                 selfSt,
 
-                tab2: ref(inventory.schemes[0].name),
+                tab2: ref(inventorySt.schemes[0].name),
 
                 editArc: ref(false),
                 confirm: ref(false),
