@@ -88,7 +88,7 @@ export async function add_archetype(name, subject_area, schema) {
 }
 
 // Delete archetype
-export async function delete_item(id) {
+export async function delete_archetype(id) {
     await fetch(uri + `/archetype/${id}`, {
         method: "DELETE",
         headers: {
@@ -137,7 +137,7 @@ export async function add_archetype(name, subject_area, schema) {
 }
 
 // Delete subject area
-export async function delete_item(id) {
+export async function delete_subject(id) {
     await fetch(uri + `/subject_area/${id}`, {
         method: "DELETE",
         headers: {
