@@ -1,12 +1,9 @@
-import { useInventory } from "src/stores/useInventory";
-import { Archetype, Item } from "src/scripts/objects"
+import { Archetype, Item, User } from "src/scripts/objects"
 
 const uri = "http://localhost:8000"
 
 // all functions here should return false upon failure
 // 'get' functions return data upon success and others should return true
-
-const inventorySt = useInventory()
 
 // Get list of items
 export async function get_items() {
@@ -20,7 +17,7 @@ export async function get_items() {
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     let data = response.json();
     console.log(response);
-    let items = data.map((x) => new Item(inventorySt.getArchetypeById(x.archetype, x.archetype_data, x.id)));
+    let items = data.map((x) => new Item(x.archetype, x.archetype_data, x.id));
     return items;
 }
 
@@ -208,9 +205,56 @@ export async function get_users() {
             'Accept': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    //let data = response.json();
+    let data = response.json();
     console.log(response);
+    let users = data.map((x) => new User(x.id, "", "", undefined, undefined)) // TODO: find way to get user roles and history
     return response.json();
+}
+
+// Add user
+export async function add_user(user) {
+    let item = {
+        id: user.id
+    }
+    let response = false;
+    await fetch(uri + "/users", {
+        method: "POST",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        },
+        json: item
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    console.log(response);
+    return true;
+}
+
+// Give user a role
+export async function add_user_role(user, role) {
+    let response = false;
+    await fetch(uri + `/users/${user.id}/roles/${role.id}`, {
+        method: "POST",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        }
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    console.log(response);
+    return true;
+}
+
+// Remove role from user
+export async function delete_user_role(user, role) {
+    let response = false;
+    await fetch(uri + `/users/${user.id}/roles/${role.id}`, {
+        method: "DELETE",
+        headers: {
+            'Authorization': "Bearer " + localStorage["accessToken"],
+            'Accept': 'application/json'
+        }
+    }).then(r => response = r).catch(e => { console.log(e); return false; });
+    console.log(response);
+    return true;
 }
 
 // Get list of roles
