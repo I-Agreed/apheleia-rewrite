@@ -1,16 +1,20 @@
 <template>
     <div class="q-pa-md" style="height: 100%;">
         <h5>Unread Notifications</h5>
-        <!-- Notifications List -->
+        <!-- Notifications list -->
         <q-list bordered separator class="rounded-borders shadow-1" style="height: 100%;">
             <q-item clickable
                    @click="notify = true;
                            selectedNotification = notification"
                     v-for="notification in selfSt.user.unreadNotifications()">
+
                 <q-icon name="notifications" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"/>
+
                 <span class="notification-title">{{ notification.title }}</span>
+
                 <!-- Tick button -->
-                <q-icon @click="selfSt.readNotification(notification.id); notify = true" name="check" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"/> 
+                <q-icon name="check" size="sm" style="margin-right: 1vh; margin-top: 0.3vh;"
+                       @click="selfSt.readNotification(notification.id); notify = true" /> 
             </q-item>
         </q-list>
     </div>
@@ -20,6 +24,7 @@
 
 <script>
     import { defineComponent, ref } from 'vue'
+    
     import { useSelf } from '../../stores/useSelf'
     import NotificationPopup from '../../components/NotificationPopup.vue'
 

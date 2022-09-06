@@ -86,30 +86,9 @@
     const inventorySt = useInventory()
     const itemsLocalSt = itemsLocal()
     const selfSt = useSelf()
-
-    
-    // let columns = {}
-    /*
-    columns = {
-        schemename: [
-            {}, // field name
-            {},
-            {}
-        ]
-    }
-    */
-    // inventory.schemes.forEach(scheme => {
-    //     let key = scheme.name
-    //     columns.key = []
-    //     scheme.fieldNames.forEach(fieldName => {
-    //         columns.key.push({ name: fieldName, align: "center", label: fieldName, field: fieldName, sortable: true })
-    //     })
-    // })
-
-    // console.log(columns)
     
     const archetypeColumns = [
-        { name: 'property', align: "center", label: "Property", field: "property", sortable: true },
+        { name: 'property',     align: "center", label: "Property Name", field: "property",     sortable: true },
         { name: 'propertyType', align: "center", label: "Property Type", field: "propertyType", sortable: true },
         { name: 'defaultValue', align: "center", label: "Default Value", field: "defaultValue", sortable: true },
         { name: 'delete', field: "delete", headerStyle: 'width: 3%'}
@@ -125,7 +104,6 @@
                 selfSt,
 
                 tab: ref(inventorySt.schemes[0].name),
-                tab2: ref("archetype1"),
 
                 lend: ref(false),
                 editLend: ref(false),
@@ -137,7 +115,7 @@
                 archColumns: archetypeColumns,
 
                 searchFilter(item, param) {
-                    // converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
+                    // Converts item name to lowercase, removes accents (for epée), and checks to see if it contains the search parameters.
                     return Object.values(item)
                                  .reduce((x, y) => x || String(y).normalize("NFD")
                                                                  .replace(/[\u0300-\u036f]/g, "")

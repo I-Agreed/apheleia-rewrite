@@ -4,6 +4,7 @@
         <div style="height: 80%; width: 100%; border: 2px solid var(--aph-grey); border-radius: 10px;">          <!-- Rounded border -->
             <!-- Splitter which splits vertically between the tabs and content -->
             <q-splitter v-model="splitterModel" style="height: 100%">
+
                 <!-- The tabs on the left -->
                 <template v-slot:before>
                     <q-tabs v-model="tab" vertical class="text-primary">
@@ -15,7 +16,8 @@
                         <q-tab name="notifications" label="Notifications" />
                     </q-tabs>
                 </template>
-                <!-- The panels on the right, connected to the tabs by the 'name' variable -->
+
+                <!-- The panels on the right -->
                 <template v-slot:after>
                     <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-down">
                         <q-tab-panel name="overview">

@@ -1,6 +1,7 @@
 <template>
     <q-dialog>
         <q-card style="width: 100%;">
+            <!-- Header -->
             <q-card-section class="wide-flexbox">
                 <h3 style="margin-top: 10px; margin-bottom: 20px;">Lend Item</h3>
                 <q-card-actions style="padding-bottom: 5%;" align="right">
@@ -9,21 +10,16 @@
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-            Lend to:
-            </q-card-section>
-
-            <q-card-section style="padding-top: 0px;">
-                <q-select outlined v-model="model" :options="options" />
+                <span>Lend to:</span>
+                <q-select outlined v-model="model" :options="options" style="padding-top: 5px;" />
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-            Lend until:
+                <span>Lend until:</span>
+                <q-input v-model="time" filled type="date" style="padding-top: 5px;" />
             </q-card-section>
 
-            <q-card-section style="padding-top: 0px;">
-                <q-input v-model="time" filled type="date" />
-            </q-card-section>
-
+            <!-- Exit buttons -->
             <q-card-actions align="right">
                 <q-btn flat label="Cancel" color="primary" v-close-popup />
                 <q-btn flat label="Lend" color="primary" v-close-popup @click="inventorySt.createLoan(itemsLocalSt.focused_item, model, time)" />
@@ -33,7 +29,6 @@
 </template>
 
 <script>
-    
     import { ref } from 'vue'
     import { defineComponent } from 'vue'
 

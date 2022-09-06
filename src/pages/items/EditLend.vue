@@ -3,6 +3,7 @@
                      model = inventorySt.getLoanByItemId(itemsLocalSt.focused_item).borrow;
                      owner = inventorySt.getLoanByItemId(itemsLocalSt.focused_item).loanedTo">
         <q-card style="width: 100%;">
+            <!-- Header -->
             <q-card-section class="wide-flexbox">
                 <h3 style="margin-top: 10px; margin-bottom: 20px;">Edit Lend</h3>
                 <q-card-actions style="padding-bottom: 5%;" align="right">
@@ -25,6 +26,7 @@
                 <q-input v-model="time" filled type="date" style="padding-top: 5px;"/>
             </q-card-section>
 
+            <!-- Exit buttons -->
             <q-card-actions align="right">
                 <q-btn flat label="Return Now" color="primary" v-close-popup @click="inventorySt.returnItem(itemsLocalSt.focused_item)"/>
                 <q-btn flat label="Cancel" color="primary" v-close-popup />
@@ -35,7 +37,6 @@
 </template>
 
 <script>
-    
     import { ref } from 'vue'
     import { defineComponent } from 'vue'
 
@@ -45,7 +46,7 @@
     import CloseButton from 'src/components/CloseButton.vue'
 
     const people = usePeople()
-    const inv = useInventory()
+    const inventorySt = useInventory()
     const itemsLocalSt = itemsLocal()
 
     const lendOptions = people.users.map(user => `${user.first_name} ${user.last_name}`)
@@ -58,18 +59,18 @@
 
             return {
                 peopleSt: people,
-                inventorySt: inv,
+                inventorySt,
                 itemsLocalSt,
 
                 model: ref(""),
                 time: ref(""),
-                owner: ref(''),
+                owner: ref(""),
 
                 options,
                 
                 setModel (val) {
                     model.value = val
-                },
+                }
             }
         }
     })

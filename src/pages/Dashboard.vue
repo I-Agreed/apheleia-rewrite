@@ -18,52 +18,19 @@
   
 <script>
     import { defineComponent } from 'vue'
+
     import { useInventory } from '../stores/useInventory.js'
     import LoansPanel from './dashboard/Loans.vue'
     import HistoryPanel from './dashboard/History.vue'
     import NotificationsPanel from './dashboard/Notifications.vue'
 
     const inventorySt = useInventory()
+
     inventorySt.updateArchetypes()
-    
-    const columns = [
-        { name: 'name', align: "center", label: "Item", field: row => row.name, sortable: true },
-        { name: 'lent', align: "center", label: "Lent On", field: "lent", sortable: true },
-        { name: 'due', align: "center", label: "Due By", field: "due", sortable: true }
-    ]
-
-    const rows = [
-        { name: "Item 1", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 2", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 3", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 4", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 5", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 6", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 7", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 8", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 9", lent: "02/02/2022", due: "22/02/2022" },
-        { name: "Item 10", lent: "02/02/2022", due: "22/02/2022" }
-    ]
-
-    const notifications = [
-        "This is a notification.",
-        "This is a notification.",
-        "This is a notification.",
-        "This is a notification.",
-        "This is a notification.",
-        "This is a notification.",
-        "This is a notification.",
-        "This is a notification.",
-        "This is a notification."
-    ]
   
     export default defineComponent({
         name: 'Dashboard',
-        components: { LoansPanel, HistoryPanel, NotificationsPanel },
-        setup () {
-            return {
-            }
-        }
+        components: { LoansPanel, HistoryPanel, NotificationsPanel }
     })
 </script>
 
