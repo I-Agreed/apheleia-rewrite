@@ -1,12 +1,9 @@
-import { useInventory } from "src/stores/useInventory";
 import { Archetype, Item } from "src/scripts/objects"
 
 const uri = "http://localhost:8000"
 
 // all functions here should return false upon failure
 // 'get' functions return data upon success and others should return true
-
-const inventorySt = useInventory()
 
 // Get list of items
 export async function get_items() {
@@ -15,13 +12,11 @@ export async function get_items() {
         method: "GET",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    let data = response.json();
-    console.log(response);
-    let items = data.map((x) => new Item(inventorySt.getArchetypeById(x.archetype, x.archetype_data, x.id)));
-    return items;
+
+    return response.json();
 }
 
 // Add new item 
@@ -35,7 +30,7 @@ export async function add_item(newItem) {
         method: "POST",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         },
         json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
@@ -55,7 +50,7 @@ export async function modify_item(modItem) {
         method: "PUT",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         },
         json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
@@ -69,7 +64,7 @@ export async function delete_item(id) {
         method: "DELETE",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
@@ -84,13 +79,11 @@ export async function get_archetypes() {
         method: "GET",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
-    let data = response.json();
-    console.log(response);
-    let arches = data.map((x) => new Archetype(x.name, x.subject_area, x.schema.fieldTypes, x.schema.fieldNames, x.schema.fieldDefault, dbId = x.id));
-    return arches;
+
+    return response.json();
 }
 
 // Create Archetype
@@ -104,7 +97,7 @@ export async function add_archetype(archetype) {
         method: "POST",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         },
         json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
@@ -120,7 +113,7 @@ export async function delete_archetype(id) {
         method: "DELETE",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
@@ -129,7 +122,7 @@ export async function delete_archetype(id) {
 }
 
 // Modify Archetype
-export async function add_archetype(archetype) {
+export async function modify_archetype(archetype) {
     let item = {
         name: archetype.name,
         subject_area: archetype.subject,
@@ -139,7 +132,7 @@ export async function add_archetype(archetype) {
         method: "PUT",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         },
         json: item
     }).then(r => response = r).catch(e => { console.log(e); return false; });
@@ -156,7 +149,7 @@ export async function get_subjects() {
         method: "GET",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
@@ -165,19 +158,19 @@ export async function get_subjects() {
 }
 
 // Create subject area
-export async function add_subject(name, subject_area, schema) {
+export async function add_subject(name, admin) {
+    let response = false;
     let item = {
         name: name,
-        subject_area: subject_area,
-        schema: schema
+        admin: admin
     }
-    await fetch(uri + "/subject_area", {
+    await fetch(uri + "/subject_areas", {
         method: "POST",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json',
         },
-        json: item
+        body: JSON.stringify(item)
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
     console.log(response);
@@ -186,11 +179,11 @@ export async function add_subject(name, subject_area, schema) {
 
 // Delete subject area
 export async function delete_subject(id) {
-    await fetch(uri + `/subject_area/${id}`, {
+    await fetch(uri + `/subject_areas/${id}`, {
         method: "DELETE",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
@@ -205,7 +198,7 @@ export async function get_users() {
         method: "GET",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();
@@ -220,7 +213,7 @@ export async function get_roles() {
         method: "GET",
         headers: {
             'Authorization': "Bearer " + localStorage["accessToken"],
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(r => response = r).catch(e => { console.log(e); return false; });
     //let data = response.json();

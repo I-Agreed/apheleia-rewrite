@@ -381,12 +381,10 @@ export const useInventory = defineStore('inventoryStore', {
                 fieldDefault: ["Blade", 0, 0]
             }
 
-            add_subject("Fencing", "437333289")
+            //add_subject("Test", 437333289)
             add_archetype("Foil", "Fencing", JSON.stringify(data))
             get_subjects().then(data => console.log("sub", data))
             get_archetypes().then(data => console.log(data))
-            get_users().then(data => console.log("usr", data))
-            console.log("Bearer " + localStorage["accessToken"])
         }
     }
 })
